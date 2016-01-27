@@ -17,16 +17,17 @@ Setup tunnel to internet to test from GitHub
 
 ## Setup GitHub
 
-Goto: https://github.com/<user>/<repo>/settings/hooks/
+Goto: `https://github.com/<user>/<repo>/settings/hooks/`
 
 Set:
+
     Payload URL:
         <host>/payload
 
 Tick:
+
     Issue comment
       Issue commented on. 
-
 
 ## Docker
 
@@ -53,7 +54,7 @@ Run
 
 Other things 
 
-    d logs -f pr-checker
-    d stop pr-checker
-    d rm pr-chcker
+    docker logs -f pr-checker
+    docker stop pr-checker
+    docker rm pr-chcker
 
