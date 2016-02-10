@@ -4,11 +4,19 @@ Checks for key comments on pull requests and updates them with statues and label
 
 If two `:+1:`s are seen on a PR, it adds the label `+d2` and sets the status on the last commit as `success`.
 
+All options are configurable via ENV (using Dotenv), see `.env.example`
+
+
 ## Dev
+
+Setup
+
+    cp .env.example .env
+    # edit as required
 
 Boot
 
-    ACCESS_TOKEN=<key> ruby server.rb
+    ruby server.rb
 
 Setup tunnel to internet to test from GitHub
 
@@ -19,15 +27,17 @@ Setup tunnel to internet to test from GitHub
 
 Goto: `https://github.com/<user>/<repo>/settings/hooks/`
 
-Set:
+Under "Webhooks", select "Add Webhook"
 
-    Payload URL:
-        <host>/payload
+Set "Payload URL" to "https://yourhost.com:port/payload"
 
-Tick:
+Tick: Issue comment: Issue commented on.
 
-    Issue comment
-      Issue commented on. 
+
+## Access token
+
+You need a Personal Access token from github : https://github.com/settings/tokens
+
 
 ## Docker
 
@@ -41,15 +51,13 @@ Build
 
     docker build -t pr-checker .
 
-Deploy
+Run test
 
-You need a Personal Access token from github : https://github.com/settings/tokens
+    docker run -i -t --rm --env-file .env -p 4444:4567 pr-checker
 
-    export ACCESS_TOKEN=<token>
+Run real
 
-Run
-
-    ID=$(docker run -d --env ACCESS_TOKEN=$ACCESS_TOKEN -p 4444:4567 --name pr-checker pr-checker)
+    ID=$(docker run -d --env-file .env -p 4444:4567 --name pr-checker pr-checker)
     echo $ID
 
 Other things 
