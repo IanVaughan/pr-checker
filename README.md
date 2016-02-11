@@ -57,10 +57,9 @@ Run test
 
 Run real
 
-    ID=$(docker run -d --env-file .env -p 4444:4567 --name pr-checker pr-checker)
-    echo $ID
+    docker run -d --env-file .env -p 4444:4567 --name pr-checker pr-checker
 
-Other things 
+Other docker commands :
 
     docker logs -f pr-checker
     docker stop pr-checker
