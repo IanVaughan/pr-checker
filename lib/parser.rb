@@ -9,23 +9,23 @@ module PrChecker
     end
 
     def parse(request)
-      push = JSON.parse(request.body.read)
-      puts "payload:#{push}"
-      return unless push.key?("issue")
-      return unless push["issue"].key?("number")
-      issue_number = push["issue"]["number"]
-      repo = push["repository"]["full_name"]
+      data = JSON.parse(request.body.read)
+      puts "payload:#{data}"
+      return "No issue found in payload" unless data.key?("issue")
+      return "No number found in payload" unless data["issue"].key?("number")
+
+      issue_number = data["issue"]["number"]
+      repo = data["repository"]["full_name"]
       puts "repo:#{repo}, issue_number:#{issue_number}"
 
       begin
         comments = client.issue_comments(repo, issue_number)
       rescue Octokit::NotFound => e
         puts "ERROR: cannot find issue. #{e}"
-        return
+        return "Failed to get comments"
       end
 
       plus_one_count = comments.count { |c| c[:body].match config.plus_one_text }
-
       puts "repo:#{repo}, issue_number:#{issue_number}, count:#{plus_one_count}"
 
       commits = client.pull_commits repo, issue_number
