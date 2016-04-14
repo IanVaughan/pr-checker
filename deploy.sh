@@ -2,7 +2,7 @@ IMAGE=pr-checker-image
 CONTAINER=pr-checker-container
 
 echo "* Building..."
-docker build --tag $IMAGE
+docker build --tag $IMAGE .
 echo "* Stopping current instance..."
 docker stop $CONTAINER
 echo "* Removing old instance..."
