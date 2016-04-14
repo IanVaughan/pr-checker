@@ -24,7 +24,7 @@ module PrChecker
         return
       end
 
-      plus_one_count = comments.count { |c| c[:body].match config.plus_one_text_regexp }
+      plus_one_count = comments.count { |c| c[:body].match config.plus_one_text }
 
       puts "repo:#{repo}, issue_number:#{issue_number}, count:#{plus_one_count}"
 
