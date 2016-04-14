@@ -1,5 +1,3 @@
-require "dotenv"
-
 module PrChecker
   class Config
     attr_reader :plus_one_text, :plus_one_text_regexp, :ok_label, :access_token, :context, :info
@@ -9,7 +7,6 @@ module PrChecker
     end
 
     def load_env
-      Dotenv.load
       @plus_one_text = ENV["PR_CHECKER_PLUS_ONE_TEXT"]
       @plus_one_text_regexp = Regexp.quote @plus_one_text
       @ok_label = ENV["PR_CHECKER_OK_LABEL"]
