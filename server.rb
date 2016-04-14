@@ -66,7 +66,6 @@ post '/payload' do
     client.add_labels_to_an_issue(repo, issue_number, [OK_LABEL])
     client.create_status(repo, commit_sha, 'success', info)
   else
-    client.remove_label(repo, issue_number, OK_LABEL)
     client.create_status(repo, commit_sha, 'pending', info)
   end
   puts "end..."
