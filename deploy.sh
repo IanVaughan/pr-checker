@@ -1,10 +1,13 @@
+IMAGE=pr-checker-image
+CONTAINER=pr-checker-container
+
 echo "* Building..."
-docker build --tag pr-checker-image .
+docker build --tag $IMAGE
 echo "* Stopping current instance..."
-docker stop pr-checker-container
+docker stop $CONTAINER
 echo "* Removing old instance..."
-docker rm pr-checker-container
+docker rm $CONTAINER
 echo "* Starting new instance..."
-docker run -d --env-file .env -p 4444:4567 --name pr-checker-container pr-checker-image
+docker run -d --env-file .env -p 4444:4567 --name $CONTAINER $IMAGE
 echo "* Showing you the logs..."
-docker logs -f pr-checker-container
+docker logs -f $CONTAINER
