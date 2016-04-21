@@ -15,6 +15,6 @@ get "/ping" do
 end
 
 post '/payload' do
-  parser.parse(request)
   status 200
+  body parser.parse(request)
 end
