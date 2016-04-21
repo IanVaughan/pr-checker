@@ -16,4 +16,5 @@ end
 
 post '/payload' do
   parser.parse(request)
+  status 200
 end

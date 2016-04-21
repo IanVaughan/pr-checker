@@ -7,7 +7,6 @@ module PrChecker
 
     def initialize(config, client)
       @config, @client = config, client
-      # @log = File.new("log/sinatra.log", "a+")
       @logger = Logger.new(STDERR)
     end
 
