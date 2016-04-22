@@ -54,7 +54,7 @@ module PrChecker
         client.create_status(org_repo, commit_sha, 'pending', info)
       end
 
-      "Found #{plus_one_count} +1s"
+      "Found #{plus_one_count} +1s on ##{issue_number} of:#{org_repo} at:#{commit_sha}"
     end
   end
 end
