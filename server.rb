@@ -1,14 +1,22 @@
 require 'sinatra'
 require './environment'
+# require 'sinatra/base'
+#
+# require "./lib/config"
+# require "./lib/remote"
+# require "./lib/parser"
 
-set :bind, '0.0.0.0' # Required for Docker
+# set :bind, '0.0.0.0' # Required for Docker
+module PrChecker
+  class Server < Sinatra::Base
+    set :bind, '0.0.0.0' # Required for Docker
 
-get '/ping' do
-  'pong'
-end
+    config = Config.new
+    client = Remote.setup(config.access_token)
+    parser = Parser.new(config, client)
 
-post '/payload' do
-  status 200
-  data = JSON.parse(request.body.read, symbolize_names: true)
-  body GitHub::Handler.new.call(data)
+    get "/ping" do
+      "pong"
+    end
+  end
 end
