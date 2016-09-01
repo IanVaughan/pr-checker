@@ -17,7 +17,7 @@ module PrChecker
         org_repo = data["repository"]["full_name"]
         commit_sha = data["pull_request"]["head"]["sha"]
 
-        info = { context: config.context, infomation: config.info }
+        info = { context: config.context, information: config.info }
         client.create_status(org_repo, commit_sha, 'failure', info)
       else
         return "No issue found in payload" unless data.key?(:issue)
@@ -44,7 +44,7 @@ module PrChecker
 
       commits = client.pull_commits org_repo, issue_number
       commit_sha = commits.last[:sha]
-      info = { context: config.context, infomation: config.info }
+      info = { context: config.context, information: config.info }
 
       if plus_one_count > 1
         client.add_labels_to_an_issue(org_repo, issue_number, [config.ok_label])
