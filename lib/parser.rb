@@ -42,7 +42,7 @@ module PrChecker
       plus_one_count = comments.count { |c| c[:body].match config.plus_one_text_regexp }
       plus_one_count += comments.count { |c| c[:body].match config.plus_one_emoji_regexp }
 
-      commits = client.pull_commits org_repo, issue_number
+      commits = client.pull_commits(org_repo, issue_number)
       commit_sha = commits.last[:sha]
       info = { context: config.context, information: config.info }
 
