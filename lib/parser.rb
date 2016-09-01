@@ -20,11 +20,11 @@ module PrChecker
         info = { context: config.context, infomation: config.info }
         client.create_status(org_repo, commit_sha, 'failure', info)
       else
-        return "No issue found in payload" unless data.key?("issue")
-        return "No number found in payload" unless data["issue"].key?("number")
+        return "No issue found in payload" unless data.key?(:issue)
+        return "No number found in payload" unless data[:issue].key?(:number)
 
-        issue_number = data["issue"]["number"]
-        org_repo = data["repository"]["full_name"]
+        issue_number = data[:issue][:number]
+        org_repo = data[:repository][:full_name]
         action(issue_number, org_repo)
       end
     end
