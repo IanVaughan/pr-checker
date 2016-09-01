@@ -65,3 +65,26 @@ Other docker commands :
     docker stop pr-checker
     docker rm pr-chcker
 
+
+
+Notts1
+
+    dm create --driver generic --generic-ip-address 78.129.181.12 --generic-ssh-port 10022 --generic-ssh-user www-deploy notts1
+    dm create --driver generic --generic-ip-address 78.129.181.9 --generic-ssh-port 10022 --generic-ssh-user www-deploy notts2
+    dm env notts1
+    eval "$(docker-machine env notts1)"
+
+check
+
+    curl http://notts1.quiqup.com:4444/ping
+
+
+Setup
+
+    https://github.com/QuiqUpLTD/QuiqupAPI/settings/hooks/7090796
+
+
+Payload URL:
+
+    http://notts1.quiqup.com:4444/payload
+

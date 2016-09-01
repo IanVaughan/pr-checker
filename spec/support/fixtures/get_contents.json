@@ -1,0 +1,18 @@
+{
+  "name":"Gemfile",
+  "path":"Gemfile",
+  "sha":"51d0f167eacbd3262e00787894796a6b2bddfcea",
+  "size":93,
+  "url":"https://api.github.com/repos/IanVaughan/pr-checker/contents/Gemfile?ref=master",
+  "html_url":"https://github.com/IanVaughan/pr-checker/blob/master/Gemfile",
+  "git_url":"https://api.github.com/repos/IanVaughan/pr-checker/git/blobs/51d0f167eacbd3262e00787894796a6b2bddfcea",
+  "download_url":"https://raw.githubusercontent.com/IanVaughan/pr-checker/master/Gemfile",
+  "type":"file",
+  "content":"T25PbmVMaW5lClR3b05hbWVzIE9uU2FtZUxpbmU=\n",
+  "encoding":"base64",
+  "_links":{
+    "self":"https://api.github.com/repos/IanVaughan/pr-checker/contents/Gemfile?ref=master",
+    "git":"https://api.github.com/repos/IanVaughan/pr-checker/git/blobs/51d0f167eacbd3262e00787894796a6b2bddfcea",
+    "html":"https://github.com/IanVaughan/pr-checker/blob/master/Gemfile"
+  }
+}
