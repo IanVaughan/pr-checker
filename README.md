@@ -70,6 +70,7 @@ Other docker commands :
 Notts1
 
     dm create --driver generic --generic-ip-address 78.129.181.12 --generic-ssh-port 10022 --generic-ssh-user www-deploy notts1
+    dm create --driver generic --generic-ip-address 78.129.181.9 --generic-ssh-port 10022 --generic-ssh-user www-deploy notts2
     dm env notts1
     eval "$(docker-machine env notts1)"
 
