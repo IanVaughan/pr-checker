@@ -1,5 +1,6 @@
 require "logger"
 require 'json'
+require 'octokit'
 
 module PrChecker
   class Parser
@@ -45,6 +46,10 @@ module PrChecker
       commits = client.pull_commits(org_repo, issue_number)
       commit_sha = commits.last[:sha]
       info = { context: config.context, information: config.info }
+
+      # client.post "/repos/IanVaughan/pr-checker/issues/4/assignees", { assignees: ['IanVaughan'] }
+      # protect_branch https://github.com/octokit/octokit.rb/blob/master/lib/octokit/client/repositories.rb#L506
+      # create_hook https://github.com/octokit/octokit.rb/blob/master/lib/octokit/client/hooks.rb#L75
 
       if plus_one_count > 1
         client.add_labels_to_an_issue(org_repo, issue_number, [config.ok_label])
