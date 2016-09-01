@@ -2,6 +2,7 @@ require 'sinatra'
 
 require './lib/config'
 require './lib/remote'
+require './lib/issue_assigner'
 require './lib/parser'
 
 config = PrChecker::Config.new

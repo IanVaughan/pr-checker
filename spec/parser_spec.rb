@@ -46,8 +46,8 @@ RSpec.describe PrChecker::Parser do
       end
 
       let(:commit) { { sha: sha } }
-      let(:sha) { "abc123" }
-      let(:info) { { context: "context", information: "info" } }
+      let(:sha) { 'abc123' }
+      let(:info) { { context: 'context', description: 'info' } }
 
       context "when no +1" do
         let(:comments) { [{ body: "Meh" }] }
@@ -129,9 +129,6 @@ RSpec.describe PrChecker::Parser do
     # issue_comments.json - get all issue comments for repo and PR issue number
     let(:issue_comments) { load_fixture('issue_comments') }
 
-    # pull_request.json - Github new PR webhook post payload
-    let(:pull_request) { load_fixture('pull_request') }
-
     # commits.json - get commits for repo and PR issue number
     let(:commits) { load_fixture('commits') }
 
@@ -141,10 +138,44 @@ RSpec.describe PrChecker::Parser do
       expect(client).to receive(:create_status).with(
         "QuiqUpLTD/QuiqupAPI", commits.last[:sha], 'pending', {
           context: '2+1s', 
-          information: 'You have 2+1s and are go for merge'
+          description: 'Require at least two people to add a +1'
         }
       )
       instance.parse(issue_comment)
+    end
+  end
+
+  context 'pull request' do
+    let(:config) { double PrChecker::Config, context: 'context', info: 'info' }
+    let(:client) { double PrChecker::Remote }
+
+    let(:pull_request) { load_fixture('pull_request') } # pull_request.json - Github new PR webhook post payload
+    let(:commit_sha) { pull_request[:pull_request][:head][:sha] }
+    let(:info) { { context: 'context', description: 'info' } }
+
+    it 'creates failure PR check status' do
+      allow(client).to receive(:post)
+      allow_any_instance_of(IssueAssigner).to receive(:call).and_return('Assigned foobar')
+
+      expect(client).to receive(:create_status).with(
+        'QuiqUpLTD/QuiqupAPI', 
+        commit_sha,
+        'failure',
+        info)
+
+      result = instance.parse(pull_request)
+      expect(result).to eq(
+        org_repo: 'QuiqUpLTD/QuiqupAPI',
+        issue_number: 4577,
+        assign: 'Assigned foobar'
+      )
+    end
+
+    it 'assignees to someone' do
+      allow(client).to receive(:create_status)
+      expect_any_instance_of(IssueAssigner).to receive(:call).with('QuiqUpLTD/QuiqupAPI', 4577)
+
+      instance.parse(pull_request)
     end
   end
 end
