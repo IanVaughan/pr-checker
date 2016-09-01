@@ -10,9 +10,8 @@ module PrChecker
       @logger = Logger.new(STDERR)
     end
 
-    def parse(request)
-      data = JSON.parse(request.body.read)
-      if data.key?("pull_request")
+    def parse(data)
+      if data.key?(:pull_request)
         return "No action on:#{data["action"]}" unless data["action"] == "opened"
         issue_number = data["number"]
         org_repo = data["repository"]["full_name"]

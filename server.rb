@@ -16,5 +16,6 @@ end
 
 post '/payload' do
   status 200
-  body parser.parse(request)
+  data = JSON.parse(request.body.read, symbolize_names: true)
+  body parser.parse(data)
 end
