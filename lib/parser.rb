@@ -21,7 +21,7 @@ module PrChecker
         commit_sha = data[:pull_request][:head][:sha]
 
         info = { context: config.context, description: config.info }
-        logger.debug "Got PR:#{org_repo}/#{commit_sha}"
+        logger.debug "New PR:#{org_repo}, sha:#{commit_sha}"
         client.create_status(org_repo, commit_sha, 'failure', info)
 
         assign_result = issue_assigner.call(org_repo, issue_number)
