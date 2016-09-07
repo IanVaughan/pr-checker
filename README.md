@@ -7,6 +7,17 @@ If two `:+1:`s are seen on a PR, it adds the label `+d2` and sets the status on 
 All options are configurable via ENV (using Dotenv), see `.env.example`
 
 
+## Auto Assign
+
+If you check in a file into the root of the repo with a list of names, it will assign the PR to those people when opened.
+
+`.pull_request_assignees`
+```
+any-github-handle
+other-github-handle
+```
+
+
 ## Dev
 
 Setup
