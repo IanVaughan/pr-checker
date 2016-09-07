@@ -15,6 +15,10 @@ class IssueAssigner
     "Assigned:#{assignees}, from files:#{config.assignees_filenames}"
   end
 
+  def unassign(org_repo, issue_number, assignees)
+    client.delete "/repos/#{org_repo}/issues/#{issue_number}/assignees", { assignees: assignees }
+  end
+
   private
 
   attr_reader :client, :config

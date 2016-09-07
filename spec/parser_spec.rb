@@ -164,11 +164,7 @@ RSpec.describe PrChecker::Parser do
         info)
 
       result = instance.parse(pull_request)
-      expect(result).to eq(
-        org_repo: 'QuiqUpLTD/QuiqupAPI',
-        issue_number: 4577,
-        assign: 'Assigned foobar'
-      )
+      expect(result).to eq('org_repo:QuiqUpLTD/QuiqupAPI, issue_number:4577, assign:Assigned foobar')
     end
 
     it 'assignees to someone' do

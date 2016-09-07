@@ -21,15 +21,11 @@ module PrChecker
         commit_sha = data[:pull_request][:head][:sha]
 
         info = { context: config.context, description: config.info }
-        logger.debug "Got PR:#{org_repo}/#{commit_sha}"
+        logger.debug "New PR:#{org_repo}, sha:#{commit_sha}"
         client.create_status(org_repo, commit_sha, 'failure', info)
 
         assign_result = issue_assigner.call(org_repo, issue_number)
-        {
-          org_repo: org_repo,
-          issue_number: issue_number,
-          assign: assign_result
-        }
+        "org_repo:#{org_repo}, issue_number:#{issue_number}, assign:#{assign_result}"
       else
         return "No issue found in payload" unless data.key?(:issue)
         return "No number found in payload" unless data[:issue].key?(:number)
@@ -52,6 +48,15 @@ module PrChecker
         return "Failed to get comments"
       end
 
+      comments.map do |c|
+        if c[:body].match(config.plus_one_emoji_regexp) || c[:body].match(config.plus_one_text_regexp)
+          user = c.fetch(:user, {}).fetch(:login, nil)
+          next if user.nil?
+          logger.debug "#{org_repo}:#{issue_number} removing assignee #{user}"
+          issue_assigner.unassign(org_repo, issue_number, user)
+        end
+      end
+
       plus_one_count = comments.count { |c| c[:body].match config.plus_one_text_regexp }
       plus_one_count += comments.count { |c| c[:body].match config.plus_one_emoji_regexp }
 
@@ -61,15 +66,12 @@ module PrChecker
       commit_sha = commits.last[:sha]
       info = { context: config.context, description: config.info }
 
-      # protect_branch https://github.com/octokit/octokit.rb/blob/master/lib/octokit/client/repositories.rb#L506
-      # create_hook https://github.com/octokit/octokit.rb/blob/master/lib/octokit/client/hooks.rb#L75
-
       if plus_one_count > 1
         logger.debug "#{org_repo}:#{issue_number} adding labels and success status"
         client.add_labels_to_an_issue(org_repo, issue_number, [config.ok_label])
         client.create_status(org_repo, commit_sha, 'success', info)
       else
-        logger.debug "#{org_repo}:#{issue_number} pending status"
+        logger.debug "#{org_repo}:#{issue_number} setting pending status check"
         client.create_status(org_repo, commit_sha, 'pending', info)
       end
 
