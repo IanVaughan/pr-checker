@@ -11,12 +11,24 @@ All options are configurable via ENV (using Dotenv), see `.env.example`
 
 If you check in a file into the root of the repo with a list of names, it will assign the PR to those people when opened.
 
-`.pull_request_assignees`
+Once you have given a +1, it will automatically remove you from the Assignees list.
+
+### Filename
+
+* The file can be either `.pull_request_assignees` or `pull_request_assignees`
+* It combines names from all the files it finds
+* If you'd like any other name, just say and it can go on the list of files to check.
+
+### Contents
+
+The contents can be space or new line separated :
+
 ```
 any-github-handle
-other-github-handle
+other-github-handle and-here-to
 ```
 
+The names must be as per the GitHub profile name, eg `https://github.com/<name here>`
 
 ## Dev
 
