@@ -48,7 +48,9 @@ module PrChecker
         return "Failed to get comments"
       end
 
-      comments.map do |c|
+      logger.debug "#{org_repo}:#{issue_number} comments:#{comments}"
+      comments.map do |comment|
+        c = comment.to_hash
         if c[:body].match(config.plus_one_emoji_regexp) || c[:body].match(config.plus_one_text_regexp)
           user = c.fetch(:user, {}).fetch(:login, nil)
           next if user.nil?
