@@ -1,14 +1,14 @@
 require 'spec_helper'
 require 'json'
 
-RSpec.describe ConfigFile do
-  let(:instance) { described_class.new(client, org_repo) }
+RSpec.describe ConfigReader do
+  let(:instance) { described_class.new(client) }
   let(:client) { double PrChecker::Remote }
   # let(:client) { PrChecker::Remote.setup('849ac993d373f8125ca17b5dec98bed971f0d177') }
-  let(:org_repo) { 'OrgName/RepoName' }
 
   describe '#call' do
-    subject { instance.call }
+    let(:org_repo) { 'OrgName/RepoName' }
+    subject { instance.fetch_from_repo(org_repo) }
     let(:path) { "/repos/#{org_repo}/contents/#{ConfigFile::CONFIG_FILENAME}" }
 
     context 'when no config file is found in the repo' do

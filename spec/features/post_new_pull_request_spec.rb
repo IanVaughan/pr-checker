@@ -1,5 +1,6 @@
 require 'spec_helper'
-require 'webmock/rspec'
+# require 'webmock/rspec'
+require 'rack/test'
 require File.expand_path("../../../server", __FILE__)
 
 RSpec.describe 'Post request received about a pull request' do
@@ -8,6 +9,8 @@ RSpec.describe 'Post request received about a pull request' do
   def app
     BaseServer
   end
+
+  let(:client) { double PrChecker::Remote }
 
   context 'a new PR is raised' do
     let(:pull_request) { load_fixture('pull_request') } # pull_request.json - Github new PR webhook post payload

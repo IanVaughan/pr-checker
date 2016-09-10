@@ -20,7 +20,7 @@ reviewed:
 
   # Whitelist users that count towards the review count
   # Leave blank to include any commenter
-  # authors:
+  # reviewers:
   #   - Phil
 
   # When the review is successful, it can do any or all of the following actions
