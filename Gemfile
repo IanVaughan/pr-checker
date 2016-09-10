@@ -1,4 +1,4 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 gem 'sinatra'
 gem 'json'
@@ -7,7 +7,10 @@ gem 'dotenv'
 
 group :test, :development do
   gem 'pry'
-  gem "rspec"
-  gem "rack-test"
+end
+
+group :test do
+  gem 'rspec'
+  gem 'rack-test'
   gem 'rspec'
 end
