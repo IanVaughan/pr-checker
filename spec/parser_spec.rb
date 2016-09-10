@@ -134,6 +134,7 @@ RSpec.describe PrChecker::Parser do
 
     it 'makes the calls' do
       expect(client).to receive(:issue_comments).with("QuiqUpLTD/QuiqupAPI", 4572).and_return(issue_comments)
+      expect(client).to receive(:delete).with("/repos/QuiqUpLTD/QuiqupAPI/issues/4572/assignees", assignees: 'IanVaughan')
       expect(client).to receive(:pull_commits).with("QuiqUpLTD/QuiqupAPI", 4572).and_return(commits)
       expect(client).to receive(:create_status).with(
         "QuiqUpLTD/QuiqupAPI", commits.last[:sha], 'pending', {
