@@ -1,10 +1,7 @@
+require 'rubygems'
 require 'rspec'
 require "pry"
-
-# require 'webmock/rspec'
-require 'rubygems'
 require 'rack/test'
-require 'pry'
 
 ENV['RACK_ENV'] = 'test'
 
@@ -20,8 +17,6 @@ def load_fixture(name)
 end
 
 RSpec.configure do |config|
-  config.order = 'random'
-
   config.mock_with :rspec
   config.expect_with :rspec
   config.raise_errors_for_deprecations!
