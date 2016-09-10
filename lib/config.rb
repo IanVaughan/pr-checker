@@ -18,7 +18,7 @@ module PrChecker
       @ok_label = ENV.fetch("PR_CHECKER_OK_LABEL", "+2d")
       @access_token = ENV.fetch("PR_CHECKER_ACCESS_TOKEN")
       @context = ENV.fetch("PR_CHECKER_CONTEXT", "No context configured")
-      @info = ENV.fetch("PR_CHECKER_INFO", "No info configured")
+      @info = ENV.fetch("PR_CHECKER_INFO", "No description configured")
       @assignees_filenames = ENV.fetch('PR_CHECKER_ASSIGNEES_FILENAMES', '').split
 
       puts "Read from env:"
