@@ -1,9 +1,5 @@
 require 'sinatra'
-
-require './lib/config'
-require './lib/remote'
-require './lib/issue_assigner'
-require './lib/parser'
+require './environment'
 
 config = PrChecker::Config.new
 client = PrChecker::Remote.setup(config.access_token)
