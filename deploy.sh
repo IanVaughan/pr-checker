@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set +e
 
 HOST=notts2
 IMAGE=pr-checker-image

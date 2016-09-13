@@ -25,6 +25,7 @@ module PrChecker
         client.create_status(org_repo, commit_sha, 'failure', info)
 
         config_file = load_config_file(org_repo)
+        logger.debug "config_file:#{config_file}"
         assign_result = issue_assigner.call(org_repo, issue_number, config_file[:assignees])
         "org_repo:#{org_repo}, issue_number:#{issue_number}, assign:#{assign_result}"
       else
