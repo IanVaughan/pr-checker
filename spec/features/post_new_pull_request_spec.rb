@@ -11,9 +11,12 @@ RSpec.describe 'Post request received about a pull request' do
   end
 
   let(:client) { double PrChecker::Remote }
+  let(:api_path) { 'https://api.github.com/repos/QuiqUpLTD/QuiqupAPI' }
+  let(:pr_check_path) { 'https://api.github.com/repos/IanVaughan/pr-checker' }
 
   context 'a new PR is raised' do
     let(:pull_request) { load_fixture('pull_request') } # pull_request.json - Github new PR webhook post payload
+    let(:contents) { load_fixture('get_contents') }
 
     it 'posts an initial fail status' do
       stub_request(:post, "https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/4577/assignees").
@@ -26,6 +29,13 @@ RSpec.describe 'Post request received about a pull request' do
 
       stub_request(:get, "https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/contents/.pr-checker.yml").
         to_return(status: 200, body: { content: 'cmV2aWV3ZXJzOgogIC0gUGF1bAogIC0gU2ltb24K\n' }.to_json )
+
+      # stub_request(:get, "#{pr_check_path}/contents/.pr_checker.yml?ref=all-config-in-repo").
+      #   with(:headers => {'Accept'=>'application/vnd.github.v3+json', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>'token 849ac993d373f8125ca17b5dec98bed971f0d177', 'Content-Type'=>'application/json', 'User-Agent'=>'Octokit Ruby Gem 4.3.0'}).
+      #   to_return(status: 200, body: contents.to_json)
+
+      # stub_request(:post, "#{api_path}/statuses/8aaecf682331bd819995efecc3996aab3d84ecc9").
+      #   with(:body => "{\"context\":\"2+1s\",\"description\":\"Require at least two people to add a +1\",\"state\":\"failure\"}").
 
       post '/payload', pull_request.to_json
       expect(last_response).to be_ok
