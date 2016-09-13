@@ -41,3 +41,17 @@ reviewed:
   status:
     context: 2+1s
     description: Require at least two people to add a +1
+
+    # The status to assign to the build status when in each stage
+    # Stages are :
+    #   initial - when the PR is raised, should it set the build status
+    #   below - 
+    #   pass - 
+    # Valid values align with what GitHub support, these cannot be changed or styled
+    #   none - means do not set status
+    #   fail - set failure status, shows with red cross
+    #   pending - set pending status, shows with amber dot
+    #   success - shows with green tick
+    inital: fail
+    below: pending
+    pass: success
