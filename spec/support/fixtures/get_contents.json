@@ -8,7 +8,7 @@
   "git_url":"https://api.github.com/repos/IanVaughan/pr-checker/git/blobs/51d0f167eacbd3262e00787894796a6b2bddfcea",
   "download_url":"https://raw.githubusercontent.com/IanVaughan/pr-checker/master/Gemfile",
   "type":"file",
-  "content":"T25PbmVMaW5lClR3b05hbWVzIE9uU2FtZUxpbmU=\n",
+  "content":"cmV2aWV3ZXJzOgogIC0gUGF1bAogIC0gU2ltb24K\n",
   "encoding":"base64",
   "_links":{
     "self":"https://api.github.com/repos/IanVaughan/pr-checker/contents/Gemfile?ref=master",
