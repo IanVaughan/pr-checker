@@ -148,7 +148,7 @@ RSpec.describe PrChecker::Parser do
 
   context 'pull request' do
     let(:config) { double PrChecker::Config, context: 'context', info: 'info' }
-    let(:client) { double PrChecker::Remote }
+    let(:client) { double PrChecker::Remote, contents: { content: 'cmV2aWV3ZXJzOgogIC0gUGF1bAogIC0gU2ltb24K\n' } }
 
     let(:pull_request) { load_fixture('pull_request') } # pull_request.json - Github new PR webhook post payload
     let(:commit_sha) { pull_request[:pull_request][:head][:sha] }
@@ -170,7 +170,8 @@ RSpec.describe PrChecker::Parser do
 
     it 'assignees to someone' do
       allow(client).to receive(:create_status)
-      expect_any_instance_of(IssueAssigner).to receive(:call).with('QuiqUpLTD/QuiqupAPI', 4577)
+      expect_any_instance_of(IssueAssigner).to \
+        receive(:call).with('QuiqUpLTD/QuiqupAPI', 4577, nil)
 
       instance.parse(pull_request)
     end
