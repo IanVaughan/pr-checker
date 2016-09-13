@@ -3,12 +3,10 @@ require 'spec_helper'
 RSpec.describe ConfigFileLoader do
   let(:instance) { described_class.new(client) }
   let(:client) { double PrChecker::Remote }
-  # let(:client) { PrChecker::Remote.setup('849ac993d373f8125ca17b5dec98bed971f0d177') }
 
-  describe '#get' do
-    subject { instance.get(org_repo) }
+  describe '#load' do
+    subject { instance.load(org_repo) }
     let(:org_repo) { 'OrgName/RepoName' }
-    # let(:path) { "/repos/#{org_repo}/contents/#{described_class::CONFIG_FILENAME}" }
 
     context 'when no config file is found in the repo' do
       it 'returns a error key hash so it can be shown in github hooks Web UI' do

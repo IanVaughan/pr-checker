@@ -9,7 +9,7 @@ class ConfigFileLoader
     @client = client
   end
 
-  def get(org_repo, branch = nil)
+  def load(org_repo, branch = nil)
     raw_file = read_config_file_from_repo(org_repo, branch)
     @config = parse_file(raw_file).symbolize_keys
   rescue RuntimeError => e
@@ -28,6 +28,7 @@ class ConfigFileLoader
   end
 
   def parse_file(file)
+    file = JSON.parse(file).symbolize_keys if file.class == String
     content = file[:content]
     decode = Base64.decode64(content)
     convert = YAML.load(decode)
