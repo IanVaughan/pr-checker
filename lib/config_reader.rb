@@ -22,8 +22,7 @@ class ConfigFileLoader
     client.contents 'IanVaughan/pr-checker', path: "#{CONFIG_FILENAME}?ref=all-config-in-repo"
   rescue Octokit::NotFound
     message = "Could not find file:#{CONFIG_FILENAME} in:#{org_repo}"
-    # logger.error message
-    raise message
+    logger.error message
   end
 
   def parse_file(file)
