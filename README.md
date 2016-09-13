@@ -16,6 +16,12 @@ Once you have given a +1, it will automatically remove you from the Assignees li
 
 The names must be as per the GitHub profile name, eg `https://github.com/<name here>`
 
+```yaml
+assignees:
+  - GithubHandle
+  - GitHandle2
+```
+
 ## Dev
 
 Setup
