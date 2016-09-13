@@ -19,12 +19,7 @@ class ConfigFileLoader
   attr_reader :client
 
   def read_config_file_from_repo(org_repo)
-    # client.get "/repos/IanVaughan/pr-checker/contents/.pr_checker.yml?ref=all-config-in-repo"
-    # client.get "/repos/#{org_repo}/contents/#{CONFIG_FILENAME}"
-    # client.contents 'IanVaughan/pr-checker', path: "#{CONFIG_FILENAME}?ref=all-config-in-repo"
-    # client.contents org_repo, path: "#{CONFIG_FILENAME}?ref=all-config-in-repo"
     client.contents 'IanVaughan/pr-checker', path: "#{CONFIG_FILENAME}?ref=all-config-in-repo"
-    # client.contents org_repo, path: CONFIG_FILENAME
   rescue Octokit::NotFound
     message = "Could not find file:#{CONFIG_FILENAME} in:#{org_repo}"
     # logger.error message
