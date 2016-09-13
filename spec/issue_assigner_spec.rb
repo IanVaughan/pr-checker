@@ -2,9 +2,8 @@ require 'spec_helper'
 require 'json'
 
 RSpec.describe IssueAssigner do
-  let(:instance) { described_class.new(client, config) }
+  let(:instance) { described_class.new(client) }
   let(:client) { double PrChecker::Remote }
-  let(:config) { double 'config', assignees: assignees }
   let(:assignees) do
     [ 'Paul', 'Foo' ]
   end
@@ -12,7 +11,7 @@ RSpec.describe IssueAssigner do
   let(:org_repo) { 'OrgName/RepoName' }
   let(:issue_number) { 42 }
 
-  let(:returned_result) { instance.call(org_repo, issue_number) }
+  let(:returned_result) { instance.call(org_repo, issue_number, assignees) }
 
   it 'assigns the names from the file to the pull request' do
     expect(client).to receive(:post).with(

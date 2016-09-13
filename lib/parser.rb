@@ -1,7 +1,6 @@
 require 'logger'
 require 'json'
 require 'octokit'
-require 'pry'
 
 module PrChecker
   class Parser
@@ -9,8 +8,9 @@ module PrChecker
 
     def initialize(config, client)
       @config, @client = config, client
+      @config_file_loader = ConfigFileLoader.new(client)
       @logger = Logger.new(STDERR)
-      @issue_assigner = IssueAssigner.new(client, config)
+      @issue_assigner = IssueAssigner.new(client)
     end
 
     def parse(data)
@@ -24,7 +24,8 @@ module PrChecker
         logger.debug "New PR:#{org_repo}, sha:#{commit_sha}"
         client.create_status(org_repo, commit_sha, 'failure', info)
 
-        assign_result = issue_assigner.call(org_repo, issue_number)
+        config_file = load_config_file(org_repo)
+        assign_result = issue_assigner.call(org_repo, issue_number, config_file[:assignees])
         "org_repo:#{org_repo}, issue_number:#{issue_number}, assign:#{assign_result}"
       else
         return "No issue found in payload" unless data.key?(:issue)
@@ -38,7 +39,11 @@ module PrChecker
 
     private
 
-    attr_reader :logger, :issue_assigner
+    attr_reader :logger, :issue_assigner, :config_file_loader
+
+    def load_config_file(org_repo, branch = nil)
+      config_file_loader.load(org_repo, branch)
+    end
 
     def action(issue_number, org_repo)
       begin

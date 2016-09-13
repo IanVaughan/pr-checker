@@ -9,15 +9,20 @@ RSpec.describe 'Post request received about a pull request' do
     Sinatra::Application
   end
 
-  let(:client) { double PrChecker::Remote }
-
   context 'a new PR is raised' do
     let(:pull_request) { load_fixture('pull_request') } # pull_request.json - Github new PR webhook post payload
 
     it 'posts an initial fail status' do
+      stub_request(:post, "https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/4577/assignees").
+        with(:body => "{\"assignees\":null}").
+        to_return(:status => 200, :body => "", :headers => {})
+
       stub_request(:post, "https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/statuses/8aaecf682331bd819995efecc3996aab3d84ecc9").
         with(:body => "{\"context\":\"2+1s\",\"description\":\"Require at least two people to add a +1\",\"state\":\"failure\"}").
         to_return(:status => 200, :body => "", :headers => {})
+
+      stub_request(:get, "https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/contents/.pr-checker.yml").
+        to_return(status: 200, body: { content: 'cmV2aWV3ZXJzOgogIC0gUGF1bAogIC0gU2ltb24K\n' }.to_json )
 
       post '/payload', pull_request.to_json
       expect(last_response).to be_ok
