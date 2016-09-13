@@ -7,12 +7,11 @@ class IssueAssigner
 
   def call(org_repo, issue_number)
     files = read_files_from(org_repo)
-    return "Could not find files:#{config.assignees_filenames}" if files.empty?
 
     assignees = get_names_from(files)
 
     assign(org_repo, issue_number, assignees)
-    "Assigned:#{assignees}, from files:#{config.assignees_filenames}"
+    "Assigned:#{assignees}"
   end
 
   def unassign(org_repo, issue_number, assignees)

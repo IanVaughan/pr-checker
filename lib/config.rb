@@ -3,7 +3,7 @@ require "dotenv"
 module PrChecker
   class Config
     attr_reader :plus_one_text, :plus_one_text_regexp, :plus_one_emoji_regexp
-    attr_reader :ok_label, :access_token, :context, :info, :assignees_filenames
+    attr_reader :ok_label, :access_token, :context, :info
 
     def initialize
       load_env
@@ -19,7 +19,6 @@ module PrChecker
       @access_token = ENV.fetch("PR_CHECKER_ACCESS_TOKEN")
       @context = ENV.fetch("PR_CHECKER_CONTEXT", "No context configured")
       @info = ENV.fetch("PR_CHECKER_INFO", "No description configured")
-      @assignees_filenames = ENV.fetch('PR_CHECKER_ASSIGNEES_FILENAMES', '').split
 
       puts "Read from env:"
       puts "PLUS_ONE_TEXT: #{@plus_one_text}"
