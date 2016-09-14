@@ -18,7 +18,7 @@ RSpec.describe 'Post request received about a pull request' do
         to_return(:status => 200, :body => "", :headers => {})
 
       stub_request(:post, "https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/statuses/8aaecf682331bd819995efecc3996aab3d84ecc9").
-        with(:body => "{\"context\":\"2+1s\",\"description\":\"Require at least two people to add a +1\",\"state\":\"failure\"}").
+        with(:body => "{\"context\":\"No context configured\",\"description\":\"No description configured\",\"state\":\"failure\"}").
         to_return(:status => 200, :body => "", :headers => {})
 
       stub_request(:get, "https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/contents/.pr-checker.yml").

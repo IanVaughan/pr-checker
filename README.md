@@ -1,4 +1,4 @@
-# PR Checker
+# PR Checker [![Build Status](https://travis-ci.org/IanVaughan/pr-checker.svg?branch=master)](https://travis-ci.org/IanVaughan/pr-checker)
 
 Checks for key comments on pull requests and updates them with statues and labels.
 
