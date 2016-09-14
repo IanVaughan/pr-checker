@@ -16,7 +16,7 @@ module PrChecker
       @plus_one_text_regexp = Regexp.quote @plus_one_text
       @plus_one_emoji_regexp = ENV.fetch("PR_CHECKER_PLUS_ONE_EMOJI", "👍 ")
       @ok_label = ENV.fetch("PR_CHECKER_OK_LABEL", "+2d")
-      @access_token = ENV.fetch("PR_CHECKER_ACCESS_TOKEN")
+      @access_token = ENV.fetch("PR_CHECKER_ACCESS_TOKEN", nil)
       @context = ENV.fetch("PR_CHECKER_CONTEXT", "No context configured")
       @info = ENV.fetch("PR_CHECKER_INFO", "No description configured")
 
