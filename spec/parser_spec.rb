@@ -138,8 +138,8 @@ RSpec.describe PrChecker::Parser do
       expect(client).to receive(:pull_commits).with("QuiqUpLTD/QuiqupAPI", 4572).and_return(commits)
       expect(client).to receive(:create_status).with(
         "QuiqUpLTD/QuiqupAPI", commits.last[:sha], 'pending', {
-          context: '2+1s', 
-          description: 'Require at least two people to add a +1'
+          context: 'No context configured', 
+          description: 'No description configured'
         }
       )
       instance.parse(issue_comment)
