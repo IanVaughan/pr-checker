@@ -64,7 +64,7 @@ Local usage
 
 Build
 
-    docker build -t pr-checker .
+    docker build --tag IanVaughan/pr-checker:master .
 
 Run test
 
@@ -80,6 +80,7 @@ Other docker commands :
     docker stop pr-checker
     docker rm pr-chcker
 
+    docker push quiqup/pr-checker:master
 
 
 Notts1
