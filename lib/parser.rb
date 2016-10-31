@@ -22,7 +22,7 @@ module PrChecker
 
         info = { context: config.context, description: config.info }
         logger.debug "New PR:#{org_repo}, sha:#{commit_sha}"
-        client.create_status(org_repo, commit_sha, 'failure', info)
+        client.create_status(org_repo, commit_sha, 'pending', info)
 
         config_file = load_config_file(org_repo)
         logger.debug "config_file:#{config_file}"
