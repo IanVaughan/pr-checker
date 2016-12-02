@@ -1,19 +1,14 @@
 #!/bin/bash
 set +e
 
-HOST=notts2
-IMAGE=pr-checker-image
-CONTAINER=pr-checker-container
+MACHINE=quiqup
+IMAGE=ianvaughan/pr-checker
 
-eval $(docker-machine env $HOST)
+docker-machine start $MACHINE
+eval $(docker-machine env $MACHINE)
 
 echo "* Building..."
 docker build --tag $IMAGE .
-echo "* Stopping current instance..."
-docker stop $CONTAINER
-echo "* Removing old instance..."
-docker rm $CONTAINER
-echo "* Starting new instance..."
-docker run -d --env-file .env -p 4444:4567 --restart=always --name $CONTAINER $IMAGE
-echo "* Showing you the logs..."
-docker logs -f $CONTAINER
+
+echo "* Pushing..."
+docker push $IMAGE
