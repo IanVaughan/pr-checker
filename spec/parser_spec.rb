@@ -121,7 +121,7 @@ RSpec.describe Parser do
 
   context 'full payload' do
     let(:config) { Config.new }
-    let(:client) { Remote.setup(config.access_token) }
+    let(:client) { Client.setup(config.access_token) }
 
     # issue_comment.json - GitHub comment webhook post payload
     let(:issue_comment) { load_fixture('issue_comment') }
@@ -148,7 +148,7 @@ RSpec.describe Parser do
 
   context 'pull request' do
     let(:config) { double Config, context: 'context', info: 'info' }
-    let(:client) { double Remote, contents: { content: 'cmV2aWV3ZXJzOgogIC0gUGF1bAogIC0gU2ltb24K\n' } }
+    let(:client) { double Client, contents: { content: 'cmV2aWV3ZXJzOgogIC0gUGF1bAogIC0gU2ltb24K\n' } }
 
     let(:pull_request) { load_fixture('pull_request') } # pull_request.json - Github new PR webhook post payload
     let(:commit_sha) { pull_request[:pull_request][:head][:sha] }

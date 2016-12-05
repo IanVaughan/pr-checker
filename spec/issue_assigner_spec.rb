@@ -3,7 +3,7 @@ require 'json'
 
 RSpec.describe IssueAssigner do
   let(:instance) { described_class.new(client) }
-  let(:client) { double Remote }
+  let(:client) { double Client }
   let(:assignees) do
     [ 'Paul', 'Foo' ]
   end

@@ -1,6 +1,6 @@
 require 'octokit'
 
-class Remote
+class Client
   def self.setup(access_token)
     client = Octokit::Client.new(access_token: access_token)
     begin

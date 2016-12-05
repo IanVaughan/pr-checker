@@ -2,7 +2,7 @@ require 'sinatra'
 require './environment'
 
 config = Config.new
-client = Remote.setup(config.access_token)
+client = Client.setup(config.access_token)
 parser = Parser.new(config, client)
 
 set :bind, '0.0.0.0' # Required for Docker
