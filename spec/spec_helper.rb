@@ -1,16 +1,11 @@
 require 'rubygems'
 require 'rspec'
-require "pry"
+require 'pry'
 require 'rack/test'
 
 ENV['RACK_ENV'] = 'test'
 
-# require File.expand_path('../../environment', __FILE__)
-require File.expand_path('../../lib/config_reader', __FILE__)
-require File.expand_path('../../lib/config', __FILE__)
-require File.expand_path('../../lib/issue_assigner', __FILE__)
-require File.expand_path('../../lib/parser', __FILE__)
-require File.expand_path('../../lib/remote', __FILE__)
+require File.expand_path('../../environment', __FILE__)
 
 def load_fixture(name)
   path = "#{Dir.pwd}/spec/support/fixtures/#{name}.json"

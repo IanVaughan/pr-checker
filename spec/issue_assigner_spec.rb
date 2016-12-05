@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'json'
+# require 'json'
 
-RSpec.describe IssueAssigner do
+RSpec.describe PrChecker::IssueAssigner do
   let(:instance) { described_class.new(client) }
   let(:client) { double Client }
   let(:assignees) do
