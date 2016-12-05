@@ -4,10 +4,10 @@ require 'octokit'
 
 class Parser
   def initialize(config = nil, client = nil)
+    @logger = Logger.new(STDERR)
     @config = config || Config.new
     @client = client || Client.setup(@config.access_token)
     @config_file_loader = ConfigFileLoader.new(@client)
-    @logger = Logger.new(STDERR)
     @issue_assigner = IssueAssigner.new(@client)
   end
 
@@ -38,8 +38,7 @@ class Parser
 
   private
 
-  attr_reader :config, :client
-  attr_reader :logger, :issue_assigner, :config_file_loader
+  attr_reader :config, :client, :logger, :issue_assigner, :config_file_loader
 
   def load_config_file(org_repo, branch = nil)
     config_file_loader.load(org_repo, branch)
