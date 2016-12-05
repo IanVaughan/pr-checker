@@ -64,11 +64,15 @@ Local usage
 
 Build
 
-    docker build --tag IanVaughan/pr-checker:master .
+    docker build --tag ianvaughan/pr-checker:master .
+
+Push
+
+    docker push ianvaughan/pr-checker:master
 
 Run test
 
-    docker run -i -t --rm --env-file .env -p 4444:4567 pr-checker
+    docker run -i -t --rm --env-file .env -p 4444:4567 ianvaughan/pr-checker:master
 
 Run real
 
@@ -80,7 +84,6 @@ Other docker commands :
     docker stop pr-checker
     docker rm pr-chcker
 
-    docker push quiqup/pr-checker:master
 
 
 Notts1
