@@ -5,7 +5,7 @@ require 'octokit'
 class Parser
   def initialize(config = nil, client = nil)
     @logger = Logger.new(STDERR)
-    @config = config || Config.new
+    @config = config || MasterConfig.new
     @client = client || Client.setup(@config.access_token)
     @config_file_loader = ConfigFileLoader.new(@client)
     @issue_assigner = IssueAssigner.new(@client)

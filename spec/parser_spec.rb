@@ -6,7 +6,7 @@ RSpec.describe Parser do
 
   context 'basic mock' do
     let(:parse) { instance.parse(payload) }
-    let(:config) { double "Config" }
+    let(:config) { double "MasterConfig" }
     let(:client) { double "Client" }
 
     context "empty payload" do
@@ -120,7 +120,7 @@ RSpec.describe Parser do
   end
 
   context 'full payload' do
-    let(:config) { Config.new }
+    let(:config) { MasterConfig.new }
     let(:client) { Client.setup(config.access_token) }
 
     # issue_comment.json - GitHub comment webhook post payload
@@ -147,7 +147,7 @@ RSpec.describe Parser do
   end
 
   context 'pull request' do
-    let(:config) { double Config, context: 'context', info: 'info' }
+    let(:config) { double MasterConfig, context: 'context', info: 'info' }
     let(:client) { double Client, contents: { content: 'cmV2aWV3ZXJzOgogIC0gUGF1bAogIC0gU2ltb24K\n' } }
 
     let(:pull_request) { load_fixture('pull_request') } # pull_request.json - Github new PR webhook post payload
