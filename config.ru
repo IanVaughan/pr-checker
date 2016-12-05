@@ -1,2 +1,2 @@
 require "./server"
-run PrChecker::Server
+run Server

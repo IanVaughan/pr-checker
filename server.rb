@@ -1,9 +1,9 @@
 require 'sinatra'
 require './environment'
 
-config = PrChecker::Config.new
-client = PrChecker::Remote.setup(config.access_token)
-parser = PrChecker::Parser.new(config, client)
+config = Config.new
+client = Remote.setup(config.access_token)
+parser = Parser.new(config, client)
 
 set :bind, '0.0.0.0' # Required for Docker
 

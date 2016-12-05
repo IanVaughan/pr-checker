@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe ConfigFileLoader do
   let(:instance) { described_class.new(client) }
-  let(:client) { double PrChecker::Remote }
+  let(:client) { double Remote }
 
   describe '#load' do
     subject { instance.load(org_repo) }

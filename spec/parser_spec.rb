@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'json'
 
-RSpec.describe PrChecker::Parser do
+RSpec.describe Parser do
   let(:instance) { described_class.new(config, client) }
 
   context 'basic mock' do
@@ -120,8 +120,8 @@ RSpec.describe PrChecker::Parser do
   end
 
   context 'full payload' do
-    let(:config) { PrChecker::Config.new }
-    let(:client) { PrChecker::Remote.setup(config.access_token) }
+    let(:config) { Config.new }
+    let(:client) { Remote.setup(config.access_token) }
 
     # issue_comment.json - GitHub comment webhook post payload
     let(:issue_comment) { load_fixture('issue_comment') }
@@ -147,8 +147,8 @@ RSpec.describe PrChecker::Parser do
   end
 
   context 'pull request' do
-    let(:config) { double PrChecker::Config, context: 'context', info: 'info' }
-    let(:client) { double PrChecker::Remote, contents: { content: 'cmV2aWV3ZXJzOgogIC0gUGF1bAogIC0gU2ltb24K\n' } }
+    let(:config) { double Config, context: 'context', info: 'info' }
+    let(:client) { double Remote, contents: { content: 'cmV2aWV3ZXJzOgogIC0gUGF1bAogIC0gU2ltb24K\n' } }
 
     let(:pull_request) { load_fixture('pull_request') } # pull_request.json - Github new PR webhook post payload
     let(:commit_sha) { pull_request[:pull_request][:head][:sha] }
