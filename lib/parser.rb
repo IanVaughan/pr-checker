@@ -3,13 +3,12 @@ require 'json'
 require 'octokit'
 
 class Parser
-  attr_reader :config, :client
-
-  def initialize(config, client)
-    @config, @client = config, client
-    @config_file_loader = ConfigFileLoader.new(client)
+  def initialize(config = nil, client = nil)
+    @config = config || Config.new
+    @client = client || Client.setup(@config.access_token)
+    @config_file_loader = ConfigFileLoader.new(@client)
     @logger = Logger.new(STDERR)
-    @issue_assigner = IssueAssigner.new(client)
+    @issue_assigner = IssueAssigner.new(@client)
   end
 
   def parse(data)
@@ -39,6 +38,7 @@ class Parser
 
   private
 
+  attr_reader :config, :client
   attr_reader :logger, :issue_assigner, :config_file_loader
 
   def load_config_file(org_repo, branch = nil)
