@@ -161,7 +161,7 @@ RSpec.describe PrChecker::Parser do
       expect(client).to receive(:create_status).with(
         'QuiqUpLTD/QuiqupAPI', 
         commit_sha,
-        'failure',
+        'pending',
         info)
 
       result = instance.parse(pull_request)
