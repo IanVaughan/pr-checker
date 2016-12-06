@@ -18,12 +18,5 @@ class MasterConfig
     @access_token = ENV.fetch("PR_CHECKER_ACCESS_TOKEN", nil)
     @context = ENV.fetch("PR_CHECKER_CONTEXT", "No context configured")
     @info = ENV.fetch("PR_CHECKER_INFO", "No description configured")
-
-    puts "Read from env:"
-    puts "PLUS_ONE_TEXT: #{@plus_one_text}"
-    puts "OK_LABEL: #{@ok_label}"
-    puts "ACCESS_TOKEN: #{@access_token}"
-    puts "CONTEXT: #{@context}"
-    puts "INFO: #{@info}"
   end
 end
