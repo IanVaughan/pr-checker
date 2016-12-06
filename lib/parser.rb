@@ -27,8 +27,6 @@ class Parser
       assign_result = issue_assigner.call(org_repo, issue_number, config_file[:assignees])
       "org_repo:#{org_repo}, issue_number:#{issue_number}, assign:#{assign_result}"
 
-    elsif data[:action] == 'assigned' # PR assigned
-    elsif data[:action] == 'created' # Pr Review
     elsif data[:action] == 'synchronize' && data.key?(:pull_request)
       issue_number = data[:number]
       org_repo = data[:repository][:full_name]
