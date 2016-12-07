@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'json'
 
-RSpec.describe GitHubHandler do
+RSpec.describe GitHub::Handler do
   let(:instance) { described_class.new(config, client) }
 
   context 'basic mock' do
