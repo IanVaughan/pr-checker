@@ -2,7 +2,7 @@ require 'logger'
 require 'json'
 require 'octokit'
 
-class Parser
+class GitHubHandler
   def initialize(config = nil, client = nil)
     @logger = Logger.new(STDERR)
     @config = config || MasterConfig.new
