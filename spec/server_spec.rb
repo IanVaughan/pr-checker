@@ -17,7 +17,7 @@ RSpec.describe 'Server' do
 
   it 'accepts a JSON payload and passes it as a hash to the handler' do
     payload = { foo: 'bar' }
-    expect_any_instance_of(GitHubHandler).to receive(:parse).with(payload).and_return('parser response')
+    expect_any_instance_of(GitHubHandler).to receive(:call).with(payload).and_return('parser response')
 
     post '/payload', payload.to_json
 

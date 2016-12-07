@@ -11,7 +11,7 @@ class GitHubHandler
     @issue_assigner = IssueAssigner.new(@client)
   end
 
-  def parse(data)
+  def call(data)
     if data[:action] == "opened" && data.key?(:pull_request)
       return "No action on:#{data[:action]}" unless data[:action] == "opened"
       issue_number = data[:number]
