@@ -1,6 +1,7 @@
 require 'logger'
 require 'json'
 require 'octokit'
+require 'github/parser'
 
 module GitHub
   class Handler
@@ -13,33 +14,21 @@ module GitHub
     end
 
     def call(data)
-      if data[:action] == "opened" && data.key?(:pull_request)
-        return "No action on:#{data[:action]}" unless data[:action] == "opened"
-        issue_number = data[:number]
-        org_repo = data[:repository][:full_name]
-        commit_sha = data[:pull_request][:head][:sha]
+      github_response = Parser.new(data)
+      github_response.parse
 
+      if github_response.pull_request?
         info = { context: config.context, description: config.info }
-        logger.debug "New PR:#{org_repo}, sha:#{commit_sha}"
-        client.create_status(org_repo, commit_sha, 'pending', info)
+        logger.debug "New PR:#{github_response.org_repo}, sha:#{github_response.commit_sha}"
+        client.create_status(github_response.org_repo, github_response.commit_sha, 'pending', info)
 
-        config_file = load_config_file(org_repo)
+        config_file = load_config_file(github_response.org_repo)
         logger.debug "config_file:#{config_file}"
-        assign_result = issue_assigner.call(org_repo, issue_number, config_file[:assignees])
-        "org_repo:#{org_repo}, issue_number:#{issue_number}, assign:#{assign_result}"
+        assign_result = issue_assigner.call(github_response.org_repo, github_response.issue_number, config_file[:assignees])
+        "org_repo:#{github_response.org_repo}, issue_number:#{github_response.issue_number}, assign:#{assign_result}"
 
-      elsif data[:action] == 'synchronize' && data.key?(:pull_request)
-        issue_number = data[:number]
-        org_repo = data[:repository][:full_name]
-
-        action(issue_number, org_repo)
       else
-        return "No issue found in payload" unless data.key?(:issue)
-        return "No number found in payload" unless data[:issue].key?(:number)
-
-        issue_number = data[:issue][:number]
-        org_repo = data[:repository][:full_name]
-        action(issue_number, org_repo)
+        action(github_response.issue_number, github_response.org_repo)
       end
     end
 
