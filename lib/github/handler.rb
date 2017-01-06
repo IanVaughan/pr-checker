@@ -49,6 +49,8 @@ module GitHub
         return "Failed to get comments"
       end
 
+      return "Failed to get comments" if comments.nil?
+
       logger.debug "#{org_repo}:#{issue_number} comments:#{comments}"
       comments.map do |comment|
         c = comment.to_hash

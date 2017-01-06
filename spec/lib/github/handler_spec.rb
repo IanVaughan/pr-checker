@@ -3,25 +3,35 @@ require 'json'
 
 RSpec.describe GitHub::Handler do
   let(:instance) { described_class.new(config, client) }
+  let(:call) { instance.call(payload) }
 
   context 'basic mock' do
-    let(:call) { instance.call(payload) }
-    let(:config) { double "MasterConfig" }
+    let(:config) { double "MasterConfig", context: 'context', info: 'info' }
     let(:client) { double "Client" }
 
     context "empty payload" do
       let(:payload) { {} }
+      let(:comments) { [] }
+      let(:commits) { [ { sha: 'sha' } ] }
 
       it "accepts payload" do
-        expect(call).to eq "No issue found in payload"
+        expect(client).to receive(:issue_comments).with(nil, nil).and_return(comments)
+        expect(client).to receive(:pull_commits).with(nil, nil).and_return(commits)
+        expect(client).to receive(:create_status).with(nil, 'sha', 'pending', { context: 'context', description: 'info' })
+        expect(call).to eq "Found 0 +1s on # of: at:sha"
       end
     end
 
     context "no number in payload" do
       let(:payload) { { issue: {} } }
+      let(:comments) { [] }
+      let(:commits) { [ { sha: 'sha' } ] }
 
       it "accepts payload" do
-        expect(call).to eq "No number found in payload"
+        expect(client).to receive(:issue_comments).with(nil, nil).and_return(comments)
+        expect(client).to receive(:pull_commits).with(nil, nil).and_return(commits)
+        expect(client).to receive(:create_status).with(nil, 'sha', 'pending', { context: 'context', description: 'info' })
+        expect(call).to eq "Found 0 +1s on # of: at:sha"
       end
     end
 
