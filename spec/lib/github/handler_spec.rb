@@ -1,27 +1,37 @@
 require 'spec_helper'
 require 'json'
 
-RSpec.describe Parser do
+RSpec.describe GitHub::Handler do
   let(:instance) { described_class.new(config, client) }
+  let(:call) { instance.call(payload) }
 
   context 'basic mock' do
-    let(:parse) { instance.parse(payload) }
-    let(:config) { double "MasterConfig" }
+    let(:config) { double "MasterConfig", context: 'context', info: 'info' }
     let(:client) { double "Client" }
 
     context "empty payload" do
       let(:payload) { {} }
+      let(:comments) { [] }
+      let(:commits) { [ { sha: 'sha' } ] }
 
       it "accepts payload" do
-        expect(parse).to eq "No issue found in payload"
+        expect(client).to receive(:issue_comments).with(nil, nil).and_return(comments)
+        expect(client).to receive(:pull_commits).with(nil, nil).and_return(commits)
+        expect(client).to receive(:create_status).with(nil, 'sha', 'pending', { context: 'context', description: 'info' })
+        expect(call).to eq "Found 0 +1s on # of: at:sha"
       end
     end
 
     context "no number in payload" do
       let(:payload) { { issue: {} } }
+      let(:comments) { [] }
+      let(:commits) { [ { sha: 'sha' } ] }
 
       it "accepts payload" do
-        expect(parse).to eq "No number found in payload"
+        expect(client).to receive(:issue_comments).with(nil, nil).and_return(comments)
+        expect(client).to receive(:pull_commits).with(nil, nil).and_return(commits)
+        expect(client).to receive(:create_status).with(nil, 'sha', 'pending', { context: 'context', description: 'info' })
+        expect(call).to eq "Found 0 +1s on # of: at:sha"
       end
     end
 
@@ -57,7 +67,7 @@ RSpec.describe Parser do
           expect(client).to receive(:pull_commits).with(org_repo, issue).and_return([commit])
           expect(client).to receive(:create_status).with(org_repo, sha, "pending", info)
 
-          expect(parse).to eq "Found 0 +1s on ##{issue} of:#{org_repo} at:#{sha}"
+          expect(call).to eq "Found 0 +1s on ##{issue} of:#{org_repo} at:#{sha}"
         end
       end
 
@@ -69,7 +79,7 @@ RSpec.describe Parser do
           expect(client).to receive(:pull_commits).with(org_repo, issue).and_return([commit])
           expect(client).to receive(:create_status).with(org_repo, sha, "pending", info)
 
-          expect(parse).to eq "Found 1 +1s on ##{issue} of:#{org_repo} at:#{sha}"
+          expect(call).to eq "Found 1 +1s on ##{issue} of:#{org_repo} at:#{sha}"
         end
       end
 
@@ -81,7 +91,7 @@ RSpec.describe Parser do
           expect(client).to receive(:pull_commits).with(org_repo, issue).and_return([commit])
           expect(client).to receive(:create_status).with(org_repo, sha, "pending", info)
           
-          expect(parse).to eq "Found 1 +1s on ##{issue} of:#{org_repo} at:#{sha}"
+          expect(call).to eq "Found 1 +1s on ##{issue} of:#{org_repo} at:#{sha}"
         end
       end
 
@@ -93,7 +103,7 @@ RSpec.describe Parser do
           expect(client).to receive(:pull_commits).with(org_repo, issue).and_return([commit])
           expect(client).to receive(:create_status).with(org_repo, sha, "pending", info)
 
-          expect(parse).to eq "Found 1 +1s on ##{issue} of:#{org_repo} at:#{sha}"
+          expect(call).to eq "Found 1 +1s on ##{issue} of:#{org_repo} at:#{sha}"
         end
       end
 
@@ -113,7 +123,7 @@ RSpec.describe Parser do
           expect(client).to receive(:add_labels_to_an_issue).with(org_repo, issue, labels)
           expect(client).to receive(:create_status).with(org_repo, sha, "success", info)
           
-          expect(parse).to eq "Found 2 +1s on ##{issue} of:#{org_repo} at:#{sha}"
+          expect(call).to eq "Found 2 +1s on ##{issue} of:#{org_repo} at:#{sha}"
         end
       end
     end
@@ -142,7 +152,7 @@ RSpec.describe Parser do
           description: 'No description configured'
         }
       )
-      instance.parse(issue_comment)
+      instance.call(issue_comment)
     end
   end
 
@@ -164,7 +174,7 @@ RSpec.describe Parser do
         'pending',
         info)
 
-      result = instance.parse(pull_request)
+      result = instance.call(pull_request)
       expect(result).to eq('org_repo:QuiqUpLTD/QuiqupAPI, issue_number:4577, assign:Assigned foobar')
     end
 
@@ -173,7 +183,7 @@ RSpec.describe Parser do
       expect_any_instance_of(IssueAssigner).to \
         receive(:call).with('QuiqUpLTD/QuiqupAPI', 4577, nil)
 
-      instance.parse(pull_request)
+      instance.call(pull_request)
     end
   end
 end
