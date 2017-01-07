@@ -6,7 +6,7 @@ RSpec.describe 'Post request received about a pull request' do
   include Rack::Test::Methods
 
   def app
-    Sinatra::Application
+    BaseServer
   end
 
   context 'a new PR is raised' do
