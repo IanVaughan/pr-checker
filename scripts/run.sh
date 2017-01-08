@@ -12,6 +12,6 @@ echo "* On branch:$BRANCH, sha:$GIT_SHA, running image with:$TAG"
 docker-machine start $MACHINE
 eval $(docker-machine env $MACHINE)
 
-docker run -it --rm --env-file .env -p 4444:4567 $IMAGE:$TAG
+docker run -it --rm --env-file .env -p 80:80 $IMAGE:$TAG
 
-# curl http://192.168.99.101:4444/ping
+# curl http://192.168.99.101:80/ping
