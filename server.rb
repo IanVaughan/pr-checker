@@ -1,8 +1,15 @@
 require './environment'
 require "sinatra/base"
 
-class BaseServer < Sinatra::Base
-  set :bind, '0.0.0.0' # Required for Docker
+class BaseServer < Sinatra::Application
+  # configure do
+  #   set :bind, '0.0.0.0' # Required for Docker
+  #   set :port, 80
+  # end
+
+  get '/ping' do
+    'pong'
+  end
 
   post '/payload' do
     status 200
