@@ -1,7 +1,7 @@
 require 'logger'
 require 'json'
 require 'octokit'
-require 'github/parser'
+require_relative 'parser'
 
 module GitHub
   class Handler
