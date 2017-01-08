@@ -7,14 +7,11 @@ BRANCH=$(git rev-parse --abbrev-ref HEAD)
 GIT_SHA=$(git rev-parse --short HEAD)
 TAG=${BRANCH}_${GIT_SHA}
 
-echo "* On branch:$BRANCH, sha:$GIT_SHA, tagging image with:$TAG"
+echo "* On branch:$BRANCH, sha:$GIT_SHA, running image with:$TAG"
 
 docker-machine start $MACHINE
 eval $(docker-machine env $MACHINE)
 
-echo "* Building image..."
-docker build --tag $IMAGE:$TAG .
+docker run -it --rm --env-file .env -p 4444:4567 $IMAGE:$TAG
 
-echo "* Pushing..."
-docker push $IMAGE:$TAG
-echo "Pushed $IMAGE:$TAG"
+# curl http://192.168.99.101:4444/ping
