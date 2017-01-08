@@ -1,3 +1,3 @@
 FROM ruby:2.1-onbuild
-EXPOSE 4567
-CMD ["ruby", "server.rb"]
+EXPOSE 80
+CMD ["rackup", "-p", "80", "-o", "0.0.0.0"]

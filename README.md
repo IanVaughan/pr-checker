@@ -31,7 +31,7 @@ Setup
 
 Boot
 
-    ruby server.rb
+    rackup
 
 Setup tunnel to internet to test from GitHub
 
