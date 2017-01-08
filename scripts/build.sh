@@ -11,10 +11,7 @@ echo "* On branch:$BRANCH, sha:$GIT_SHA, tagging image with:$TAG"
 
 docker-machine start $MACHINE
 eval $(docker-machine env $MACHINE)
+docker-machine env $MACHINE
 
 echo "* Building image..."
 docker build --tag $IMAGE:$TAG .
-
-echo "* Pushing..."
-docker push $IMAGE:$TAG
-echo "Pushed $IMAGE:$TAG"
