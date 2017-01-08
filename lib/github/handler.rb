@@ -15,8 +15,8 @@ module GitHub
     end
 
     def call(data)
-      github_response = Parser.new(data)
-      github_response.parse
+      github_response = Parser.new(client)
+      github_response.parse(data)
 
       config_file = load_config_file(github_response.org_repo)
 

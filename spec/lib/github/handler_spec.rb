@@ -2,14 +2,13 @@ require 'spec_helper'
 require 'json'
 
 RSpec.describe GitHub::Handler do
-  let(:instance) { described_class.new(config, client) }
-  # let(:instance) { described_class.new(client) }
+  let(:instance) { described_class.new(client) }
   let(:call) { instance.call(payload) }
 
   context 'basic mock' do
     let(:config) { double "MasterConfig", context: 'context', info: 'info' }
     # let(:parse) { instance.parse(payload) }
-    # let(:client) { double "Client" }
+    let(:client) { double "Client" }
 
     context "empty payload" do
       let(:payload) { {} }
