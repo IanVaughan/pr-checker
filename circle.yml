@@ -1,0 +1,21 @@
+machine:
+  timezone:
+    Europe/London
+  services:
+    - docker
+  environment:
+    IMAGE: ianvaughan/pr-checker
+
+dependencies:
+  cache_directories:
+    - "~/docker"
+
+deployment:
+  hubmaster:
+    branch: master
+    commands:
+      - if [[ -e ~/docker/master.tar ]]; then docker load -i ~/docker/master.tar; fi
+      - docker build --tag $IMAGE:master .
+      - mkdir -p ~/docker; docker save $IMAGE:master > ~/docker/master.tar
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push $IMAGE:master
