@@ -4,16 +4,17 @@ set +e
 MACHINE=quiqup
 IMAGE=ianvaughan/pr-checker
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
+GIT_SHA=$(git rev-parse --short HEAD)
+IMAGE_TAG=${BRANCH}_${GIT_SHA}
 
-echo "This branch:$BRANCH"
+echo "* On branch:$BRANCH, sha:$GIT_SHA, tagging image with:$IMAGE_TAG"
 
 docker-machine start $MACHINE
-docker-machine env $MACHINE
 eval $(docker-machine env $MACHINE)
 
-echo "* Building..."
-docker build --tag $IMAGE:$BRANCH .
+echo "* Building image..."
+docker build --tag $IMAGE:$IMAGE_TAG .
 
 echo "* Pushing..."
-docker push $IMAGE:$BRANCH
-echo "Pushed $IMAGE:$BRANCH"
+docker push $IMAGE:$IMAGE_TAG
+echo "Pushed $IMAGE:$IMAGE_TAG"
