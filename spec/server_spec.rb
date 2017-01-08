@@ -6,13 +6,7 @@ RSpec.describe 'Server' do
   include Rack::Test::Methods
 
   def app
-    Sinatra::Application
-  end
-
-  it 'pings' do
-    get '/ping'
-    expect(last_response).to be_ok
-    expect(last_response.body).to eq('pong')
+    BaseServer
   end
 
   it 'accepts a JSON payload and passes it as a hash to the handler' do
