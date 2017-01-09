@@ -3,5 +3,4 @@ log
 .git
 .bundle
 log/*
-spec
 .env

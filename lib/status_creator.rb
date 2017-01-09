@@ -21,15 +21,15 @@ class StatusCreator
 
   def create(org_repo, commit_sha, status, config)
     client.create_status(
-      org_repo, 
-      commit_sha, 
+      org_repo,
+      commit_sha,
       status,
       info(config)
     )
   end
 
   def info(config)
-    { 
+    {
       context: config[:status][:context],
       description: config[:status][:description]
     }

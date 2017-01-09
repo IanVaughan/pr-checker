@@ -9,12 +9,22 @@ module GitHub
       @config = config || MasterConfig.new
       @client = client || Client.setup(@config.access_token)
       @config_file_loader = ConfigFileLoader.new(@client)
-      @issue_assigner = IssueAssigner.new(@client)
-      @status_creator = StatusCreator.new(client)
-      @comment_receiver = CommentReceiver.new(client, logger, status_creator, issue_assigner)
+      # @issue_assigner = IssueAssigner.new(@client)
+      # @status_creator = StatusCreator.new(client)
+      # @comment_receiver = CommentReceiver.new(client, logger, status_creator, issue_assigner)
     end
 
     def parse(data)
+      # if github_response.pull_request?
+      #   info = { context: config.context, description: config.info }
+      #   logger.debug "New PR:#{github_response.org_repo}, sha:#{github_response.commit_sha}"
+      #   client.create_status(github_response.org_repo, github_response.commit_sha, 'pending', info)
+      #
+      #   config_file = load_config_file(github_response.org_repo)
+      #   logger.debug "config_file:#{config_file}"
+      #   assign_result = issue_assigner.call(github_response.org_repo, github_response.issue_number, config_file[:assignees])
+      #   "org_repo:#{github_response.org_repo}, issue_number:#{github_response.issue_number}, assign:#{assign_result}"
+
       if data.key?(:pull_request)
         return "No action on:#{data[:action]}" unless data[:action] == "opened"
 
@@ -29,6 +39,8 @@ module GitHub
           "org_repo:#{org_repo}, issue_number:#{issue_number}, assign:#{assign_result}"
         end
       else
+        # action(github_response.issue_number, github_response.org_repo)
+
         return "No issue found in payload" unless data.key?(:issue)
         return "No number found in payload" unless data[:issue].key?(:number)
 
