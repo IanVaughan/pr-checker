@@ -3,8 +3,8 @@ require 'json'
 
 RSpec.describe ConfigReader do
   let(:instance) { described_class.new(client) }
-  let(:client) { double PrChecker::Remote }
-  # let(:client) { PrChecker::Remote.setup('849ac993d373f8125ca17b5dec98bed971f0d177') }
+  let(:client) { double Remote }
+  # let(:client) { Remote.setup('849ac993d373f8125ca17b5dec98bed971f0d177') }
 
   describe '#call' do
     let(:org_repo) { 'OrgName/RepoName' }

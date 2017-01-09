@@ -10,7 +10,7 @@ RSpec.describe 'Post request received about a pull request' do
     BaseServer
   end
 
-  let(:client) { double PrChecker::Remote }
+  let(:client) { double Remote }
   let(:api_path) { 'https://api.github.com/repos/QuiqUpLTD/QuiqupAPI' }
   let(:pr_check_path) { 'https://api.github.com/repos/IanVaughan/pr-checker' }
 
