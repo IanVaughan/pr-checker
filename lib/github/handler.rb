@@ -14,41 +14,41 @@ module GitHub
       # @comment_receiver = CommentReceiver.new(client, logger, status_creator, issue_assigner)
     end
 
-    def parse(data)
-      # if github_response.pull_request?
-      #   info = { context: config.context, description: config.info }
-      #   logger.debug "New PR:#{github_response.org_repo}, sha:#{github_response.commit_sha}"
-      #   client.create_status(github_response.org_repo, github_response.commit_sha, 'pending', info)
+    def call(data)
+      github_response = Parser.new(data)
+      github_response.parse
+
+      if github_response.pull_request?
+        info = { context: config.context, description: config.info }
+        logger.debug "New PR:#{github_response.org_repo}, sha:#{github_response.commit_sha}"
+        client.create_status(github_response.org_repo, github_response.commit_sha, 'pending', info)
+
+        config_file = load_config_file(github_response.org_repo)
+        logger.debug "config_file:#{config_file}"
+        assign_result = issue_assigner.call(github_response.org_repo, github_response.issue_number, config_file[:assignees])
+        "org_repo:#{github_response.org_repo}, issue_number:#{github_response.issue_number}, assign:#{assign_result}"
+
+      # if data.key?(:pull_request)
+      #   return "No action on:#{data[:action]}" unless data[:action] == "opened"
       #
-      #   config_file = load_config_file(github_response.org_repo)
-      #   logger.debug "config_file:#{config_file}"
-      #   assign_result = issue_assigner.call(github_response.org_repo, github_response.issue_number, config_file[:assignees])
-      #   "org_repo:#{github_response.org_repo}, issue_number:#{github_response.issue_number}, assign:#{assign_result}"
-
-      if data.key?(:pull_request)
-        return "No action on:#{data[:action]}" unless data[:action] == "opened"
-
-        issue_number = data[:number]
-        org_repo = data[:repository][:full_name]
-        commit_sha = data[:pull_request][:head][:sha]
-        logger.debug "New PR:#{org_repo}, sha:#{commit_sha}"
-
-        c = config(org_repo)
-        status_creator.fail(org_repo, commit_sha, c.reviewed)
-        issue_assigner.assign(org_repo, issue_number, c.reviewers).tap do |assign_result|
-          "org_repo:#{org_repo}, issue_number:#{issue_number}, assign:#{assign_result}"
-        end
+      #   logger.debug "New PR:#{org_repo}, sha:#{commit_sha}"
+      #
+      #   c = config(org_repo)
+      #   status_creator.fail(org_repo, commit_sha, c.reviewed)
+      #   issue_assigner.assign(org_repo, issue_number, c.reviewers).tap do |assign_result|
+      #     "org_repo:#{org_repo}, issue_number:#{issue_number}, assign:#{assign_result}"
+      #   end
       else
-        # action(github_response.issue_number, github_response.org_repo)
+        action(github_response.issue_number, github_response.org_repo)
 
-        return "No issue found in payload" unless data.key?(:issue)
-        return "No number found in payload" unless data[:issue].key?(:number)
-
-        issue_number = data[:issue][:number]
-        org_repo = data[:repository][:full_name]
-
-        c = config(org_repo).reviewed
-        comment_receiver.call(org_repo, issue_number, c)
+        # return "No issue found in payload" unless data.key?(:issue)
+        # return "No number found in payload" unless data[:issue].key?(:number)
+        #
+        # issue_number = data[:issue][:number]
+        # org_repo = data[:repository][:full_name]
+        #
+        # c = config(org_repo).reviewed
+        # comment_receiver.call(org_repo, issue_number, c)
       end
     end
 
