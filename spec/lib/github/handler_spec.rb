@@ -4,7 +4,6 @@ require 'json'
 RSpec.describe GitHub::Handler do
   let(:instance) { described_class.new(config, client) }
   let(:call) { instance.call(payload) }
-  # let(:logger) { double 'Logger', debug: true }
 
   context 'basic mock' do
     let(:config) { double "MasterConfig", context: 'context', info: 'info' }

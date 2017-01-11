@@ -1,25 +1,29 @@
 require 'spec_helper'
-require 'json'
+# require 'json'
 
 RSpec.describe ConfigReader do
   let(:instance) { described_class.new(client) }
-  let(:client) { double Remote }
-  # let(:client) { Remote.setup('849ac993d373f8125ca17b5dec98bed971f0d177') }
+  let(:client) { double Client }
 
   describe '#call' do
-    let(:org_repo) { 'OrgName/RepoName' }
-    subject { instance.fetch_from_repo(org_repo) }
-    let(:path) { "/repos/#{org_repo}/contents/#{ConfigFile::CONFIG_FILENAME}" }
+    let(:call) { instance.call(org_repo) }
+    let(:org_repo) { 'IanVaughan/pr-checker' }
+    let(:path) { "/repos/#{org_repo}/contents/#{described_class::CONFIG_FILENAME}" }
 
     context 'when no config file is found in the repo' do
-      it 'returns a error key hash so it can be shown in github hooks Web UI' do
-        expect(client).to receive(:contents).with(org_repo, path: ConfigFile::CONFIG_FILENAME).and_raise(Octokit::NotFound)
+      subject { call }
 
-        is_expected.to eq(error: "Could not find file:#{ConfigFile::CONFIG_FILENAME} in:#{org_repo}")
+      it 'returns a error key hash so it can be shown in github hooks Web UI' do
+        expect(client).to receive(:contents).with(
+          org_repo, path: described_class::CONFIG_FILENAME
+        ).and_raise(Octokit::NotFound)
+
+        is_expected.to eq("Could not find file:#{described_class::CONFIG_FILENAME} in:#{org_repo}")
       end
     end
 
     context 'when the config file is found' do
+      subject { call.to_h }
       let(:get_contents) { load_fixture('get_contents') }
       let(:config_file) do
         {
@@ -40,9 +44,11 @@ RSpec.describe ConfigReader do
       end
 
       it 'loads the class ivars with the config from the file' do
-        expect(client).to receive(:contents).with(org_repo, path: ConfigFile::CONFIG_FILENAME).and_return(get_contents)
+        expect(client).to receive(:contents).with(
+          org_repo, path: described_class::CONFIG_FILENAME
+        ).and_return(get_contents)
 
-        is_expected.to eq(ok: config_file)
+        is_expected.to eq config_file
       end
     end
   end

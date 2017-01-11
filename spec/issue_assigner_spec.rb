@@ -1,24 +1,25 @@
 require 'spec_helper'
 
 RSpec.describe IssueAssigner do
-  let(:instance) { described_class.new(client) }
+  let(:instance) { described_class.new(client, config, payload) }
   let(:client) { double Client }
-  let(:assignees) do
-    [ 'Paul', 'Foo' ]
+  let(:config) do
+    { assignees: [ 'Paul', 'Foo' ] }
   end
 
-  let(:org_repo) { 'OrgName/RepoName' }
-  let(:issue_number) { 42 }
+  let(:pull_request) { load_fixture('pull_request') }
+  let(:payload) do
+    GitHub::Parser.new(pull_request).parse
+  end
 
-  let(:returned_result) { instance.call(org_repo, issue_number, assignees) }
+  let(:returned_result) { instance.assign }
 
   it 'assigns the names from the file to the pull request' do
     expect(client).to receive(:post).with(
-      "/repos/#{org_repo}/issues/#{issue_number}/assignees",
-      { assignees: assignees }
+      "/repos/#{payload.org_repo}/issues/#{payload.issue_number}/assignees",
+      { assignees: config[:assignees] }
     )
 
-    expect(returned_result).to \
-      eq "Assigned:#{assignees}"
+    expect(returned_result).to eq "Assigned:#{config[:assignees]}"
   end
 end

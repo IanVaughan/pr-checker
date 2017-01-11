@@ -1,18 +1,20 @@
-class CommentCounter
-  def initialize(logger, client, status_creator)
+class CommentCounter # StatusCreator # UpdateStaus
+  def initialize(logger, client, status_creator) # , org_repo, issue_number, config)
     @logger = logger
     @client = client
     @status_creator = status_creator
   end
 
-  def call(comments, org_repo, issue_number, config)
+  def call(comments)
     plus_one_count = count_matches(comments, config)
     sha = get_last_commit_sha(org_repo, issue_number)
 
     if plus_one_count > config[:match_count]
+      logger.debug "#{org_repo}:#{issue_number} adding labels and success status"
       client.add_labels_to_an_issue(org_repo, issue_number, [config.ok_label])
       status_creator.success(org_repo, sha, config)
     else
+      logger.debug "#{org_repo}:#{issue_number} setting pending status check"
       status_creator.pending(org_repo, sha, config)
     end
 

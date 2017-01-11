@@ -28,6 +28,8 @@ module GitHub
       else
         "No issue found in payload"
       end
+
+      self
     end
 
     def pull_request?

@@ -1,17 +1,17 @@
 class UnassignReviewers
-  def initialize(logger, issue_assigner)
+  def initialize(logger, issue_assigner, org_repo, issue_number, config)
     @logger = logger
     @issue_assigner = issue_assigner
   end
 
-  def call(comments, org_repo, issue_number, config)
+  def call(comments)
     comments.map do |sawer_comment|
       comment = sawer_comment.to_hash
       if any_match?(comment, config)
         user = extract_user_from(comment)
         next if user.nil?
         logger.debug "#{org_repo}:#{issue_number} removing assignee #{user}"
-        issue_assigner.unassign(org_repo, issue_number, user)
+        issue_assigner.unassign
       end
     end
   end

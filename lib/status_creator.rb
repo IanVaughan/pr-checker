@@ -1,6 +1,13 @@
-class StatusCreator
-  def initialize(client)
-    @client = client
+class StatusCreator # CreateStatus
+  def initialize(client, repo_config, payload)
+    @client, @repo_config, @payload = client, repo_config, payload
+  end
+
+  def initial
+    create(
+      payload.org_repo, payload.commit_sha, 
+      repo_config[:intial], info(repo_config)
+    )
   end
 
   def success(org_repo, commit_sha, config)
@@ -17,14 +24,12 @@ class StatusCreator
 
   private
 
-  attr_reader :client
+  attr_reader :client, :repo_config, :payload
 
   def create(org_repo, commit_sha, status, config)
+    logger.debug "Setting status:#{org_repo}, sha:#{commit_sha}, status:#{status}"
     client.create_status(
-      org_repo,
-      commit_sha,
-      status,
-      info(config)
+      org_repo, commit_sha, status, info(config)
     )
   end
 
