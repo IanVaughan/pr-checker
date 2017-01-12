@@ -1,6 +1,7 @@
 class CommentCounter # StatusCreator # UpdateStaus
-  def initialize(logger, client, status_creator) # , org_repo, issue_number, config)
-    @logger = logger
+  include Logging
+
+  def initialize(client, config, payload)
     @client = client
     @status_creator = status_creator
   end

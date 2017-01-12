@@ -1,16 +1,21 @@
 class UnassignReviewers
-  def initialize(logger, issue_assigner, org_repo, issue_number, config)
-    @logger = logger
-    @issue_assigner = issue_assigner
+  include Logging
+
+  CONFIG_KEY = :review_matches
+
+  def initialize(client, config, payload)
+    @issue_assigner = IssueAssigner.new(client, config, payload)
+    @payload = payload
+    @config = config
   end
 
   def call(comments)
     comments.map do |sawer_comment|
       comment = sawer_comment.to_hash
-      if any_match?(comment, config)
+      if any_match?(comment)
         user = extract_user_from(comment)
         next if user.nil?
-        logger.debug "#{org_repo}:#{issue_number} removing assignee #{user}"
+        logger.debug "Removing assignee #{user}, from #{payload.to_s}"
         issue_assigner.unassign
       end
     end
@@ -18,10 +23,10 @@ class UnassignReviewers
 
   private
 
-  attr_reader :issue_assigner, :logger
+  attr_reader :issue_assigner, :payload, :config
 
-  def any_match?(comment, config)
-    config[:review_matches].any? { |plus_one| comment[:body].match(plus_one) }
+  def any_match?(comment)
+    config[CONFIG_KEY].any? { |plus_one| comment[:body].match(plus_one) }
   end
 
   def extract_user_from(comment)

@@ -1,28 +1,36 @@
-require 'logger'
 require 'json'
 require_relative 'client'
 require_relative 'parser'
+require 'pry'
 
+# Main entry point from POST request
 module GitHub
   class Handler
-    def self.call(data, client = nil)
-      logger = Logger.new(STDERR)
-      payload = Parser.new(data).parse
+    include Logging
+
+    def call(payload, client = nil)
+      data = Parser.new(payload).parse
+      return "Unknown payload" unless data.valid?
 
       ## Temp read from master config, will read from DB via repo lookup
       master_config = MasterConfig.new
       client = client || Client.setup(master_config.access_token)
 
-      repo_config = ConfigReader.new(client).call(payload.org_repo)
+      begin
+        repo_config = ConfigReader.new(client).call(data.org_repo, data.commit_sha)
+      rescue RuntimeError => e
+        logger.warn "Returning now..."
+        return "Unable to process #{data.to_s}"
+      end
 
       ## Loop unknown keys as review blocks
 
-      assign_issue = IssueAssigner.new(client, repo_config[:assignees], payload)
-      create_status = StatusCreator.new(client, repo_config[:reviewed], payload)
-      check_comments = CommentReceiver.new(client, logger, repo_config[:reviewed], payload)
+      assign_issue = IssueAssigner.new(client, repo_config, data)
+      create_status = ::StatusCreator.new(client, repo_config[:reviewed], data)
+      check_comments = ::CommentReceiver.new(client, repo_config[:reviewed], data, assign_issue)
 
-      if payload.pull_request?
-        logger.debug "New PR:#{payload.org_repo}, sha:#{payload.commit_sha}"
+      if data.pull_request?
+        logger.debug "New PR:#{data.org_repo}, sha:#{data.commit_sha}"
         create_status.initial
         assign_issue.assign
       else

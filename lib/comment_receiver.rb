@@ -2,14 +2,17 @@ require './lib/unassign_reviewers'
 require './lib/comment_counter'
 
 class CommentReceiver # CheckComments
-  def initialize(client, logger, repo_config, payload)
-    @client = client
-    @logger = logger
-    @config = repo_config
-    @payload = payload
+  include Logging
 
-    @unassign_reviewers = UnassignReviewers.new(logger)
-    @count_comments = CommentCounter.new(logger, client)
+  def initialize(client, config, payload, issue_assigner)
+    @client = client
+    @config = config
+    @payload = payload
+    @org_repo = payload.org_repo
+    @issue_number = payload.issue_number
+
+    @unassign_reviewers = UnassignReviewers.new(client, config, payload)
+    @count_comments = CommentCounter.new(client, config, payload)
   end
 
   def call
@@ -23,14 +26,7 @@ class CommentReceiver # CheckComments
 
   private
 
-  attr_reader :client, :logger, :count_comments, :unassign_reviewers, :config, :payload
-  # delegate :org_repo, :issue_number, to: :payload
-  def org_repo
-    payload.org_repo
-  end
-  def issue_number
-    payload.issue_number
-  end
+  attr_reader :client, :count_comments, :unassign_reviewers, :config, :payload, :org_repo, :issue_number
 
   def get_issue_comments(org_repo, issue_number)
     logger.debug "Getting comments from repo:#{org_repo}, issue:#{issue_number}"

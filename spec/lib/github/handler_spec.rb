@@ -2,72 +2,67 @@ require 'spec_helper'
 require 'json'
 
 RSpec.describe GitHub::Handler do
-  let(:instance) { described_class.new(config, client) }
-  let(:call) { instance.call(payload) }
+  let(:call) { described_class.new.(payload, client) }
 
   context 'basic mock' do
-    let(:config) { double "MasterConfig", context: 'context', info: 'info' }
+    # let(:config) { double "MasterConfig", context: 'context', info: 'info' }
     # let(:parse) { instance.parse(payload) }
     let(:client) { double "Client" }
 
     context "empty payload" do
       let(:payload) { {} }
-      let(:comments) { [] }
-      let(:commits) { [ { sha: 'sha' } ] }
 
       it "accepts payload" do
-        expect(client).to receive(:issue_comments).with(nil, nil).and_return(comments)
-        expect(client).to receive(:pull_commits).with(nil, nil).and_return(commits)
-        expect(client).to receive(:create_status).with(nil, 'sha', 'pending', { context: 'context', description: 'info' })
-        expect(call).to eq "Found 0 +1s on # of: at:sha"
-      end
-    end
-
-    context "no number in payload" do
-      let(:payload) { { issue: {} } }
-      let(:comments) { [] }
-      let(:commits) { [ { sha: 'sha' } ] }
-
-      it "accepts payload" do
-        expect(client).to receive(:issue_comments).with(nil, nil).and_return(comments)
-        expect(client).to receive(:pull_commits).with(nil, nil).and_return(commits)
-        expect(client).to receive(:create_status).with(nil, 'sha', 'pending', { context: 'context', description: 'info' })
-        expect(call).to eq "Found 0 +1s on # of: at:sha"
+        expect(call).to eq "Unknown payload"
       end
     end
 
     context "data in payload" do
       before do
-        allow(config).to receive(:plus_one_text_regexp).and_return(Regexp.quote(":+1:"))
-        # allow(config).to receive(:plus_one_emoji_regexp).and_return(Regexp.quote("\xF0\x9F\x91\x8D"))
-        allow(config).to receive(:plus_one_emoji_regexp).and_return("\u{1F44D}")
-        allow(config).to receive(:context).and_return("context")
-        allow(config).to receive(:info).and_return("info")
-        allow(config).to receive(:ok_label).and_return("ok_label")
+        # allow(config).to receive(:plus_one_text_regexp).and_return(Regexp.quote(":+1:"))
+        # # allow(config).to receive(:plus_one_emoji_regexp).and_return(Regexp.quote("\xF0\x9F\x91\x8D"))
+        # allow(config).to receive(:plus_one_emoji_regexp).and_return("\u{1F44D}")
+        # allow(config).to receive(:context).and_return("context")
+        # allow(config).to receive(:info).and_return("info")
+        # allow(config).to receive(:ok_label).and_return("ok_label")
       end
 
-      let(:org_repo) { "MyOrg/MyRepo" }
-      let(:issue) { 22 }
+      let(:org_repo) { "IanVaughan/PrChecker" }
+      # let(:issue) { 22 }
+      #
+      # let(:payload) do
+      #   {
+      #     issue: { number: issue },
+      #     repository: { full_name: org_repo }
+      #   }
+      # end
 
-      let(:payload) do
-        {
-          issue: { number: issue },
-          repository: { full_name: org_repo }
-        }
-      end
-
-      let(:commit) { { sha: sha } }
-      let(:sha) { 'abc123' }
-      let(:info) { { context: 'context', description: 'info' } }
+      # let(:commit) { { sha: sha } }
+      # let(:sha) { 'abc123' }
+      # let(:info) { { context: 'context', description: 'info' } }
 
       context "when no +1" do
-        let(:comments) { [{ body: "Meh" }] }
+        # let(:comments) { [{ body: "Meh" }] }
+        let(:payload) { load_fixture 'pull_request' }
+
+        let(:config_reader) { instance_double(ConfigReader) }
+        before do
+          expect(ConfigReader).to receive(:new).and_return(config_reader)
+        end
+
+        let(:repo_config) do
+          { assignees: [ 'Bob' ],
+            reviewed: 1 
+          }
+        end
 
         it "accepts payload" do
-          expect(client).to receive(:issue_comments).with(org_repo, issue).and_return(comments)
-          expect(client).to receive(:pull_commits).with(org_repo, issue).and_return([commit])
-          expect(client).to receive(:create_status).with(org_repo, sha, "pending", info)
+          # expect(client).to receive(:issue_comments).with(org_repo, issue).and_return(comments)
+          # expect(client).to receive(:pull_commits).with(org_repo, issue).and_return([commit])
+          # expect(client).to receive(:create_status).with(org_repo, sha, "pending", info)
 
+          expect(IssueAssigner).to receive(:new).with(client, repo_config[:assignees], data)
+          expect(config_reader).to receive(:call).with(org_repo).and_return(repo_config)
           expect(call).to eq "Found 0 +1s on ##{issue} of:#{org_repo} at:#{sha}"
         end
       end
@@ -91,7 +86,7 @@ RSpec.describe GitHub::Handler do
           expect(client).to receive(:issue_comments).with(org_repo, issue).and_return(comments)
           expect(client).to receive(:pull_commits).with(org_repo, issue).and_return([commit])
           expect(client).to receive(:create_status).with(org_repo, sha, "pending", info)
-          
+
           expect(call).to eq "Found 1 +1s on ##{issue} of:#{org_repo} at:#{sha}"
         end
       end
@@ -123,7 +118,7 @@ RSpec.describe GitHub::Handler do
           expect(client).to receive(:pull_commits).with(org_repo, issue).and_return([commit])
           expect(client).to receive(:add_labels_to_an_issue).with(org_repo, issue, labels)
           expect(client).to receive(:create_status).with(org_repo, sha, "success", info)
-          
+
           expect(call).to eq "Found 2 +1s on ##{issue} of:#{org_repo} at:#{sha}"
         end
       end
@@ -144,12 +139,12 @@ RSpec.describe GitHub::Handler do
     let(:commits) { load_fixture('commits') }
 
     it 'makes the calls' do
-      expect(client).to receive(:issue_comments).with("QuiqUpLTD/QuiqupAPI", 4572).and_return(issue_comments)
-      expect(client).to receive(:delete).with("/repos/QuiqUpLTD/QuiqupAPI/issues/4572/assignees", assignees: 'IanVaughan')
-      expect(client).to receive(:pull_commits).with("QuiqUpLTD/QuiqupAPI", 4572).and_return(commits)
+      expect(client).to receive(:issue_comments).with("IanVaughan/PrChecker", 4572).and_return(issue_comments)
+      expect(client).to receive(:delete).with("/repos/IanVaughan/PrChecker/issues/4572/assignees", assignees: 'IanVaughan')
+      expect(client).to receive(:pull_commits).with("IanVaughan/PrChecker", 4572).and_return(commits)
       expect(client).to receive(:create_status).with(
-        "QuiqUpLTD/QuiqupAPI", commits.last[:sha], 'pending', {
-          context: 'No context configured', 
+        "IanVaughan/PrChecker", commits.last[:sha], 'pending', {
+          context: 'No context configured',
           description: 'No description configured'
         }
       )
@@ -170,23 +165,23 @@ RSpec.describe GitHub::Handler do
       allow_any_instance_of(IssueAssigner).to receive(:call).and_return('Assigned foobar')
 
       expect(client).to receive(:create_status).with(
-        'QuiqUpLTD/QuiqupAPI', 
+        'IanVaughan/PrChecker',
         commit_sha,
         'pending',
         info)
 
       result = instance.call(pull_request)
-      expect(result).to eq('org_repo:QuiqUpLTD/QuiqupAPI, issue_number:4577, assign:Assigned foobar')
+      expect(result).to eq('org_repo:IanVaughan/PrChecker, issue_number:4577, assign:Assigned foobar')
     end
 
     it 'assignees to someone' do
       allow(client).to receive(:create_status)
 
       # expect_any_instance_of(StatusCreator).to \
-      #   receive(:call).with('QuiqUpLTD/QuiqupAPI', commit_sha, [])
+      #   receive(:call).with('IanVaughan/PrChecker', commit_sha, [])
       #
       # expect_any_instance_of(IssueAssigner).to \
-      #   receive(:call).with('QuiqUpLTD/QuiqupAPI', 4577, nil)
+      #   receive(:call).with('IanVaughan/PrChecker', 4577, nil)
 
       instance.call(pull_request)
     end

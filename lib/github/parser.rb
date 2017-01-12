@@ -1,17 +1,29 @@
 module GitHub
   class Parser
+    include Logging
+
     def initialize(data)
       @data = data
     end
 
-    attr_reader :issue_number, :org_repo, :commit_sha, :type
+    attr_reader :issue_number, :org_repo, :commit_sha, :type, :status
 
     def parse
-      if data[:action] == "opened" && data.key?(:pull_request)
+      if data.key?(:pull_request)
         @issue_number = data[:number]
         @org_repo = data[:repository][:full_name]
         @commit_sha = data[:pull_request][:head][:sha]
         @type = :pull_request
+
+        if data[:action] == "opened"
+          @state = :opened
+        elsif data[:action] == "closed"
+          @state = :closed
+          logger.info "Ignoring closed PR"
+        else
+          @state = :unknown
+          logger.warn "Unhanled PR case"
+        end
 
       elsif data[:action] == 'synchronize' && data.key?(:pull_request)
         @issue_number = data[:number]
@@ -32,12 +44,20 @@ module GitHub
       self
     end
 
+    def valid?
+      !data.empty?
+    end
+
     def pull_request?
       type == :pull_request
     end
 
     def issue?
       type == :issue
+    end
+
+    def to_s
+      "org_repo:#{org_repo}, issue:#{issue_number}, sha:#{commit_sha}, type:#{type}"
     end
 
     private
