@@ -1,7 +1,7 @@
 class IssueAssigner
   include Logging
 
-  CONFIG_KEY = :assigness
+  CONFIG_KEY = :assignees
 
   def initialize(client, config, payload)
     @client = client
