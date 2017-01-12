@@ -2,11 +2,12 @@ require 'spec_helper'
 require 'json'
 
 RSpec.describe GitHub::Handler do
-  let(:instance) { described_class.new(config, client) }
+  let(:instance) { described_class.new(client) }
   let(:call) { instance.call(payload) }
 
   context 'basic mock' do
     let(:config) { double "MasterConfig", context: 'context', info: 'info' }
+    # let(:parse) { instance.parse(payload) }
     let(:client) { double "Client" }
 
     context "empty payload" do
@@ -36,15 +37,6 @@ RSpec.describe GitHub::Handler do
     end
 
     context "data in payload" do
-      before do
-        allow(config).to receive(:plus_one_text_regexp).and_return(Regexp.quote(":+1:"))
-        # allow(config).to receive(:plus_one_emoji_regexp).and_return(Regexp.quote("\xF0\x9F\x91\x8D"))
-        allow(config).to receive(:plus_one_emoji_regexp).and_return("\u{1F44D}")
-        allow(config).to receive(:context).and_return("context")
-        allow(config).to receive(:info).and_return("info")
-        allow(config).to receive(:ok_label).and_return("ok_label")
-      end
-
       let(:org_repo) { "MyOrg/MyRepo" }
       let(:issue) { 22 }
 
@@ -130,8 +122,9 @@ RSpec.describe GitHub::Handler do
   end
 
   context 'full payload' do
-    let(:config) { MasterConfig.new }
-    let(:client) { Client.setup(config.access_token) }
+    # let(:config) { MasterConfig.new }
+    # let(:client) { Client.setup(config.access_token) }
+    let(:client) { Client.setup('abc123') }
 
     # issue_comment.json - GitHub comment webhook post payload
     let(:issue_comment) { load_fixture('issue_comment') }
@@ -158,7 +151,7 @@ RSpec.describe GitHub::Handler do
 
   context 'pull request' do
     let(:config) { double MasterConfig, context: 'context', info: 'info' }
-    let(:client) { double Client, contents: { content: 'cmV2aWV3ZXJzOgogIC0gUGF1bAogIC0gU2ltb24K\n' } }
+    # let(:client) { double Client, contents: { content: 'cmV2aWV3ZXJzOgogIC0gUGF1bAogIC0gU2ltb24K\n' } }
 
     let(:pull_request) { load_fixture('pull_request') } # pull_request.json - Github new PR webhook post payload
     let(:commit_sha) { pull_request[:pull_request][:head][:sha] }
