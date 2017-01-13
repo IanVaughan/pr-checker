@@ -1,22 +1,28 @@
 class CommentCounter # StatusCreator # UpdateStaus
   include Logging
 
-  def initialize(client, config, payload)
+  CONFIG_KEY = :matches
+
+  def initialize(client, config, payload, status_creator)
     @client = client
+    @config = config
+    @payload = payload
+    @org_repo = payload.org_repo
+    @issue_number = payload.issue_number
     @status_creator = status_creator
   end
 
   def call(comments)
-    plus_one_count = count_matches(comments, config)
+    plus_one_count = count_matches(comments)
     sha = get_last_commit_sha(org_repo, issue_number)
 
-    if plus_one_count > config[:match_count]
-      logger.debug "#{org_repo}:#{issue_number} adding labels and success status"
+    if plus_one_count > config[:count]
+      logger.debug "Adding labels and success status to:#{payload.to_s}"
       client.add_labels_to_an_issue(org_repo, issue_number, [config.ok_label])
-      status_creator.success(org_repo, sha, config)
+      status_creator.success
     else
-      logger.debug "#{org_repo}:#{issue_number} setting pending status check"
-      status_creator.pending(org_repo, sha, config)
+      logger.debug "Setting pending status to:#{payload.to_s}"
+      status_creator.pending
     end
 
     "Found #{plus_one_count} +1s on ##{issue_number} of:#{org_repo} at:#{sha}"
@@ -24,14 +30,20 @@ class CommentCounter # StatusCreator # UpdateStaus
 
   private
 
-  attr_reader :logger, :client, :status_creator
+  attr_reader :client, :config, :status_creator, :org_repo, :issue_number, :payload
 
-  def count_matches(comments, config)
-    comments.count { |comment| any_match?(comment, config) }
+  def count_matches(comments)
+    comments.count { |comment| any_match?(comment) }
   end
 
-  def any_match?(comment, config)
-    config[:review_matches].any? { |plus_one| comment[:body].match(plus_one) }
+  def any_match?(comment)
+    c = config[CONFIG_KEY]
+    if c.nil?
+      message = "Could not find config '#{CONFIG_KEY}' in #{config}, for:#{payload}"
+      logger.warn message
+      return message
+    end
+    c.any? { |plus_one| comment[:body].match(plus_one) }
   end
 
   def get_last_commit_sha(org_repo, issue_number)

@@ -41,17 +41,13 @@ class StatusCreator # CreateStatus
     create(config[:initial])
   end
 
-  # def success
-  #   create('success', config)
-  # end
-  #
-  # def pending
-  #   create(commit_sha, 'pending', config)
-  # end
-  #
-  # def fail
-  #   create(org_repo, commit_sha, 'failure', config)
-  # end
+  def pending
+    create(config[:pending])
+  end
+
+  def success
+    create(config[:success])
+  end
 
   private
 

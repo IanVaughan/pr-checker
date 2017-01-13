@@ -26,7 +26,13 @@ class UnassignReviewers
   attr_reader :issue_assigner, :payload, :config
 
   def any_match?(comment)
-    config[CONFIG_KEY].any? { |plus_one| comment[:body].match(plus_one) }
+    c = config[CONFIG_KEY]
+    if c.nil?
+      message = "Could not find config #{CONFIG_KEY} in #{config}, for:#{payload}"
+      logger.warn message
+      return message
+    end
+    c.any? { |plus_one| comment[:body].match(plus_one) }
   end
 
   def extract_user_from(comment)

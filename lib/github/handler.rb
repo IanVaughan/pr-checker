@@ -35,7 +35,7 @@ module GitHub
         return message
       end
       create_status = ::StatusCreator.new(client, config, data)
-      check_comments = ::CommentReceiver.new(client, config, data, assign_issue)
+      check_comments = ::CommentReceiver.new(client, config, data, assign_issue, create_status)
 
       if data.pull_request?
         logger.debug "New PR:#{data.org_repo}, sha:#{data.commit_sha}"
