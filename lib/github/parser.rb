@@ -6,39 +6,32 @@ module GitHub
       @data = data
     end
 
-    attr_reader :issue_number, :org_repo, :commit_sha, :type, :status
+    attr_reader :issue_number, :org_repo, :commit_sha, :type, :action
 
     def parse
+      @org_repo = data[:repository][:full_name]
+
       if data.key?(:pull_request)
         @issue_number = data[:number]
-        @org_repo = data[:repository][:full_name]
         @commit_sha = data[:pull_request][:head][:sha]
         @type = :pull_request
-
-        if data[:action] == "opened"
-          @state = :opened
-        elsif data[:action] == "closed"
-          @state = :closed
-          logger.info "Ignoring closed PR"
-        else
-          @state = :unknown
-          logger.warn "Unhanled PR case"
-        end
-
-      elsif data[:action] == 'synchronize' && data.key?(:pull_request)
-        @issue_number = data[:number]
-        @org_repo = data[:repository][:full_name]
-        @type = :pull_request
+        @action = data[:action].to_sym
+        logger.debug "PR:#{self.to_s}"
 
       elsif data.key?(:issue)
-        return "No number found in payload" unless data[:issue].key?(:number)
+        if data[:issue].key?(:number)
+        else
+          logger.debug "No number found in payload" 
+        end
 
         @issue_number = data[:issue][:number]
-        @org_repo = data[:repository][:full_name]
+        @commit_sha = nil
         @type = :issue
+        @action = data[:action] # delete
+        logger.debug "Issue:#{self.to_s}"
 
       else
-        "No issue found in payload"
+        logger.debug "No issue found in payload"
       end
 
       self
@@ -57,7 +50,7 @@ module GitHub
     end
 
     def to_s
-      "org_repo:#{org_repo}, issue:#{issue_number}, sha:#{commit_sha}, type:#{type}"
+      "org_repo:#{org_repo}, issue:#{issue_number}, sha:#{commit_sha}, type:#{type}, action:#{action}"
     end
 
     private

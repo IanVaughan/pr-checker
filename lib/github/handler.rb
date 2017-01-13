@@ -16,6 +16,7 @@ module GitHub
       master_config = MasterConfig.new
       client = client || Client.setup(master_config.access_token)
 
+      # If its a issue, then there is no sha, so config file has to be read from master
       begin
         repo_config = ConfigReader.new(client).call(data.org_repo, data.commit_sha)
       rescue RuntimeError => e
@@ -26,8 +27,15 @@ module GitHub
       ## Loop unknown keys as review blocks
 
       assign_issue = IssueAssigner.new(client, repo_config, data)
-      create_status = ::StatusCreator.new(client, repo_config[:reviewed], data)
-      check_comments = ::CommentReceiver.new(client, repo_config[:reviewed], data, assign_issue)
+
+      config = repo_config[:reviewed]
+      if config.nil?
+        message = "No config for:#{data.to_s}"
+        logger.warn message
+        return message
+      end
+      create_status = ::StatusCreator.new(client, config, data)
+      check_comments = ::CommentReceiver.new(client, config, data, assign_issue)
 
       if data.pull_request?
         logger.debug "New PR:#{data.org_repo}, sha:#{data.commit_sha}"
