@@ -1,2 +1,93 @@
+# A list of users to auto assign the PR to when it is opened
+# Once they have commented with any of the above review matches
+# they will be auto unassigned
 assignees:
   - IanVaughan
+  - Simon
+
+# Status Review blocks (can be named anything you like)
+reviewed:
+  # The text to search comments for
+  # It will count any of these as a match
+  matches:
+    - ':+1:'
+    - \u{1F44D}
+    - 👍
+
+  # How many of above matches must be found in comments
+  # before it triggers a successful review
+  count: 2
+
+  # Whitelist users that count towards the review count
+  # Leave blank to include any commenter
+  # reviewers:
+  #   - Phil
+
+  # When the review is successful, it can do any or all of the following actions
+  # actions:
+
+  # Add a label to the PR, with the given text and colour
+  # If the label does not exist it will be created
+  # If the label colour does not match it will be updated
+  # https://help.github.com/articles/creating-and-editing-labels-for-issues-and-pull-requests/
+  # https://help.github.com/articles/applying-labels-to-issues-and-pull-requests/
+  label:
+    text: +2d
+    colour: 009800
+
+  # Set build status to the PR
+  # This can be used to block merge via GitHub
+  # https://github.com/blog/1227-commit-status-api
+  # https://help.github.com/articles/enabling-required-status-checks/
+  status:
+    context: 2+1s
+    description: Require at least two people to add a +1
+    target_url: http://rules.com
+
+    # The status to assign to the build status when in each stage
+    # Stages are :
+    #   initial - when the PR is raised, should it set the build status
+    #   below - when matched comment count is below match_count
+    #   pass - when matched comment count meets match_count
+    # Valid values align with what GitHub support, these cannot be changed or styled
+    #   none - do not set status
+    #   failure - set failure status (shows with red cross)
+    #   pending - set pending status (shows with amber dot)
+    #   success - set success status (shows with green tick)
+    initial: pending
+    pending: pending
+    success: success
+
+qa:
+  # The text to search comments for
+  # It will count any of these as a match
+  review_matches:
+    - LGTM
+
+  # How many of above matches must be found in comments
+  # before it triggers a successful review
+  match_count: 1
+
+  # Whitelist users that count towards the review count
+  # Leave blank to include any commenter
+  reviewers:
+    - QaPerson
+
+  # When the review is successful, it can do any or all of the following actions
+  # actions:
+
+  # Add a label to the PR, with the given text and colour
+  # If the label does not exist it will be created
+  # If the label colour does not match it will be updated
+  # https://help.github.com/articles/creating-and-editing-labels-for-issues-and-pull-requests/
+  # https://help.github.com/articles/applying-labels-to-issues-and-pull-requests/
+  label:
+    text: qa-pass
+    colour: 009800
+
+  # Set build status to the PR
+  # This can be used to block merge via GitHub
+  # https://github.com/blog/1227-commit-status-api
+  # https://help.github.com/articles/enabling-required-status-checks/
+  status:
+    context: qa-pass
