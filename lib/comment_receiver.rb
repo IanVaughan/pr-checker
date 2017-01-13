@@ -17,7 +17,7 @@ class CommentReceiver # CheckComments
 
   def call
     comments = get_issue_comments(org_repo, issue_number)
-    # logger.debug "#{org_repo}:#{issue_number} found comments:#{comments}"
+    logger.debug "Found comments"
     return "Failed to get comments" if comments.nil?
 
     unassign_reviewers.call(comments)

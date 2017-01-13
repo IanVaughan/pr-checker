@@ -1,7 +1,7 @@
 class UnassignReviewers
   include Logging
 
-  CONFIG_KEY = :review_matches
+  CONFIG_KEY = :matches
 
   def initialize(client, config, payload)
     @issue_assigner = IssueAssigner.new(client, config, payload)
@@ -14,8 +14,11 @@ class UnassignReviewers
       comment = sawer_comment.to_hash
       if any_match?(comment)
         user = extract_user_from(comment)
-        next if user.nil?
-        logger.debug "Removing assignee #{user}, from #{payload.to_s}"
+        if user.nil?
+          logger.warn "#{self.class} Could not find user in comment:#{comment}, for:#{payload}"
+          next
+        end
+        logger.debug "#{self.class} Removing assignee:#{user}, from:#{payload}"
         issue_assigner.unassign
       end
     end
@@ -26,13 +29,16 @@ class UnassignReviewers
   attr_reader :issue_assigner, :payload, :config
 
   def any_match?(comment)
+    config_key.any? { |plus_one| comment[:body].match(plus_one) }
+  end
+
+  def config_key
     c = config[CONFIG_KEY]
-    if c.nil?
-      message = "Could not find config #{CONFIG_KEY} in #{config}, for:#{payload}"
-      logger.warn message
-      return message
-    end
-    c.any? { |plus_one| comment[:body].match(plus_one) }
+    return c if c
+
+    message = "#{self.class} Could not find key:#{CONFIG_KEY}, in:#{config}, for:#{payload}"
+    logger.warn message
+    return message
   end
 
   def extract_user_from(comment)

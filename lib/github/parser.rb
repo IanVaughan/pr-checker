@@ -2,13 +2,13 @@ module GitHub
   class Parser
     include Logging
 
-    def initialize(data)
-      @data = data
+    def initialize(client)
+      @client = client
     end
 
     attr_reader :issue_number, :org_repo, :commit_sha, :type, :action
 
-    def parse
+    def parse(data)
       @org_repo = data[:repository][:full_name]
 
       if data.key?(:pull_request)
@@ -16,7 +16,7 @@ module GitHub
         @commit_sha = data[:pull_request][:head][:sha]
         @type = :pull_request
         @action = data[:action].to_sym
-        logger.debug "PR:#{self.to_s}"
+        logger.debug "#{self.class} Parsed pull_request:#{self.to_s}"
 
       elsif data.key?(:issue)
         if data[:issue].key?(:number)
@@ -25,7 +25,7 @@ module GitHub
         end
 
         @issue_number = data[:issue][:number]
-        @commit_sha = nil
+        @commit_sha = get_last_sha
         @type = :issue
         @action = data[:action] # delete
         logger.debug "Issue:#{self.to_s}"
@@ -38,7 +38,7 @@ module GitHub
     end
 
     def valid?
-      !data.empty?
+      !type.nil?
     end
 
     def pull_request?
@@ -55,6 +55,11 @@ module GitHub
 
     private
 
-    attr_reader :data
+    attr_reader :client
+
+    def get_last_sha
+      commits = client.pull_commits(org_repo, issue_number)
+      commits.last[:sha]
+    end
   end
 end

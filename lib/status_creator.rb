@@ -55,6 +55,7 @@ class StatusCreator # CreateStatus
 
   def create(status)
     logger.debug "Setting status:#{status}, on:#{payload.to_s}"
+    return unless status
     client.create_status(
       org_repo, commit_sha, status, info
     )

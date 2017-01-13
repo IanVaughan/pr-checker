@@ -16,9 +16,13 @@ class CommentCounter # StatusCreator # UpdateStaus
     plus_one_count = count_matches(comments)
     sha = get_last_commit_sha(org_repo, issue_number)
 
-    if plus_one_count > config[:count]
-      logger.debug "Adding labels and success status to:#{payload.to_s}"
-      client.add_labels_to_an_issue(org_repo, issue_number, [config.ok_label])
+    if plus_one_count >= config[:count]
+      logger.debug "Adding labels and success status to:#{payload}"
+      label = config[:label][:text]
+      color = config[:label][:colour]
+      client.update_label(org_repo, label, { color: 'f29513' })
+      client.add_labels_to_an_issue(org_repo, issue_number, [label])
+
       status_creator.success
     else
       logger.debug "Setting pending status to:#{payload.to_s}"
