@@ -3,8 +3,9 @@ module Workers
     include Sidekiq::Worker
 
     def perform
-      # puts 'Workers::Projects...'
+      puts 'Workers::Projects...'
       projects.each do |raw_project|
+        puts 'Workers::Project...'
         project = create_or_update(raw_project)
         Project.perform_async(project.id)
       end

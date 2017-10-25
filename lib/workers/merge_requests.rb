@@ -3,7 +3,7 @@ module Workers
     include Sidekiq::Worker
 
     def perform(project_id)
-      # puts "Workers::MergeRequests:#{project_id}"
+      puts "Workers::MergeRequests project_id:#{project_id}"
       project = Models::Project.find(project_id)
       mrs = merge_requests(project)
       mrs.each do |mr|
