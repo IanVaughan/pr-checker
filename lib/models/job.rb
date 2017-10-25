@@ -1,7 +1,5 @@
 module Models
-  class Pipeline
+  class Job
     include MongoMapper::EmbeddedDocument
-    
-    has_many :jobs, class: Job
   end
 end

@@ -12,7 +12,7 @@ module Workers
         pipeline.jobs.build(job)
         pipeline.save!
 
-        Job.perform_async(project_id, pipeline_id, job.id)
+        Job.perform_async(project_id, pipeline_id, job[:id])
       end
     end
 
@@ -23,7 +23,7 @@ module Workers
     end
 
     def jobs(project, pipeline)
-      Gitlab::Pipeline.new.call(project, pipeline).jobs
+      Gitlab::Jobs.new.call(project, pipeline)
     end
   end
 end

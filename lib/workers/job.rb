@@ -9,6 +9,9 @@ module Workers
       pipeline = project.pipelines.find(pipeline_id)
       job = pipeline.jobs.find(job_id)
 
+      puts job
+      puts "-"*100
+
       # TODO: check job
     end
 
