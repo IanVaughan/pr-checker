@@ -52,3 +52,23 @@ Tick: Issue comment: Issue commented on.
 ## Access token
 
 You need a Personal Access token from github : https://github.com/settings/tokens
+
+
+
+
+https://github.com/anlek/mongify/issues/130
+https://github.com/stripe-contrib/pagerbot/issues/46
+
+docker run --name lab-stats-mongo -v $PWD/data:/data/db -p 27017:27017 -d mongo:3.2
+
+docker run --name lab-stats-app --link lab-stats-mongo:mongo -d application-that-uses-mongo
+docker run -it --link lab-stats-mongo:mongo --rm mongo sh -c 'exec mongo "$MONGO_PORT_27017_TCP_ADDR:$MONGO_PORT_27017_TCP_PORT/test"'
+
+alias pgup="docker run --name postgres -v ~/pgdata:/var/lib/postgresql/data -d -p 5432:5432 --restart always mdillon/postgis -c log_statement=all"
+
+* `sidekiq -r ./lib/initializers/sidekiq.rb` For sidekiq server
+* `rackup config.ru` For Sidekiq web
+* `pry -r ./lib/initializers/sidekiq.rb`
+
+[1] pry(main)> Workers::Projects.perform_async
+Workers::MergeRequests.perform_async(20)
