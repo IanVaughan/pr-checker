@@ -3,7 +3,7 @@ module Workers
     include Sidekiq::Worker
 
     def perform(project_id, pipeline_id)
-      puts "Workers::Jobs:#{project_id}, #{pipeline_id}"
+      # puts "Workers::Jobs:#{project_id}, #{pipeline_id}"
 
       project = project(project_id)
       pipeline = project.pipelines.find(pipeline_id)

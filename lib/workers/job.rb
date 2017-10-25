@@ -3,14 +3,14 @@ module Workers
     include Sidekiq::Worker
 
     def perform(project_id, pipeline_id, job_id)
-      puts "Workers::Job:#{project_id}, #{job_id}"
+      # puts "Workers::Job:#{project_id}, #{job_id}"
 
       project = Models::Project.find(project_id)
       pipeline = project.pipelines.find(pipeline_id)
       job = pipeline.jobs.find(job_id)
 
-      puts job
-      puts "-"*100
+      # puts job
+      # puts "-"*100
 
       # TODO: check job
     end
