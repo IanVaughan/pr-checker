@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+
+  database:
+    image: mongo:3.2
+    volumes:
+      - ./data:/data/db
+
+  redis:
+    image: redis:latest
+
+  # web:
+  #   # tty: true # Enables debugging capabilities when attached to this container.
+  #   build: .
+  #   volumes:
+  #     - .:/app
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     DATABASE_HOST: database
+  #     SIDEKIQ_REDIS_URL: redis://redis:6379/
+  #   ports:
+  #     - '9292:80'
+  #   # command: rackup --host 0.0.0.0 --port 80 # bundle exec rails s -p 3000 -b '0.0.0.0'
+  #   depends_on:
+  #     - database
+  #     - redis
+
+  sidekiq:
+    build: .
+    env_file:
+      - .env
+    environment:
+      DATABASE_HOST: database
+      SIDEKIQ_REDIS_URL: redis://redis:6379/
+    command: bundle exec sidekiq -r ./lib/initializers/sidekiq.rb
+    depends_on:
+      - database
+      - redis

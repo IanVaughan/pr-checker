@@ -1,0 +1,7 @@
+.git
+.bundle
+log/*
+spec
+.env
+.ruby-version
+data/*
