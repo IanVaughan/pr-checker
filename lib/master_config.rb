@@ -1,5 +1,3 @@
-require "dotenv"
-
 class MasterConfig
   attr_reader :plus_one_text, :plus_one_text_regexp, :plus_one_emoji_regexp
   attr_reader :ok_label, :access_token, :context, :info

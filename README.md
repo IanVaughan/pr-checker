@@ -66,9 +66,17 @@ docker run -it --link lab-stats-mongo:mongo --rm mongo sh -c 'exec mongo "$MONGO
 
 alias pgup="docker run --name postgres -v ~/pgdata:/var/lib/postgresql/data -d -p 5432:5432 --restart always mdillon/postgis -c log_statement=all"
 
-* `sidekiq -r ./lib/initializers/sidekiq.rb` For sidekiq server
+* `sidekiq -r ./config/initializers/sidekiq.rb` For sidekiq server
 * `rackup config.ru` For Sidekiq web http://localhost:9292/
-* `pry -r ./lib/initializers/sidekiq.rb`
+* `pry -r ./config/initializers/sidekiq.rb`
 
 [1] pry(main)> Workers::Projects.perform_async
 Workers::MergeRequests.perform_async(20)
+
+
+dc exec sidekiq pry -r ./lib/initializers/sidekiq.rb
+dc exec sidekiq bash
+
+
+
+http://localhost:9292/sidekiq

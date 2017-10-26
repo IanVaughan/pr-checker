@@ -34,7 +34,7 @@ services:
     environment:
       DATABASE_HOST: database
       SIDEKIQ_REDIS_URL: redis://redis:6379/
-    command: bundle exec sidekiq -r ./lib/initializers/sidekiq.rb
+    command: bundle exec sidekiq -r ./config/initializers/sidekiq.rb
     depends_on:
       - database
       - redis

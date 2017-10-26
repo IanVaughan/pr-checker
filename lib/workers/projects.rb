@@ -5,9 +5,9 @@ module Workers
     def perform
       puts 'Workers::Projects...'
       projects.each do |raw_project|
-        puts 'Workers::Project...'
-        project = create_or_update(raw_project)
-        Project.perform_async(project.id)
+        puts "Workers::Project project:#{raw_project[:id]}"
+        # project = create_or_update(raw_project)
+        Project.perform_async(raw_project[:id])
       end
     end
 

@@ -1,7 +1,5 @@
-# require "./server"
-# run BaseServer
-
+require "./server"
 require 'sidekiq/web'
-require './lib/initializers/sidekiq'
+# require './config/initializers/sidekiq'
 
-run Sidekiq::Web
+run Rack::URLMap.new('/' => BaseServer, '/sidekiq' => Sidekiq::Web)

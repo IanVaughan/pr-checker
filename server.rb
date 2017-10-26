@@ -6,9 +6,14 @@ class BaseServer < Sinatra::Application
     'pong'
   end
 
-  post '/payload' do
+  post '/github/payload' do
     status 200
     data = JSON.parse(request.body.read, symbolize_names: true)
     body GitHub::Handler.new.call(data)
+  end
+
+  post '/gitlab/refresh' do
+    status 200
+    body Workers::Projects.perform_async
   end
 end

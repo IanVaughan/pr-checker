@@ -1,3 +1,4 @@
+# module GitHub
 class IssueAssigner
   def initialize(client)
     @client = client

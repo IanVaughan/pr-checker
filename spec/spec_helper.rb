@@ -3,6 +3,8 @@ require 'rspec'
 require "pry"
 require 'rack/test'
 
+# require 'gitlab/'
+
 ENV['RACK_ENV'] = 'test'
 
 require File.expand_path('../../environment', __FILE__)
@@ -20,3 +22,9 @@ RSpec.configure do |config|
 
   config.expose_dsl_globally = false
 end
+
+# RSpec.configure do |config|
+#   config.before(:each) do
+#     Sidekiq::Worker.clear_all
+#   end
+# end

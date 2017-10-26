@@ -11,4 +11,11 @@ class Client
     end
     client
   end
+
+  def read_file_from_repo(filename, org_repo, branch = nil)
+    client.contents org_repo, path: filename + (branch ? "?ref=#{branch}" : '')
+  rescue Octokit::NotFound
+    message = "Could not find file:#{filename} in:#{org_repo}"
+    raise message
+  end
 end
