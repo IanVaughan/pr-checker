@@ -3,21 +3,20 @@ module Workers
     include Sidekiq::Worker
 
     def perform(project_id)
-      puts "Workers::Pipelines:#{project_id}"
-      # project = Models::Project.find(project_id)
-      # pipelines(project).each do |pipeline|
-      #   puts "Workers::Pipeline:#{pipeline[:id]}"
-      #   pl = project.pipelines.build(pipeline)
-      #   project.save!
-      #
-      #   Pipeline.perform_async(project_id, pl.id)
-      # end
-    end
+      logger.info "Workers::Pipelines project_id:#{project_id}"
 
-    private
+      project = Models::Project.find(project_id)
+      pipelines = Gitlab::Pipelines.new.call(project)
+      logger.info "Workers::Pipelines project_id:#{project_id}, count:#{pipelines.count}"
 
-    def pipelines(project)
-      Gitlab::Pipelines.new.call(project)
+      pipelines.each do |pipeline|
+        logger.info "Workers::Pipeline project_id:#{project_id}, pipeline_id:#{pipeline[:id]}"
+
+        pl = project.pipelines.build(pipeline)
+        project.save!
+
+        Pipeline.perform_async(project_id, pl.id)
+      end
     end
   end
 end

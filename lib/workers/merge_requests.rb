@@ -3,21 +3,20 @@ module Workers
     include Sidekiq::Worker
 
     def perform(project_id)
-      puts "Workers::MergeRequests project_id:#{project_id}"
-      # project = Models::Project.find(project_id)
-      # mrs = merge_requests(project)
-      # mrs.each do |mr|
-      #   mr = project.merge_requests.build(mr)
-      #   project.save!
-      #
-      #   MergeRequest.perform_async(project_id, mr.id)
-      # end
-    end
+      logger.info "Workers::MergeRequests project_id:#{project_id}"
 
-    private
+      project = Models::Project.find(project_id)
+      merge_requests = Gitlab::MergeRequests.new.call(project)
+      logger.info "Workers::MergeRequests project_id:#{project_id}, count:#{merge_requests.count}"
 
-    def merge_requests(project)
-      Gitlab::MergeRequests.new.call(project)
+      merge_requests.each do |mr|
+        logger.info "Workers::MergeRequests project_id:#{project_id}, mr:#{mr[:id]}"
+
+        mr = project.merge_requests.build(mr)
+        project.save!
+
+        MergeRequest.perform_async(project_id, mr.id)
+      end
     end
   end
 end

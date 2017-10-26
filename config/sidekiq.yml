@@ -6,3 +6,5 @@
 
 :queues:
   - default
+
+:logfile: ./log/sidekiq.log

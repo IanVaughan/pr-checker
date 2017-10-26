@@ -3,8 +3,8 @@ module Workers
     include Sidekiq::Worker
 
     def perform(project_id)
-      puts "Workers::Project:#{project_id}"
-      # save_details(project_id)
+      logger.info "Workers::Project project_id:#{project_id}"
+      save_details(project_id)
 
       MergeRequests.perform_async(project_id)
       Pipelines.perform_async(project_id)
