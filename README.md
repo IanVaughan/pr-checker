@@ -22,16 +22,29 @@ assignees:
   - GitHandle2
 ```
 
-## Dev
+## Development
 
 Setup
 
     cp .env.example .env
     # edit as required
 
-Boot
+Standalone :
 
-    rackup
+* `docker run --name lab-stats-mongo -v $PWD/data:/data/db -p 27017:27017 -d mongo:3.2`
+  * `docker start lab-stats-mongo`
+* `sidekiq -r ./environment.rb` - Start sidekiq server
+* `rackup`                      - Start Web / Sidekiq web http://localhost:9292/sidekiq
+* `pry -r ./environment.rb`     - For ruby console
+
+Docker compose
+
+* `docker-compose up`
+* `docker-compose exec sidekiq pry -r ./environment.rb`
+
+Kick off refresh
+
+* `curl -i -X POST localhost:9292/gitlab/refresh -d ''`
 
 Setup tunnel to internet to test from GitHub
 
@@ -48,35 +61,6 @@ Set "Payload URL" to "https://yourhost.com:port/payload"
 
 Tick: Issue comment: Issue commented on.
 
-
 ## Access token
 
 You need a Personal Access token from github : https://github.com/settings/tokens
-
-
-
-
-https://github.com/anlek/mongify/issues/130
-https://github.com/stripe-contrib/pagerbot/issues/46
-
-docker run --name lab-stats-mongo -v $PWD/data:/data/db -p 27017:27017 -d mongo:3.2 | docker start lab-stats-mongo
-
-docker run --name lab-stats-app --link lab-stats-mongo:mongo -d application-that-uses-mongo
-docker run -it --link lab-stats-mongo:mongo --rm mongo sh -c 'exec mongo "$MONGO_PORT_27017_TCP_ADDR:$MONGO_PORT_27017_TCP_PORT/test"'
-
-alias pgup="docker run --name postgres -v ~/pgdata:/var/lib/postgresql/data -d -p 5432:5432 --restart always mdillon/postgis -c log_statement=all"
-
-* `sidekiq -r ./config/initializers/sidekiq.rb` For sidekiq server
-* `rackup config.ru` For Sidekiq web http://localhost:9292/
-* `pry -r ./config/initializers/sidekiq.rb`
-
-[1] pry(main)> Workers::Projects.perform_async
-Workers::MergeRequests.perform_async(20)
-
-
-dc exec sidekiq pry -r ./lib/initializers/sidekiq.rb
-dc exec sidekiq bash
-
-
-
-http://localhost:9292/sidekiq

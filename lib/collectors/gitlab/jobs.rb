@@ -1,7 +1,7 @@
 module Gitlab
   class Jobs < Access
-    def call(project, pipeline)
-      puts "Gitlab::Jobs project:#{project["path_with_namespace"]}, pipeline_id:#{pipeline['_id']}"
+    def call(project, pipeline_id)
+      puts "Gitlab::Jobs project:#{project["path_with_namespace"]}, pipeline_id:#{pipeline_id}"
       pipeline(project["path_with_namespace"], pipeline["_id"])
     end
 

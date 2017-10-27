@@ -7,4 +7,5 @@
 :queues:
   - default
 
+# TODO: Want this local, but on docker want default STDOUT
 :logfile: ./log/sidekiq.log

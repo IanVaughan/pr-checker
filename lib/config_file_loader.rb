@@ -18,6 +18,8 @@ class ConfigFileLoader
 
   private
 
+  attr_reader :client
+
   def parse_file(file)
     file = JSON.parse(file).symbolize_keys if file.class == String
     content = file[:content]

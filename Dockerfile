@@ -15,4 +15,4 @@ ADD . $APP_HOME
 
 EXPOSE 80
 
-CMD ["rackup", "--host", "0.0.0.0", "--p", "80", "-s", "Puma"]
+CMD ["rackup", "--host", "0.0.0.0", "-p", "80"]
