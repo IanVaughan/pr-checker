@@ -1,11 +1,11 @@
 version: '3'
 services:
   database:
-    image: mongo:3.2
-    ports:
-      - '27017:27017'
-    volumes:
-      - ./data:/data/db
+    image: postgres:latest
+    # ports:
+    #   - '5432:5432'
+    # volumes:
+    #   - ./data:/data/db
 
   redis:
     image: redis:latest
@@ -18,7 +18,7 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE_HOST: database
+      DATABASE_URL: postgres://database/pr_checker_dev?pool=5
       SIDEKIQ_REDIS_URL: redis://redis:6379/
     ports:
       - '9292:80'
@@ -32,7 +32,7 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE_HOST: database
+      DATABASE_URL: postgres://database/pr_checker_dev?pool=5
       SIDEKIQ_REDIS_URL: redis://redis:6379/
     command: bundle exec sidekiq -r ./environment.rb -L STDOUT
     restart: always

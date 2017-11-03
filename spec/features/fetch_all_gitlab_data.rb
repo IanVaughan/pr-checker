@@ -1,18 +1,37 @@
 require 'spec_helper'
-# require 'webmock/rspec'
+require 'webmock/rspec'
 # require File.expand_path("../../../server", __FILE__)
 require 'sidekiq/testing'
 
 RSpec.describe 'Fetch all data', sidekiq: :fake do
   # Sidekiq::Testing.fake!
   # include Rack::Test::Methods
-  #
-  # def app
-  #   BaseServer
-  # end
 
   it "do" do
     expect { Workers::Projects.perform_async }.to change(Workers::Projects.jobs, :size).by(1)
+
+    response = [
+    {
+        "id": 294,
+        "description": "",
+        "default_branch": "master",
+        "tag_list": [],
+        "ssh_url_to_repo": "git@gitlab.quiqup.com:danhawkins/testing-deploy.git",
+        "http_url_to_repo": "https://gitlab.quiqup.com/danhawkins/testing-deploy.git",
+        "web_url": "https://gitlab.quiqup.com/danhawkins/testing-deploy",
+        "name": "testing-deploy",
+        "name_with_namespace": "Danny Hawkins / testing-deploy",
+        "path": "testing-dseploy",
+        "path_with_namespace": "danhawkins/testing-deploy",
+        "star_count": 0,
+        "forks_count": 0,
+        "created_at": "2017-10-18T12:08:38.570Z",
+        "last_activity_at": "2017-10-18T12:08:38.570Z"
+    }]
+
+    url = "https://gitlab.quiqup.com/api/v4/projects?per_page=2000&simple=true"
+    stub_request(:get, url).to_return(status: 200, body: response, headers: {})
+    #  with headers {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded', 'Private-Token'=>'gF6yksySZWWgrmhdnp43'}
 
     Workers::Projects.drain
   end

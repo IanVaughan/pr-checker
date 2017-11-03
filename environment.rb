@@ -1,9 +1,11 @@
 require 'dotenv'
 Dotenv.load
 
+ENV['RACK_ENV'] = 'development'
+
 require 'pry'
 
-require './config/initializers/mongo'
+require './config/initializers/database'
 
 require './lib/master_config'
 require './lib/config_file_loader'
@@ -23,7 +25,7 @@ require './lib/collectors/gitlab/pipeline'
 require './lib/collectors/gitlab/jobs'
 require './lib/collectors/gitlab/job_trace'
 
-require 'active_model/serializers'
+# require 'active_model/serializers'
 
 require './lib/models/job'
 require './lib/models/pipeline'

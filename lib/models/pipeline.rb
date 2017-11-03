@@ -1,7 +1,4 @@
-module Models
-  class Pipeline
-    include MongoMapper::EmbeddedDocument
-    
-    has_many :jobs, class: Job
-  end
+class Pipeline  < ActiveRecord::Base
+  belongs_to :project
+  has_many :jobs
 end

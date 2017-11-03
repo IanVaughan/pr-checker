@@ -1,3 +1,5 @@
+ENV['RACK_ENV'] ||= 'development'
+
 require "./server"
 require 'sidekiq/web'
 

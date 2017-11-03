@@ -11,10 +11,9 @@ module Workers
     end
 
     def save_details(project_id)
-      project = Models::Project.find(project_id)
-      dets = project_details(project_id)
-      project.update_attributes!(dets)
-      project.save!
+      project = ::Project.find(project_id)
+      info = project_details(project_id)
+      project.update!(info: info)
     end
 
     def project_details(project_id)

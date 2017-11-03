@@ -1,8 +1,5 @@
-module Models
-  class Project
-    include MongoMapper::Document
-
-    has_many :merge_requests, class: MergeRequest
-    has_many :pipelines, class: Pipeline
-  end
+class Project < ActiveRecord::Base
+  validates :id, presence: true
+  has_many :merge_requests
+  has_many :pipelines
 end

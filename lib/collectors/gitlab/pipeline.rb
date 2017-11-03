@@ -1,8 +1,8 @@
 module Gitlab
   class Pipeline < Access
-    def call(project, pipeline)
-      puts "Gitlab::Pipeline project:#{project["path_with_namespace"]}, pipeline:#{['_id']}"
-      pipeline(project["path_with_namespace"], pipeline["_id"])
+    def call(project, pipeline_id)
+      puts "Gitlab::Pipeline project:#{project["path_with_namespace"]}, pipeline_id:#{pipeline_id}"
+      pipeline(project["path_with_namespace"], pipeline_id)
     end
 
     private

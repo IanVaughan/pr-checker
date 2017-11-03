@@ -1,0 +1,50 @@
+id: 138476
+status: success
+stage: test
+name: rspec4
+ref: CW-1183-define-relationship-between-orders-and-waypoints
+tag: false
+coverage:
+created_at: '2017-11-02T19:52:36.729Z'
+started_at: '2017-11-02T19:52:39.410Z'
+finished_at: '2017-11-02T20:04:34.182Z'
+user:
+  id: 58
+  name: Andrey Pospeev
+  username: andrey
+  state: active
+  avatar_url: https://gitlab.quiqup.com/uploads/-/system/user/avatar/58/avatar.png
+  web_url: https://gitlab.quiqup.com/andrey
+  created_at: '2017-07-17T09:49:38.456Z'
+  bio: ''
+  location: ''
+  skype: ''
+  linkedin: ''
+  twitter: ''
+  website_url: ''
+  organization: ''
+commit:
+  id: 754dd191a567bb1c74630eac05d2f9a5f24bab1b
+  short_id: 754dd191
+  title: "[CW-1183] Define relationship between orders and waypoints using STI"
+  created_at: '2017-11-02T23:52:15.000+04:00'
+  parent_ids:
+  - 0c84c6f048d3f5c17943a9283219591f4d38cda0
+  message: "[CW-1183] Define relationship between orders and waypoints using STI\n"
+  author_name: Andrey Pospeev
+  author_email: pospeev@gmail.com
+  authored_date: '2017-11-02T22:31:42.000+04:00'
+  committer_name: Andrey Pospeev
+  committer_email: pospeev@gmail.com
+  committed_date: '2017-11-02T23:52:15.000+04:00'
+runner:
+  id: 71
+  description: runner-02.quiq.ly
+  active: true
+  is_shared: true
+  name: gitlab-ci-multi-runner
+pipeline:
+  id: 35279
+  sha: 754dd191a567bb1c74630eac05d2f9a5f24bab1b
+  ref: CW-1183-define-relationship-between-orders-and-waypoints
+  status: success

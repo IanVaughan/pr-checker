@@ -1,0 +1,95 @@
+---
+:id: 20
+:description: Foobar Ruby API based on Rails and Grape
+:default_branch: master
+:tag_list:
+- api
+:ssh_url_to_repo: git@gitlab.quiqup.com:backend/CoreAPI.git
+:http_url_to_repo: https://gitlab.quiqup.com/backend/CoreAPI.git
+:web_url: https://gitlab.quiqup.com/backend/CoreAPI
+:name: CoreAPI
+:name_with_namespace: backend / CoreAPI
+:path: CoreAPI
+:path_with_namespace: backend/CoreAPI
+:star_count: 11
+:forks_count: 0
+:created_at: '2016-12-17T22:37:54.176Z'
+:last_activity_at: '2017-11-01T17:37:14.167Z'
+:_links:
+  self: http://gitlab.quiqup.com/api/v4/projects/20
+  issues: http://gitlab.quiqup.com/api/v4/projects/20/issues
+  merge_requests: http://gitlab.quiqup.com/api/v4/projects/20/merge_requests
+  repo_branches: http://gitlab.quiqup.com/api/v4/projects/20/repository/branches
+  labels: http://gitlab.quiqup.com/api/v4/projects/20/labels
+  events: http://gitlab.quiqup.com/api/v4/projects/20/events
+  members: http://gitlab.quiqup.com/api/v4/projects/20/members
+:archived: false
+:visibility: internal
+:resolve_outdated_diff_discussions: false
+:container_registry_enabled: true
+:issues_enabled: true
+:merge_requests_enabled: true
+:wiki_enabled: true
+:jobs_enabled: true
+:snippets_enabled: true
+:shared_runners_enabled: true
+:lfs_enabled: true
+:creator_id: 2
+:namespace:
+  id: 4
+  name: backend
+  path: backend
+  kind: group
+  full_path: backend
+  parent_id:
+  members_count_with_descendants: 32
+  shared_runners_minutes_limit:
+  plan:
+:import_status: finished
+:import_error: '{"message":"The remote data could not be fully imported.","errors":[{"type":"pull_request","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/pulls/4432","errors":"Object
+  not found - no match for id (9d02d8710d92d6653ba7930e26771e93295e1201)"},{"type":"remove_branch","name":"pull/4432/dev-4595-split-menu-items-table-part-2"},{"type":"pull_request","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/pulls/4486","errors":"Object
+  not found - no match for id (1d8f85576e4b0800198e72d165e7c02983c02251)"},{"type":"remove_branch","name":"pull/4486/remove-order-number"},{"type":"pull_request","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/pulls/4652","errors":"Object
+  not found - no match for id (f7af232ad7d7f9e14090161a20347a4d4b19a1b7)"},{"type":"remove_branch","name":"pull/4652/DEV-5270-index-jobs-in-elasticsearch"},{"type":"pull_request","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/pulls/4800","errors":"Object
+  not found - no match for id (3928749453cd061e401a1a8115aa5691418323bc)"},{"type":"remove_branch","name":"pull/4800/fraud-send-success"},{"type":"pull_request","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/pulls/4837","errors":"Object
+  not found - no match for id (d50f4892817e4a7ae3a583bcaefdb25ab94f34c5)"},{"type":"remove_branch","name":"pull/4837/messenger-integration"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/15","errors":"Validation
+  failed: Title is too long (maximum is 255 characters)"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/16","errors":"Validation
+  failed: Title is too long (maximum is 255 characters)"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/26","errors":"Validation
+  failed: Title is too long (maximum is 255 characters)"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/1025","errors":"undefined
+  method `update_attribute'' for nil:NilClass"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/1092","errors":"undefined
+  method `update_attribute'' for nil:NilClass"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/1383","errors":"undefined
+  method `update_attribute'' for nil:NilClass"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/3016","errors":"string
+  contains null byte"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/3576","errors":"string
+  contains null byte"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/3625","errors":"string
+  contains null byte"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/3699","errors":"string
+  contains null byte"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/3715","errors":"string
+  contains null byte"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/3748","errors":"string
+  contains null byte"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/3761","errors":"string
+  contains null byte"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/3790","errors":"string
+  contains null byte"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/3874","errors":"string
+  contains null byte"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/3936","errors":"string
+  contains null byte"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/4347","errors":"undefined
+  method `update_attribute'' for nil:NilClass"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/4432","errors":"undefined
+  method `update_attribute'' for nil:NilClass"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/4652","errors":"undefined
+  method `update_attribute'' for nil:NilClass"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/4800","errors":"undefined
+  method `update_attribute'' for nil:NilClass"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/4837","errors":"undefined
+  method `update_attribute'' for nil:NilClass"}]}'
+:avatar_url:
+:open_issues_count: 1
+:runners_token: 8WkRR8JVjDCFwCgkzUmi
+:public_jobs: true
+:ci_config_path: ''
+:shared_with_groups:
+- group_id: 29
+  group_name: api-core
+  group_access_level: 30
+:only_allow_merge_if_pipeline_succeeds: true
+:repository_storage: default
+:request_access_enabled: true
+:only_allow_merge_if_all_discussions_are_resolved: true
+:printing_merge_request_link_enabled: true
+:approvals_before_merge: 2
+:permissions:
+  project_access:
+  group_access:
+    access_level: 40
+    notification_level: 3

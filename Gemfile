@@ -8,14 +8,13 @@ gem 'octokit'
 gem 'dotenv'
 # gem 'activesupport'
 
+gem 'rake'
+
 gem 'gitlab'
 gem 'sidekiq'
 gem 'rack'
-gem 'redis-namespace'
-gem 'mongo_mapper'
-gem 'bson_ext'
-gem 'activemodel-serializers-xml'
-gem 'active_model_serializers'
+gem 'activerecord'
+gem 'pg'
 
 group :test, :development do
   gem 'pry'
@@ -25,4 +24,5 @@ group :test do
   gem 'rack-test'
   gem 'rspec'
   gem 'webmock'
+  gem 'database_cleaner'
 end

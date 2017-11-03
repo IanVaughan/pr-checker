@@ -17,13 +17,12 @@ module Workers
     private
 
     def create_or_update(raw_project)
-      project = Models::Project.find(raw_project[:id])
+      project = ::Project.find_by(id: raw_project[:id])
 
       if project.present?
         project.update_attributes!(raw_project)
       else
-        project = Models::Project.new(raw_project)
-        project.save!
+        ::Project.create!(raw_project)
       end
 
       project

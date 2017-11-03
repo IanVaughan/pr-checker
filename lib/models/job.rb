@@ -1,5 +1,3 @@
-module Models
-  class Job
-    include MongoMapper::EmbeddedDocument
-  end
+class Job < ActiveRecord::Base
+  belongs_to :pipeline
 end

@@ -1,6 +1,3 @@
-module Models
-  class MergeRequest
-    include MongoMapper::EmbeddedDocument
-
-  end
+class MergeRequest < ActiveRecord::Base
+  belongs_to :project
 end
