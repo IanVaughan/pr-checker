@@ -15,14 +15,18 @@ namespace :db do
 
   desc "Create the database"
   task :create do
+    puts "Create::Connecting..."
     ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || db_config_admin)
+    puts "Create::Creating..."
     ActiveRecord::Base.connection.create_database(db_config["database"])
     puts "Database created."
   end
 
   desc "Migrate the database"
   task :migrate do
+    puts "Migrate::Connecting..."
     ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || db_config)
+    puts "Migrate::Migrating..."
     ActiveRecord::Migrator.migrate("db/migrate/")
     Rake::Task["db:schema"].invoke
     puts "Database migrated."
@@ -30,6 +34,7 @@ namespace :db do
 
   desc "Drop the database"
   task :drop do
+    puts "Drop::Connecting..."
     ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || db_config_admin)
     ActiveRecord::Base.connection.drop_database(db_config["database"])
     puts "Database deleted."

@@ -6,7 +6,6 @@ gem 'sinatra'
 gem 'json'
 gem 'octokit'
 gem 'dotenv'
-# gem 'activesupport'
 
 gem 'rake'
 

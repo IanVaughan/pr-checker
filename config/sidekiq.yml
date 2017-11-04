@@ -1,6 +1,6 @@
 ---
 :verbose: true
-:concurrency: 25
+:concurrency: 5
 
 :timeout: 30
 

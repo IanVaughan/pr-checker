@@ -3,7 +3,7 @@ require 'sidekiq/testing'
 
 RSpec.describe Workers::Pipelines do
   let(:instance) { described_class.new }
-  let(:perform) { instance.perform(project_id, page: page) }
+  let(:perform) { instance.perform(project_id, page) }
   let(:project_id) { project["id"] }
 
   let(:project) { load_fixture_yml('gitlab/formatted/project2.yml') }

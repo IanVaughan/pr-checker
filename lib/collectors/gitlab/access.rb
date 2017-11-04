@@ -1,5 +1,5 @@
 require 'gitlab'
-require 'json'
+# require 'json'
 
 module Gitlab
   class Access

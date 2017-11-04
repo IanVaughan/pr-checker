@@ -5,7 +5,10 @@ module Workers
     def perform(project_id, mr_id)
       logger.info "Workers::MergeRequest project_id:#{project_id}, mr_id:#{mr_id}"
 
-      mr = ::Project.find(project_id).merge_requests.find(mr_id)
+      project = ::Project.find(project_id)
+      mr = project.merge_requests.find(mr_id)
+      info = Gitlab::MergeRequest.new.call(project, mr[:iid])
+      mr.update!(info: info)
     end
   end
 end

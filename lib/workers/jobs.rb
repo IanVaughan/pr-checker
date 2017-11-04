@@ -14,7 +14,7 @@ module Workers
       jobs.each do |job|
         logger.info "Workers::Jobs project_id:#{project_id}, pipeline_id:#{pipeline_id}, job_id:#{job[:id]}"
 
-        pipeline.jobs.create!(id: job[:id], info: job)
+        pipeline.jobs.find_or_create_by!(id: job[:id]) { |j| j.update info: job }
 
         Job.perform_async(project_id, pipeline_id, job[:id])
         JobTrace.perform_async(project_id, job[:id])

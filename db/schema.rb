@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20171101211101) do
   create_table "jobs", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "pipeline_id"
-    t.hstore "info"
+    t.json "info", default: {}
     t.string "trace"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20171101211101) do
   create_table "merge_requests", id: :serial, force: :cascade do |t|
     t.string "title"
     t.integer "project_id"
-    t.hstore "info"
+    t.json "info", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_merge_requests_on_project_id"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20171101211101) do
 
   create_table "pipelines", id: :serial, force: :cascade do |t|
     t.integer "project_id"
-    t.hstore "info"
+    t.json "info"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_pipelines_on_project_id"
@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 20171101211101) do
     t.integer "star_count"
     t.integer "forks_count"
     t.datetime "last_activity_at"
-    t.hstore "info"
+    t.json "info", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

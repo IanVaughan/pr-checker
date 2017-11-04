@@ -18,18 +18,55 @@ RSpec.describe Workers::Jobs do
   let(:job_id) { job["id"] }
 
   describe '#perform', sidekiq: :fake do
-    it "saves" do
-      expect_any_instance_of(Gitlab::Jobs).to receive(:call).and_return([job])
+    context "with new data" do
+      it "saves" do
+        expect_any_instance_of(Gitlab::Jobs).to receive(:call).and_return([job])
 
-      perform
+        perform
 
-      expect(Workers::Job.jobs.size).to eq(1)
-      expect(Workers::Job.jobs.first["args"]).to eq [project_id, pipeline_id, job_id]
+        expect(Workers::Job.jobs.size).to eq(1)
+        expect(Workers::Job.jobs.first["args"]).to eq [project_id, pipeline_id, job_id]
 
-      expect(Workers::JobTrace.jobs.size).to eq(1)
-      expect(Workers::JobTrace.jobs.first["args"]).to eq [project_id, job_id]
+        expect(Workers::JobTrace.jobs.size).to eq(1)
+        expect(Workers::JobTrace.jobs.first["args"]).to eq [project_id, job_id]
 
-      # expect(saved_protect.reload.pipelines.last.info).to eq merge_request
+        expect(saved_protect.reload.pipelines.last.jobs.last.info).to eq job
+      end
+    end
+
+    context "with existing same data" do
+      before { saved_pipeline.jobs.create! id: job[:id], info: job }
+
+      it "saves" do
+        expect_any_instance_of(Gitlab::Jobs).to receive(:call).and_return([job])
+
+        perform
+
+        expect(Workers::Job.jobs.size).to eq(1)
+        expect(Workers::Job.jobs.first["args"]).to eq [project_id, pipeline_id, job_id]
+
+        expect(Workers::JobTrace.jobs.size).to eq(1)
+        expect(Workers::JobTrace.jobs.first["args"]).to eq [project_id, job_id]
+
+        expect(saved_protect.reload.pipelines.last.jobs.last.info).to eq job
+      end
+    end
+
+    context "with existing changed data" do
+      before { saved_pipeline.jobs.create! id: job[:id], info: job }
+
+      it "saves" do
+        expect_any_instance_of(Gitlab::Jobs).to receive(:call).and_return([job.merge("status"=>"failed")])
+        perform
+
+        expect(Workers::Job.jobs.size).to eq(1)
+        expect(Workers::Job.jobs.first["args"]).to eq [project_id, pipeline_id, job_id]
+
+        expect(Workers::JobTrace.jobs.size).to eq(1)
+        expect(Workers::JobTrace.jobs.first["args"]).to eq [project_id, job_id]
+
+        expect(saved_protect.reload.pipelines.last.jobs.last.info).to eq job
+      end
     end
   end
 end

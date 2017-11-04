@@ -10,9 +10,8 @@ module Workers
       # pipeline = project.pipelines.find(pipeline_id)
       # job = pipeline.jobs.find(job_id)
       job = ::Job.find(job_id)
+      # job.update!(trace: trace)
 
-      job.update!(trace: trace)
-      
       # TODO: check trace
     end
   end

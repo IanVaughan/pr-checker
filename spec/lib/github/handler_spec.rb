@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'json'
+# require 'json'
 
 RSpec.describe GitHub::Handler do
   let(:instance) { described_class.new(config, client) }

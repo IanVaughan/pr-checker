@@ -2,7 +2,7 @@ module Workers
   class Pipelines
     include Sidekiq::Worker
 
-    def perform(project_id, page: nil)
+    def perform(project_id, page = nil)
       project = ::Project.find(project_id)
 
       page = 1 if page.nil?
@@ -13,7 +13,9 @@ module Workers
       pipelines.each do |pipeline|
         logger.info "Workers::Pipeline project_id:#{project_id}, pipeline_id:#{pipeline[:id]}"
 
-        project.pipelines.create!(id: pipeline[:id], info: pipeline)
+        project.pipelines.find_or_create_by!(id: pipeline[:id]) do |pl|
+          pl.update!(info: pipeline)
+        end
 
         Pipeline.perform_async(project_id, pipeline[:id])
       end

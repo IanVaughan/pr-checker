@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'json'
+# require 'json'
 
 RSpec.describe IssueAssigner do
   let(:instance) { described_class.new(client) }
