@@ -1,7 +1,6 @@
 module Gitlab
   class Project < Access
     def call(id)
-      puts "Gitlab::Project Collecting..."
       response_to_hash Gitlab.project(id)
     end
   end

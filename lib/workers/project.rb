@@ -8,6 +8,7 @@ module Workers
 
       MergeRequests.perform_async(project_id)
       Pipelines.perform_async(project_id)
+      Branches.perform_async(project_id)
     end
 
     def save_details(project_id)

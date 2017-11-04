@@ -16,10 +16,33 @@ ActiveRecord::Schema.define(version: 20171101211101) do
   enable_extension "plpgsql"
   enable_extension "hstore"
 
+  create_table "branches", id: :serial, force: :cascade do |t|
+    t.string "name", null: false
+    t.json "commit"
+    t.boolean "merged"
+    t.boolean "protected"
+    t.boolean "developers_can_push"
+    t.boolean "developers_can_merge"
+    t.integer "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_branches_on_project_id"
+  end
+
   create_table "jobs", id: :serial, force: :cascade do |t|
-    t.string "name"
+    t.string "status", null: false
+    t.string "stage", null: false
+    t.string "name", null: false
+    t.string "ref", null: false
+    t.string "tag", null: false
+    t.string "coverage"
+    t.datetime "started_at", null: false
+    t.datetime "finished_at", null: false
+    t.json "user", default: {}
+    t.json "commit", default: {}
+    t.json "runner", default: {}
+    t.json "pipeline", default: {}
     t.integer "pipeline_id"
-    t.json "info", default: {}
     t.string "trace"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -27,7 +50,11 @@ ActiveRecord::Schema.define(version: 20171101211101) do
   end
 
   create_table "merge_requests", id: :serial, force: :cascade do |t|
-    t.string "title"
+    t.integer "iid", null: false
+    t.string "title", null: false
+    t.string "description", null: false
+    t.string "state", null: false
+    t.string "web_url", null: false
     t.integer "project_id"
     t.json "info", default: {}
     t.datetime "created_at", null: false
@@ -36,8 +63,11 @@ ActiveRecord::Schema.define(version: 20171101211101) do
   end
 
   create_table "pipelines", id: :serial, force: :cascade do |t|
+    t.string "sha", null: false
+    t.string "ref", null: false
+    t.string "status", null: false
+    t.json "info", default: {}
     t.integer "project_id"
-    t.json "info"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_pipelines_on_project_id"
@@ -50,10 +80,10 @@ ActiveRecord::Schema.define(version: 20171101211101) do
     t.string "ssh_url_to_repo"
     t.string "http_url_to_repo"
     t.string "web_url"
-    t.string "name"
-    t.string "name_with_namespace"
-    t.string "path"
-    t.string "path_with_namespace"
+    t.string "name", null: false
+    t.string "name_with_namespace", null: false
+    t.string "path", null: false
+    t.string "path_with_namespace", null: false
     t.integer "star_count"
     t.integer "forks_count"
     t.datetime "last_activity_at"

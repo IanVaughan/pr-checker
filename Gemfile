@@ -17,6 +17,8 @@ gem 'pg'
 
 group :test, :development do
   gem 'pry'
+  gem 'guard'
+  gem 'guard-rspec', require: false
 end
 
 group :test do

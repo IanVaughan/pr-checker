@@ -1,0 +1,22 @@
+---
+:name: use-name-not-constant
+:commit:
+  id: e927f3d5f358ad80ad76ad12779950871c9a55aa
+  short_id: e927f3d5
+  title: removed from rails admin
+  created_at: '2017-06-22T11:46:24.000+01:00'
+  parent_ids:
+  - 312836c6e43ecf6e0111409fb5c0168e99394f26
+  message: 'removed from rails admin
+
+'
+  author_name: Danny Hawkins
+  author_email: danny@quiqup.com
+  authored_date: '2017-06-22T11:46:24.000+01:00'
+  committer_name: Danny Hawkins
+  committer_email: danny@quiqup.com
+  committed_date: '2017-06-22T11:46:24.000+01:00'
+:merged: false
+:protected: false
+:developers_can_push: false
+:developers_can_merge: false

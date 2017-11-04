@@ -4,7 +4,7 @@ require "pry"
 require 'rack/test'
 require 'database_cleaner'
 
-# require 'gitlab/'
+require "./spec/support/factories"
 
 ENV['RACK_ENV'] = 'test'
 

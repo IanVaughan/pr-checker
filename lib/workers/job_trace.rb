@@ -12,6 +12,11 @@ module Workers
       job = ::Job.find(job_id)
       # job.update!(trace: trace)
 
+      # data = Gitlab::JobTrace.new.call(20, id);
+      # compressed_data = Zlib::Deflate.deflate(data);
+      # data.size # => 35246
+      # compressed_data.size # => 9476
+
       # TODO: check trace
     end
   end

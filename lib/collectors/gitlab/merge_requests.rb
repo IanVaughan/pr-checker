@@ -1,7 +1,6 @@
 module Gitlab
   class MergeRequests < Access
     def call(project, page, view: 'simple', state: nil)
-      puts "Gitlab::MergeRequests project:#{project["path_with_namespace"]}, page:#{page}"
       response_to_array(merge_requests(project["path_with_namespace"], page, view, state))
     end
 

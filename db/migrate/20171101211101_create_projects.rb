@@ -9,10 +9,10 @@ class CreateProjects < ActiveRecord::Migration[5.0]
       t.string :ssh_url_to_repo
       t.string :http_url_to_repo
       t.string :web_url
-      t.string :name
-      t.string :name_with_namespace
-      t.string :path
-      t.string :path_with_namespace
+      t.string :name, null: false
+      t.string :name_with_namespace, null: false
+      t.string :path, null: false
+      t.string :path_with_namespace, null: false
       t.integer :star_count
       t.integer :forks_count
       t.datetime :last_activity_at
@@ -20,23 +20,53 @@ class CreateProjects < ActiveRecord::Migration[5.0]
       t.timestamps
     end
 
-    create_table :pipelines, force: true do |t|
+    create_table :branches, force: true do |t|
+      t.string :name, null: false
+      t.json :commit
+      t.boolean :merged
+      t.boolean :protected
+      t.boolean :developers_can_push
+      t.boolean :developers_can_merge
       t.references :project
-      t.json :info
+      t.timestamps
+    end
+
+    create_table :pipelines, force: true do |t|
+      t.string :sha, null: false
+      t.string :ref, null: false
+      t.string :status, null: false
+      t.json :info, default: {}
+      t.references :project
       t.timestamps
     end
 
     create_table :merge_requests, force: true do |t|
-      t.string :title
+      t.integer :iid, null: false
+      t.string :title, null: false
+      t.string :description, null: false
+      t.string :state, null: false
+      t.string :web_url, null: false
       t.references :project
       t.json :info, default: {}
       t.timestamps
     end
 
     create_table :jobs, force: true do |t|
-      t.string :name
+      t.string :status, null: false
+      t.string :stage, null: false
+      t.string :name, null: false
+      t.string :ref, null: false
+      t.string :tag, null: false
+      t.string :coverage
+      t.datetime :started_at, null: false
+      t.datetime :finished_at, null: false
+
+      t.json :user, default: {}
+      t.json :commit, default: {}
+      t.json :runner, default: {}
+      t.json :pipeline, default: {}
+
       t.references :pipeline
-      t.json :info, default: {}
       t.string :trace
       t.timestamps
     end

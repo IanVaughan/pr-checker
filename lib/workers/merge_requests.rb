@@ -13,8 +13,14 @@ module Workers
       merge_requests.each do |merge_request|
         logger.info "Workers::MergeRequests project_id:#{project_id}, merge_request:#{merge_request[:id]}"
 
-        project.merge_requests.find_or_create_by!(id: merge_request[:id]) do |mr|
-          mr.update! info: merge_request
+        project.merge_requests.find_or_create_by(id: merge_request[:id]).tap do |mr|
+          mr.update!(
+            iid: merge_request[:iid],
+            title: merge_request[:title],
+            description: merge_request[:description],
+            state: merge_request[:state],
+            web_url: merge_request[:web_url]
+          )
         end
 
         MergeRequest.perform_async(project_id, merge_request[:id])

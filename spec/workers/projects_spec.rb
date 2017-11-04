@@ -24,7 +24,7 @@ RSpec.describe Workers::Projects do
     end
 
     context "with existing seen projects", sidekiq: :fake do
-      let(:project1) { load_fixture_yml('gitlab/formatted/project1.yml') }
+      let(:project1) { project_basic_fixture }
 
       before { Project.create!(project1.merge(description: "old description")) }
 

@@ -7,7 +7,7 @@ module Workers
 
       project = ::Project.find(project_id)
       mr = project.merge_requests.find(mr_id)
-      info = Gitlab::MergeRequest.new.call(project, mr[:iid])
+      info = Gitlab::MergeRequest.new.call(project, mr.iid)
       mr.update!(info: info)
     end
   end

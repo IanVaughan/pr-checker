@@ -1,6 +1,6 @@
 ---
 :id: 20
-:description: Foobar Ruby API based on Rails and Grape
+:description: Quiqup Ruby API based on Rails and Grape
 :default_branch: master
 :tag_list:
 - api
@@ -14,7 +14,7 @@
 :star_count: 11
 :forks_count: 0
 :created_at: '2016-12-17T22:37:54.176Z'
-:last_activity_at: '2017-11-01T17:37:14.167Z'
+:last_activity_at: '2017-11-04T16:22:44.111Z'
 :_links:
   self: http://gitlab.quiqup.com/api/v4/projects/20
   issues: http://gitlab.quiqup.com/api/v4/projects/20/issues
@@ -41,10 +41,10 @@
   path: backend
   kind: group
   full_path: backend
-  parent_id:
+  parent_id: 
   members_count_with_descendants: 32
-  shared_runners_minutes_limit:
-  plan:
+  shared_runners_minutes_limit: 
+  plan: 
 :import_status: finished
 :import_error: '{"message":"The remote data could not be fully imported.","errors":[{"type":"pull_request","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/pulls/4432","errors":"Object
   not found - no match for id (9d02d8710d92d6653ba7930e26771e93295e1201)"},{"type":"remove_branch","name":"pull/4432/dev-4595-split-menu-items-table-part-2"},{"type":"pull_request","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/pulls/4486","errors":"Object
@@ -73,7 +73,7 @@
   method `update_attribute'' for nil:NilClass"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/4800","errors":"undefined
   method `update_attribute'' for nil:NilClass"},{"type":"issue","url":"https://api.github.com/repos/QuiqUpLTD/QuiqupAPI/issues/4837","errors":"undefined
   method `update_attribute'' for nil:NilClass"}]}'
-:avatar_url:
+:avatar_url: 
 :open_issues_count: 1
 :runners_token: 8WkRR8JVjDCFwCgkzUmi
 :public_jobs: true
@@ -89,7 +89,7 @@
 :printing_merge_request_link_enabled: true
 :approvals_before_merge: 2
 :permissions:
-  project_access:
+  project_access: 
   group_access:
     access_level: 40
     notification_level: 3

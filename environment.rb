@@ -1,8 +1,9 @@
 require 'dotenv'
 Dotenv.load
 
-ENV['RACK_ENV'] = 'development'
+ENV['RACK_ENV'] ||= 'development'
 
+require 'yaml'
 require 'pry'
 
 require './config/initializers/database'
@@ -19,6 +20,7 @@ require './lib/collectors/github/handler'
 require './lib/collectors/gitlab/access'
 require './lib/collectors/gitlab/project'
 require './lib/collectors/gitlab/projects'
+require './lib/collectors/gitlab/branches'
 require './lib/collectors/gitlab/merge_requests'
 require './lib/collectors/gitlab/merge_request'
 require './lib/collectors/gitlab/pipelines'
@@ -31,11 +33,14 @@ require './lib/collectors/gitlab/job_trace'
 require './lib/models/job'
 require './lib/models/pipeline'
 require './lib/models/merge_request'
+require './lib/models/branch'
 require './lib/models/project'
 
 require './config/initializers/sidekiq'
 
 require './lib/workers/projects'
+require './lib/workers/branches'
+require './lib/workers/branch'
 require './lib/workers/project'
 require './lib/workers/pipelines'
 require './lib/workers/pipeline'

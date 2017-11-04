@@ -1,5 +1,6 @@
 class Pipeline  < ActiveRecord::Base
-  validates :id, presence: true, uniqueness: true
+  validates :id, :sha, :ref, presence: true, uniqueness: true
+  validates :status, presence: true
   belongs_to :project
   has_many :jobs
 end
