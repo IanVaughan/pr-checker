@@ -41,6 +41,9 @@ Docker compose
 
 * `docker-compose up`
 * `docker-compose exec sidekiq pry -r ./environment.rb`
+* `docker-compose exec web rake db:reset`
+docker-compose exec sidekiq pry -r ./environment.rb
+
 
 Kick off refresh
 

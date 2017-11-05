@@ -11,26 +11,18 @@ namespace :db do
   db_config       = YAML::load(File.open('config/database.yml'))[env]
   # Cannot create a db within a connection to a different db,
   # of which the main hash has a :database key
-  db_config_admin = ENV['CREATE_DATABASE_URL'] || db_config.merge(
-    database: 'postgres'
-    #, schema_search_path: 'public', host:
-  )
+  db_config_admin = ENV['CREATE_DATABASE_URL'] || db_config.merge(database: 'postgres')
 
   desc "Create the database"
   task :create do
-    puts "Create::Connecting... : #{db_config_admin}"
     ActiveRecord::Base.establish_connection(db_config_admin)
-    # ActiveRecord::Base.establish_connection(db_config)
-    puts "Create::Creating... : #{db_config["database"]}"
     ActiveRecord::Base.connection.create_database(db_config["database"])
     puts "Database created."
   end
 
   desc "Migrate the database"
   task :migrate do
-    puts "Migrate::Connecting..."
     ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || db_config)
-    puts "Migrate::Migrating..."
     ActiveRecord::Migrator.migrate("db/migrate/")
     Rake::Task["db:schema"].invoke
     puts "Database migrated."
@@ -38,7 +30,6 @@ namespace :db do
 
   desc "Drop the database"
   task :drop do
-    puts "Drop::Connecting..."
     ActiveRecord::Base.establish_connection(db_config_admin)
     ActiveRecord::Base.connection.drop_database(db_config["database"])
     puts "Database deleted."

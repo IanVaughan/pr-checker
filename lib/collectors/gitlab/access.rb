@@ -1,18 +1,21 @@
 require 'gitlab'
-# require 'json'
+
+GITLAB_API_ENDPOINT = ENV['GITLAB_API_ENDPOINT']
+GITLAB_API_PRIVATE_TOKEN = ENV['GITLAB_API_PRIVATE_TOKEN']
 
 module Gitlab
   class Access
     def initialize
       Gitlab.configure do |config|
-        config.endpoint = ENV['GITLAB_API_ENDPOINT']
-        config.private_token = ENV['GITLAB_API_PRIVATE_TOKEN']
+        config.endpoint = GITLAB_API_ENDPOINT
+        config.private_token = GITLAB_API_PRIVATE_TOKEN
       end
     end
 
     protected
 
     def response_to_array(response)
+      return [] if response.empty?
       response.auto_paginate.map { |item| response_to_hash(item) }
     end
 

@@ -14,6 +14,7 @@ gem 'sidekiq'
 gem 'rack'
 gem 'activerecord'
 gem 'pg'
+# gem 'dogstatsd-ruby'
 
 group :test, :development do
   gem 'pry'

@@ -2,26 +2,40 @@ require './environment'
 require "sinatra/base"
 
 class BaseServer < Sinatra::Application
+  LOGGER = Logger.new("log/server_#{ENV['RACK_ENV']}.log")
+
+  def response_json
+    request.body.rewind
+    JSON.parse(request.body.read, symbolize_names: true)
+  end
+
   get '/ping' do
+    LOGGER.info "ping"
     'pong'
   end
 
   post '/github/payload' do
     status 200
-    data = JSON.parse(request.body.read, symbolize_names: true)
-    body GitHub::Handler.new.call(data)
+    body GitHub::Handler.new.call(response_json)
   end
 
-  GITLAB_POST_HOOK = "/gitlab/hooks"
-  post '/gitlab/hooks' do
+  post '/gitlab/hooks/system' do
     status 200
-    data = JSON.parse(request.body.read, symbolize_names: true)
-    puts "GitLab system hook:#{data}"
+    data = response_json
+    LOGGER.info "GitLab system hook:#{data}"
+    # body GitHub::Handler.new.call(data)
+  end
+
+  post '/gitlab/hooks/project' do
+    status 200
+    data = response_json
+    LOGGER.info "GitLab project hook:#{data}"
     # body GitHub::Handler.new.call(data)
   end
 
   post '/gitlab/add_hook' do
-    gitlab_post_server = "https://063ebb9a.ngrok.io"
+    status 200
+    body ""
   end
 
   post '/gitlab/refresh' do

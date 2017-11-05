@@ -1,0 +1,17 @@
+---
+:id: 96596
+:body: Note body
+:attachment:
+:author:
+  id: 4
+  name: Ian Vaughan
+  username: ian
+  state: active
+  avatar_url: https://secure.gravatar.com/avatar/d8d54f3d1c64fbc094b1c7e97eb031aa?s=80&d=identicon
+  web_url: https://gitlab.quiqup.com/ian
+:created_at: '2017-11-03T22:12:38.234Z'
+:updated_at: '2017-11-03T22:12:38.234Z'
+:system: false
+:noteable_id: 14240
+:noteable_type: MergeRequest
+:noteable_iid: 6236

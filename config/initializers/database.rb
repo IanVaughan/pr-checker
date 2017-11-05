@@ -1,6 +1,4 @@
 require 'active_record'
-# require 'pg' # postgresql
-# require 'active_record'
 require 'logger'
 
 # ActiveRecord::Base.logger = Logger.new("log/active_record_#{ENV['RACK_ENV']}.log")

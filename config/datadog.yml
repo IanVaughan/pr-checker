@@ -1,0 +1,19 @@
+# hostname is set to `docker info | grep Name` by default
+# see: https://github.com/DataDog/docker-dd-agent#hostname
+# (we'll beed to configure a LB so we don't need a hostname in here)
+
+# Classic ENV style :
+# DATADOG_HOST=notts1
+# DATADOG_PORT=8125
+# DATADOG_ENV=staging
+# (env is used in tags)
+#
+# Or config file style :
+
+default:
+  host: localhost
+  port: 8125
+  env: staging
+
+production:
+  env: production

@@ -278,3 +278,20 @@ def create_note(branch = create_branch)
     merge_request: gitlab_note[:merge_request]
   )
 end
+
+def system_hook_fixture
+  load_fixture_yml('gitlab/formatted/system_hook.yml')
+end
+
+def create_system_hook
+  gitlab_system_hook_fixture = system_hook_fixture
+
+  SystemHook.create!(
+    id: gitlab_system_hook_fixture[:id],
+    url: gitlab_system_hook_fixture[:url],
+    push_events: gitlab_system_hook_fixture[:push_events],
+    tag_push_events: gitlab_system_hook_fixture[:tag_push_events],
+    repository_update_events: gitlab_system_hook_fixture[:repository_update_events],
+    enable_ssl_verification: gitlab_system_hook_fixture[:enable_ssl_verification]
+  )
+end

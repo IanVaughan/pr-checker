@@ -2,22 +2,17 @@ version: '3'
 services:
   database:
     image: postgres:latest
-    # ports:
-    #   - '5432:5432'
-    # volumes:
-    #   - ./data:/data/db
 
   redis:
     image: redis:latest
 
   web:
-    # tty: true # Enables debugging capabilities when attached to this container.
     build: .
     env_file:
       - .env
     environment:
-      CREATE_DATABASE_URL: postgres://database/postgres?pool=5
-      DATABASE_URL: postgres://database/pr_checker_dev?pool=5
+      CREATE_DATABASE_URL: postgres://postgres@database/postgres?pool=20
+      DATABASE_URL: postgres://postgres@database/pr_checker_dev?pool=20
       SIDEKIQ_REDIS_URL: redis://redis:6379/
     ports:
       - '9292:80'
@@ -26,16 +21,13 @@ services:
       - redis
 
   sidekiq:
-    # tty: true # Enables debugging capabilities when attached to this container.
     build: .
     env_file:
       - .env
-    volumes:
-      - .:/app
     environment:
-      DATABASE_URL: postgres://database/pr_checker_dev?pool=5
+      DATABASE_URL: postgres://postgres@database/pr_checker_dev?pool=20
       SIDEKIQ_REDIS_URL: redis://redis:6379/
-    command: bundle exec sidekiq -r ./environment.rb -L STDOUT
+    command: bundle exec sidekiq -r ./environment.rb
     restart: always
     depends_on:
       - database

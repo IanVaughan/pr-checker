@@ -44,6 +44,7 @@ end
 
 RSpec.configure do |config|
   config.before(:each) do
+  # config.before(:each, sidekiq: true) do
     Sidekiq::Worker.clear_all
   end
 end

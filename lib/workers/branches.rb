@@ -2,14 +2,12 @@ module Workers
   class Branches
     include Sidekiq::Worker
 
-    def perform(project_id, page = nil)
+    def perform(project_id)
       logger.info "Workers::Branches project_id:#{project_id}"
 
       project = ::Project.find(project_id)
-      page = 1 if page.nil?
-      branches = Gitlab::Branches.new.call(project_id, page)
-      logger.info "Workers::Branches project_id:#{project_id}, count:#{branches.count}, page:#{page}"
-      Branches.perform_async(project_id, page + 1) if branches.any?
+      branches = Gitlab::Branches.new.call(project_id)
+      logger.info "Workers::Branches project_id:#{project_id}, count:#{branches.count}"
 
       branches.each do |branch|
         logger.info "Workers::Branches project_id:#{project_id}, branch_id:#{branch[:name]}"

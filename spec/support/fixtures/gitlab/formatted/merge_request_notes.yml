@@ -1,0 +1,61 @@
+---
+- :id: 96577
+  :body: |-
+    added 11 commits
+
+    * 80afb474...2be3f526 - 10 commits from branch `master`
+    * 4b42c5a1 - Get a text output from CodeClimate as well
+
+    [Compare with previous version](https://gitlab.quiqup.com/backend/CoreAPI/merge_requests/6231/diffs?diff_id=32566&start_sha=80afb4745f46a2bc686c385a49efd364aba7d080)
+  :attachment: 
+  :author:
+    id: 4
+    name: Ian Vaughan
+    username: ian
+    state: active
+    avatar_url: https://secure.gravatar.com/avatar/d8d54f3d1c64fbc094b1c7e97eb031aa?s=80&d=identicon
+    web_url: https://gitlab.quiqup.com/ian
+  :created_at: '2017-11-03T18:10:48.876Z'
+  :updated_at: '2017-11-03T18:10:48.876Z'
+  :system: true
+  :noteable_id: 14226
+  :noteable_type: MergeRequest
+  :noteable_iid: 6231
+- :id: 96490
+  :body: Artefact can be seen in the codeclimate pipeline https://gitlab.quiqup.com/backend/CoreAPI/-/jobs/139226/artifacts/file/codeclimate.txt
+  :attachment: 
+  :author:
+    id: 4
+    name: Ian Vaughan
+    username: ian
+    state: active
+    avatar_url: https://secure.gravatar.com/avatar/d8d54f3d1c64fbc094b1c7e97eb031aa?s=80&d=identicon
+    web_url: https://gitlab.quiqup.com/ian
+  :created_at: '2017-11-03T15:07:18.344Z'
+  :updated_at: '2017-11-03T15:07:18.344Z'
+  :system: false
+  :noteable_id: 14226
+  :noteable_type: MergeRequest
+  :noteable_iid: 6231
+- :id: 96479
+  :body: |-
+    added 5 commits
+
+    * b5f52151...a374a814 - 4 commits from branch `master`
+    * 80afb474 - Get a text output from CodeClimate as well
+
+    [Compare with previous version](https://gitlab.quiqup.com/backend/CoreAPI/merge_requests/6231/diffs?diff_id=32536&start_sha=b5f52151a7e30f32a1fd3287eebf8c8564a3061d)
+  :attachment: 
+  :author:
+    id: 4
+    name: Ian Vaughan
+    username: ian
+    state: active
+    avatar_url: https://secure.gravatar.com/avatar/d8d54f3d1c64fbc094b1c7e97eb031aa?s=80&d=identicon
+    web_url: https://gitlab.quiqup.com/ian
+  :created_at: '2017-11-03T14:47:08.152Z'
+  :updated_at: '2017-11-03T14:47:08.152Z'
+  :system: true
+  :noteable_id: 14226
+  :noteable_type: MergeRequest
+  :noteable_iid: 6231

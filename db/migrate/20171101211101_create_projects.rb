@@ -51,6 +51,18 @@ class CreateProjects < ActiveRecord::Migration[5.0]
       t.timestamps
     end
 
+    create_table :notes, force: true do |t|
+      t.string :body
+      t.string :attachment
+      t.json :author, default: {}
+      t.boolean :system
+      t.integer :noteable_id
+      t.string :noteable_type
+      t.integer :noteable_iid
+      t.references :merge_request
+      t.timestamps
+    end
+
     create_table :jobs, force: true do |t|
       t.string :status, null: false
       t.string :stage, null: false

@@ -2,13 +2,11 @@ module Workers
   class MergeRequests
     include Sidekiq::Worker
 
-    def perform(project_id, page = nil)
+    def perform(project_id)
       project = ::Project.find(project_id)
 
-      page = 1 if page.nil?
-      merge_requests = Gitlab::MergeRequests.new.call(project, page)
-      logger.info "Workers::MergeRequests project_id:#{project_id}, count:#{merge_requests.count}, page:#{page}"
-      MergeRequests.perform_async(project_id, page) if merge_requests.any?
+      merge_requests = Gitlab::MergeRequests.new.call(project)
+      logger.info "Workers::MergeRequests project_id:#{project_id}, count:#{merge_requests.count}"
 
       merge_requests.each do |merge_request|
         logger.info "Workers::MergeRequests project_id:#{project_id}, merge_request:#{merge_request[:id]}"

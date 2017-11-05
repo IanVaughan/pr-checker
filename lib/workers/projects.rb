@@ -5,10 +5,10 @@ module Workers
     def perform
       logger.info 'Workers::Projects...'
       projects = Gitlab::Projects.new.call
-      logger.info "Workers::Projects count:#{projects.count}"
+      logger.info "*** Workers::Projects count:#{projects.count}"
 
       projects.each do |raw_project|
-        logger.info "Workers::Project project_id:#{raw_project[:id]}"
+        logger.info "*** Workers::Projects project_id:#{raw_project[:id]}"
         create_or_update(raw_project)
         Project.perform_async(raw_project[:id])
       end

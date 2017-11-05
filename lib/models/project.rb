@@ -3,4 +3,5 @@ class Project < ActiveRecord::Base
   has_many :merge_requests
   has_many :pipelines
   has_many :branches
+  has_many :project_hooks
 end

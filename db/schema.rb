@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171101211101) do
+ActiveRecord::Schema.define(version: 20171105172838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,20 @@ ActiveRecord::Schema.define(version: 20171101211101) do
     t.index ["project_id"], name: "index_merge_requests_on_project_id"
   end
 
+  create_table "notes", id: :serial, force: :cascade do |t|
+    t.string "body"
+    t.string "attachment"
+    t.json "author", default: {}
+    t.boolean "system"
+    t.integer "noteable_id"
+    t.string "noteable_type"
+    t.integer "noteable_iid"
+    t.integer "merge_request_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["merge_request_id"], name: "index_notes_on_merge_request_id"
+  end
+
   create_table "pipelines", id: :serial, force: :cascade do |t|
     t.string "sha", null: false
     t.string "ref", null: false
@@ -70,6 +84,24 @@ ActiveRecord::Schema.define(version: 20171101211101) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_pipelines_on_project_id"
+  end
+
+  create_table "project_hooks", id: :serial, force: :cascade do |t|
+    t.string "url", null: false
+    t.boolean "push_events"
+    t.boolean "tag_push_events"
+    t.boolean "repository_update_events"
+    t.boolean "enable_ssl_verification"
+    t.integer "project_id"
+    t.boolean "issues_events"
+    t.boolean "merge_requests_events"
+    t.boolean "note_events"
+    t.boolean "pipeline_events"
+    t.boolean "wiki_page_events"
+    t.boolean "job_events"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_hooks_on_project_id"
   end
 
   create_table "projects", id: :serial, force: :cascade do |t|
@@ -87,6 +119,16 @@ ActiveRecord::Schema.define(version: 20171101211101) do
     t.integer "forks_count"
     t.datetime "last_activity_at"
     t.json "info", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "system_hooks", id: :serial, force: :cascade do |t|
+    t.string "url", null: false
+    t.boolean "push_events"
+    t.boolean "tag_push_events"
+    t.boolean "repository_update_events"
+    t.boolean "enable_ssl_verification"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
