@@ -1,6 +1,6 @@
 class CreateProjects < ActiveRecord::Migration[5.0]
   def self.up
-    enable_extension :hstore
+    # enable_extension :hstore
 
     create_table :projects, force: true do |t|
       t.string :description
@@ -43,7 +43,7 @@ class CreateProjects < ActiveRecord::Migration[5.0]
     create_table :merge_requests, force: true do |t|
       t.integer :iid, null: false
       t.string :title, null: false
-      t.string :description, null: false
+      t.string :description
       t.string :state, null: false
       t.string :web_url, null: false
       t.references :project
@@ -58,8 +58,8 @@ class CreateProjects < ActiveRecord::Migration[5.0]
       t.string :ref, null: false
       t.string :tag, null: false
       t.string :coverage
-      t.datetime :started_at, null: false
-      t.datetime :finished_at, null: false
+      t.datetime :started_at
+      t.datetime :finished_at
 
       t.json :user, default: {}
       t.json :commit, default: {}

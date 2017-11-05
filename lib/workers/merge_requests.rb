@@ -17,7 +17,7 @@ module Workers
           mr.update!(
             iid: merge_request[:iid],
             title: merge_request[:title],
-            description: merge_request[:description],
+            description: merge_request[:description] || "(empty)",
             state: merge_request[:state],
             web_url: merge_request[:web_url]
           )

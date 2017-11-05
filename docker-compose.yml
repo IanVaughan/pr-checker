@@ -13,11 +13,10 @@ services:
   web:
     # tty: true # Enables debugging capabilities when attached to this container.
     build: .
-    # volumes:
-    #   - .:/app
     env_file:
       - .env
     environment:
+      CREATE_DATABASE_URL: postgres://database/postgres?pool=5
       DATABASE_URL: postgres://database/pr_checker_dev?pool=5
       SIDEKIQ_REDIS_URL: redis://redis:6379/
     ports:
@@ -31,6 +30,8 @@ services:
     build: .
     env_file:
       - .env
+    volumes:
+      - .:/app
     environment:
       DATABASE_URL: postgres://database/pr_checker_dev?pool=5
       SIDEKIQ_REDIS_URL: redis://redis:6379/

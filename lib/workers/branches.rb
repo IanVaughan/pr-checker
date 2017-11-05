@@ -12,11 +12,10 @@ module Workers
       Branches.perform_async(project_id, page + 1) if branches.any?
 
       branches.each do |branch|
-        logger.info "Workers::Branches project_id:#{project_id}, branch_id:#{branch[:id]}"
+        logger.info "Workers::Branches project_id:#{project_id}, branch_id:#{branch[:name]}"
 
-        project.branches.find_or_create_by(id: branch[:id]).tap do |br|
+        project.branches.find_or_create_by(name: branch[:name]).tap do |br|
           br.update!(
-            name: branch[:name],
             commit: branch[:commit],
             merged: branch[:merged],
             protected: branch[:protected],
@@ -25,7 +24,7 @@ module Workers
           )
         end
 
-        Branch.perform_async(project_id, branch[:id])
+        Branch.perform_async(project_id, branch[:name])
       end
     end
   end

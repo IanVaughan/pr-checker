@@ -14,7 +14,6 @@ ActiveRecord::Schema.define(version: 20171101211101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
 
   create_table "branches", id: :serial, force: :cascade do |t|
     t.string "name", null: false
@@ -36,8 +35,8 @@ ActiveRecord::Schema.define(version: 20171101211101) do
     t.string "ref", null: false
     t.string "tag", null: false
     t.string "coverage"
-    t.datetime "started_at", null: false
-    t.datetime "finished_at", null: false
+    t.datetime "started_at"
+    t.datetime "finished_at"
     t.json "user", default: {}
     t.json "commit", default: {}
     t.json "runner", default: {}
@@ -52,7 +51,7 @@ ActiveRecord::Schema.define(version: 20171101211101) do
   create_table "merge_requests", id: :serial, force: :cascade do |t|
     t.integer "iid", null: false
     t.string "title", null: false
-    t.string "description", null: false
+    t.string "description"
     t.string "state", null: false
     t.string "web_url", null: false
     t.integer "project_id"

@@ -51,6 +51,17 @@ Setup tunnel to internet to test from GitHub
     ngrok 4567 # v1.7
     ngrok http 4567 # >v2.0
 
+
+
+RACK_ENV=development rake db:reset
+rake db:create    # Create the database
+rake db:drop      # Drop the database
+rake db:migrate   # Migrate the database
+rake db:reset     # Reset the database
+rake db:schema    # Create a db/schema.rb file that is portable against any DB supported by AR
+a # Generate migration
+
+
 ## Setup GitHub
 
 Goto: `https://github.com/<user>/<repo>/settings/hooks/`

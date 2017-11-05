@@ -258,3 +258,23 @@ def create_branch(project = create_project)
     developers_can_merge: branch[:developers_can_merge]
   )
 end
+
+def note_fixture
+  load_fixture_yml('gitlab/formatted/note.yml')
+end
+
+def create_note(branch = create_branch)
+  gitlab_note = note_fixture
+
+  branch.notes.create!(
+    id: gitlab_note[:id],
+    body: gitlab_note[:body],
+    attachment: gitlab_note[:attachment],
+    author: gitlab_note[:author],
+    system: gitlab_note[:system],
+    noteable_id: gitlab_note[:noteable_id],
+    noteable_type: gitlab_note[:noteable_type],
+    noteable_iid: gitlab_note[:noteable_iid],
+    merge_request: gitlab_note[:merge_request]
+  )
+end
