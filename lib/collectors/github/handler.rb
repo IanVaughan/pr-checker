@@ -1,4 +1,4 @@
-require 'logger'
+# require 'logger'
 # require 'json'
 require 'octokit'
 require_relative 'parser'

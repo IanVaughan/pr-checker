@@ -23,14 +23,14 @@ class BaseServer < Sinatra::Application
     status 200
     data = response_json
     LOGGER.info "GitLab system hook:#{data}"
-    # body GitHub::Handler.new.call(data)
+    body Gitlab::Handler.new.call(data)
   end
 
   post '/gitlab/hooks/project' do
     status 200
     data = response_json
     LOGGER.info "GitLab project hook:#{data}"
-    # body GitHub::Handler.new.call(data)
+    body Gitlab::Handler.new.call(data)
   end
 
   post '/gitlab/add_hook' do

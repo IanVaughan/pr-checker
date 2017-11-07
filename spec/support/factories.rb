@@ -1,3 +1,15 @@
+# File.write('pipelines.yml', pipelines.to_yaml)
+
+def load_fixture(name)
+  path = "#{Dir.pwd}/spec/support/fixtures/#{name}.json"
+  file = File.read(path)
+  JSON.parse(file, symbolize_names: true)
+end
+
+def load_fixture_yml(name)
+  path = "#{Dir.pwd}/spec/support/fixtures/#{name}"
+  YAML.load_file(path).with_indifferent_access
+end
 
 # [3] pry(main)> Gitlab::Projects.new.call.last
 # => {:id=>2,
@@ -294,4 +306,20 @@ def create_system_hook
     repository_update_events: gitlab_system_hook_fixture[:repository_update_events],
     enable_ssl_verification: gitlab_system_hook_fixture[:enable_ssl_verification]
   )
+end
+
+def job_trace_fixture
+  # file = 'gitlab/formatted/job_trace.txt'
+  # path = "#{Dir.pwd}/spec/support/fixtures/#{file}"
+
+  path = "#{Dir.pwd}/spec/support/fixtures/job_trace.txt"
+  File.read(path)
+end
+
+def label_fixture
+  load_fixture_yml('gitlab/formatted/label.yml')
+end
+
+def user_fixture
+  load_fixture_yml('gitlab/formatted/user.yml')
 end

@@ -18,18 +18,18 @@ module Workers
       gitlab_notes = Gitlab::Notes.new.call(project.id, merge_request.iid)
 
       gitlab_notes.each do |gitlab_note|
-        # merge_request.notes.find_or_create_by(id: gitlab_note[:id]).tap do |note|
-        #   note.update!(
-        #     body: gitlab_note[:body],
-        #     attachment: gitlab_note[:attachment],
-        #     author: gitlab_note[:author],
-        #     system: gitlab_note[:system],
-        #     noteable_id: gitlab_note[:noteable_id],
-        #     noteable_type: gitlab_note[:noteable_type],
-        #     noteable_iid: gitlab_note[:noteable_iid],
-        #     merge_request: gitlab_note[:merge_request]
-        #   )
-        # end
+        merge_request.notes.find_or_create_by(id: gitlab_note[:id]).tap do |note|
+          note.update!(
+            body: gitlab_note[:body],
+            attachment: gitlab_note[:attachment],
+            author: gitlab_note[:author],
+            system: gitlab_note[:system],
+            noteable_id: gitlab_note[:noteable_id],
+            noteable_type: gitlab_note[:noteable_type],
+            noteable_iid: gitlab_note[:noteable_iid],
+            merge_request: gitlab_note[:merge_request]
+          )
+        end
       end
 
       # TODO: Check notes

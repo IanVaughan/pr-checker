@@ -35,6 +35,9 @@ require './lib/collectors/gitlab/pipelines'
 require './lib/collectors/gitlab/pipeline'
 require './lib/collectors/gitlab/jobs'
 require './lib/collectors/gitlab/job_trace'
+require './lib/collectors/gitlab/handler'
+require './lib/collectors/gitlab/labels'
+require './lib/collectors/gitlab/users'
 
 require './lib/models/job'
 require './lib/models/pipeline'
@@ -44,6 +47,7 @@ require './lib/models/branch'
 require './lib/models/project'
 require './lib/models/system_hook'
 require './lib/models/project_hook'
+require './lib/models/user'
 
 require './config/initializers/sidekiq'
 
@@ -59,6 +63,12 @@ require './lib/workers/jobs'
 require './lib/workers/job'
 require './lib/workers/notes'
 require './lib/workers/job_trace'
+require './lib/workers/maint'
+require './lib/workers/project_labels'
+require './lib/workers/users'
 
 module LabStats
 end
+
+# TODO: Move to schedule
+# Workers::Maint.perform_async

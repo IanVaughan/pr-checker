@@ -10,19 +10,6 @@ ENV['RACK_ENV'] = 'test'
 
 require File.expand_path('../../environment', __FILE__)
 
-def load_fixture(name)
-  path = "#{Dir.pwd}/spec/support/fixtures/#{name}.json"
-  file = File.read(path)
-  JSON.parse(file, symbolize_names: true)
-end
-
-# File.write('pipelines.yml', pipelines.to_yaml)
-
-def load_fixture_yml(name)
-  path = "#{Dir.pwd}/spec/support/fixtures/#{name}"
-  YAML.load_file(path).with_indifferent_access
-end
-
 RSpec.configure do |config|
   config.mock_with :rspec
   config.expect_with :rspec

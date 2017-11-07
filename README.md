@@ -62,8 +62,7 @@ rake db:drop      # Drop the database
 rake db:migrate   # Migrate the database
 rake db:reset     # Reset the database
 rake db:schema    # Create a db/schema.rb file that is portable against any DB supported by AR
-a # Generate migration
-
+rake g:migration  # Create migration
 
 ## Setup GitHub
 
