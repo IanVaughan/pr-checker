@@ -1,8 +1,8 @@
 image: registry.quiqup.com/backend/docker-api-builder:0.0.4
 
-# services:
-#   - redis:latest
-#   - registry.quiqup.com/backend/docker-test-postgis:latest
+services:
+  - redis:latest
+  - registry.quiqup.com/backend/docker-test-postgis:latest
 
 variables:
   POSTGRES_DB: quiqup_test
@@ -10,18 +10,12 @@ variables:
   POSTGRES_PASSWORD: ""
   DB_HOST: registry.quiqup.com-backend-docker-test-postgis
   DATABASE_URL: postgis://$POSTGRES_USER@$DB_HOST:5432/$POSTGRES_DB
+  DATABASE_URL_MAIN: postgis://$POSTGRES_USER@$DB_HOST:5432/postgres
   REDIS_URL: redis://redis:6379/
   IMAGE_URL: registry.quiqup.com/ian/lab-stats
 
-# # Cache gems in between builds
-# cache:
-#   key: fraud-service-bundle
-#   untracked: true
-#   paths:
-#     - vendor/ruby
-
-before_script:
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.quiqup.com
+# before_script:
+#   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.quiqup.com
 
 stages:
   - test
@@ -30,6 +24,16 @@ stages:
 
 test:
   stage: test
+  cache:
+    key: labstats-bundle
+    untracked: true
+    paths:
+      - vendor/ruby
+  variables:
+    CREATE_DATABASE_URL: $DATABASE_URL_MAIN
+    DATABASE_URL: $DATABASE_URL
+    SIDEKIQ_REDIS_URL: redis://redis:6379/
+    SERVER_URL: http://localhost.com
   script:
     - bundle install
     - rake db:reset
