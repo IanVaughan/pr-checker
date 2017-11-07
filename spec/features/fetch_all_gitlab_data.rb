@@ -20,7 +20,6 @@ RSpec.describe 'Fetch all data (refresh/backfill/sync)' do
     stub "https://gitlab.quiqup.com/api/v4/projects/backend%2FCoreAPI/jobs/138476/trace", job_trace_fixture
     stub "https://gitlab.quiqup.com/api/v4/projects/20/repository/branches", [branch_fixture]
     stub "https://gitlab.quiqup.com/api/v4/projects/20/labels", [label_fixture]
-
     stub("https://gitlab.quiqup.com/api/v4/projects/20/repository/branches/use-name-not-constant", [], method: :delete)
 
     Workers::Projects.perform_async
