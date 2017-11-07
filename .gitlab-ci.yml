@@ -30,6 +30,7 @@ test:
     paths:
       - vendor/ruby
   variables:
+    RAKE_ENV: test
     CREATE_DATABASE_URL: $DATABASE_URL_MAIN
     DATABASE_URL: $DATABASE_URL
     SIDEKIQ_REDIS_URL: redis://redis:6379/
