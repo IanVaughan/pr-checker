@@ -16,7 +16,7 @@ variables:
 stages:
   - test
   - build
-  # - deploy
+  - deploy
 
 test:
   stage: test
@@ -27,7 +27,6 @@ test:
       - vendor/ruby
   variables:
     RAKE_ENV: test
-    # CREATE_DATABASE_URL: $DATABASE_URL_MAIN
     CREATE_DATABASE_URL: postgres://$POSTGRES_USER@postgres:5432/postgres
     SIDEKIQ_REDIS_URL: redis://redis:6379/
     SERVER_URL: http://localhost.com
@@ -40,23 +39,23 @@ build_image:
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.quiqup.com
-    - docker pull $IMAGE_URL:latest
+    # - docker pull $IMAGE_URL:latest
     - docker build --cache-from $IMAGE_URL:latest --tag $IMAGE_URL:$CI_BUILD_REF --tag $IMAGE_URL:latest .
     - docker push $IMAGE_URL:$CI_BUILD_REF
     - docker push $IMAGE_URL:latest
 
-# deploy:
-#   stage: deploy
-#   variables:
-#     RANCHER_ACCESS_KEY: $RANCHER_ACCESS_KEY_PRODUCTION
-#     RANCHER_SECRET_KEY: $RANCHER_SECRET_KEY_PRODUCTION
-#   environment:
-#     name: production
-#   script:
-#     - echo "Deploying $CI_BUILD_REF"
-#     - rancher-gitlab-deploy --environment Production --stack FraudService --service web --start-before-stopping --new-image $IMAGE_URL:$CI_BUILD_REF
-#     - rancher-gitlab-deploy --environment Production --stack FraudService --service sidekiq --start-before-stopping --new-image $IMAGE_URL:$CI_BUILD_REF
-#     - notify-rollbar-deploy --accesstoken $ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN --environment production --username GitLab --revision $CI_BUILD_REF
-#   when: manual
-#   only:
-#     - master
+deploy:
+  stage: deploy
+  variables:
+    RANCHER_ACCESS_KEY: $RANCHER_ACCESS_KEY_PRODUCTION
+    RANCHER_SECRET_KEY: $RANCHER_SECRET_KEY_PRODUCTION
+  environment:
+    name: staging
+  script:
+    - echo "Deploying $CI_BUILD_REF"
+    - rancher-gitlab-deploy --environment Production --stack FraudService --service web --start-before-stopping --new-image $IMAGE_URL:$CI_BUILD_REF
+    - rancher-gitlab-deploy --environment Production --stack FraudService --service sidekiq --start-before-stopping --new-image $IMAGE_URL:$CI_BUILD_REF
+    - notify-rollbar-deploy --accesstoken $ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN --environment production --username GitLab --revision $CI_BUILD_REF
+  when: manual
+  only:
+    - master
