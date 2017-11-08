@@ -8,8 +8,8 @@ variables:
   POSTGRES_DB: quiqup_test
   POSTGRES_USER: test
   POSTGRES_PASSWORD: ""
-  DATABASE_URL: postgis://$POSTGRES_USER@postgres:5432/$POSTGRES_DB
-  DATABASE_URL_MAIN: postgis://$POSTGRES_USER@postgres:5432/postgres
+  DATABASE_URL: postgres://$POSTGRES_USER@postgres:5432/$POSTGRES_DB
+  DATABASE_URL_MAIN: postgres://$POSTGRES_USER@postgres:5432/postgres
   REDIS_URL: redis://redis:6379/
   IMAGE_URL: registry.quiqup.com/ian/lab-stats
 
