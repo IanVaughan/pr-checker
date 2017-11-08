@@ -13,9 +13,6 @@ variables:
   REDIS_URL: redis://redis:6379/
   IMAGE_URL: registry.quiqup.com/ian/lab-stats
 
-# before_script:
-#   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.quiqup.com
-
 stages:
   - test
   # - build
@@ -35,12 +32,13 @@ test:
     SERVER_URL: http://localhost.com
   script:
     - bundle install
-    - rake db:reset
+    - rake db:setup
     - rspec
 
 # build_image:
 #   stage: build
 #   script:
+#     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.quiqup.com
 #     - docker pull $IMAGE_URL:latest
 #     - docker build --cache-from $IMAGE_URL:latest --tag $IMAGE_URL:$CI_BUILD_REF --tag $IMAGE_URL:latest .
 #     - docker push $IMAGE_URL:$CI_BUILD_REF
