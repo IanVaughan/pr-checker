@@ -14,26 +14,26 @@ variables:
   IMAGE_URL: registry.quiqup.com/ian/lab-stats
 
 stages:
-  - test
+  # - test
   - build
   - deploy
 
-test:
-  stage: test
-  cache:
-    key: labstats-bundle
-    untracked: true
-    paths:
-      - vendor/ruby
-  variables:
-    RAKE_ENV: test
-    CREATE_DATABASE_URL: postgres://$POSTGRES_USER@postgres:5432/postgres
-    SIDEKIQ_REDIS_URL: redis://redis:6379/
-    SERVER_URL: http://localhost.com
-  script:
-    - bundle install
-    - rake db:setup
-    - rspec
+# test:
+#   stage: test
+#   cache:
+#     key: labstats-bundle
+#     untracked: true
+#     paths:
+#       - vendor/ruby
+#   variables:
+#     RAKE_ENV: test
+#     CREATE_DATABASE_URL: postgres://$POSTGRES_USER@postgres:5432/postgres
+#     SIDEKIQ_REDIS_URL: redis://redis:6379/
+#     SERVER_URL: http://localhost.com
+#   script:
+#     - bundle install
+#     - rake db:setup
+#     - rspec
 
 build_image:
   stage: build
