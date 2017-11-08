@@ -14,32 +14,32 @@ variables:
   IMAGE_URL: registry.quiqup.com/ian/lab-stats
 
 stages:
-  # - test
+  - test
   - build
   - deploy
 
-# test:
-#   stage: test
-#   cache:
-#     key: labstats-bundle
-#     untracked: true
-#     paths:
-#       - vendor/ruby
-#   variables:
-#     RAKE_ENV: test
-#     CREATE_DATABASE_URL: postgres://$POSTGRES_USER@postgres:5432/postgres
-#     SIDEKIQ_REDIS_URL: redis://redis:6379/
-#     SERVER_URL: http://localhost.com
-#   script:
-#     - bundle install
-#     - rake db:setup
-#     - rspec
+test:
+  stage: test
+  cache:
+    key: labstats-bundle
+    untracked: true
+    paths:
+      - vendor/ruby
+  variables:
+    RAKE_ENV: test
+    CREATE_DATABASE_URL: postgres://$POSTGRES_USER@postgres:5432/postgres
+    SIDEKIQ_REDIS_URL: redis://redis:6379/
+    SERVER_URL: http://localhost.com
+  script:
+    - bundle install
+    - rake db:setup
+    - rspec
 
 build_image:
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.quiqup.com
-    # - docker pull $IMAGE_URL:latest
+    - docker pull $IMAGE_URL:latest
     - docker build --cache-from $IMAGE_URL:latest --tag $IMAGE_URL:$CI_BUILD_REF --tag $IMAGE_URL:latest .
     - docker push $IMAGE_URL:$CI_BUILD_REF
     - docker push $IMAGE_URL:latest
