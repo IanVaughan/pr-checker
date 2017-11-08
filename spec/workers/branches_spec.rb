@@ -3,12 +3,10 @@ require 'sidekiq/testing'
 
 RSpec.describe Workers::Branches do
   let(:instance) { described_class.new }
-  let(:perform) { instance.perform(project.id, page) }
+  let(:perform) { instance.perform(project.id) }
   let!(:project) { create_project }
 
   describe '#perform', sidekiq: :fake do
-    let(:page) { nil }
-
     context "first call" do
       it "saves" do
         expect_any_instance_of(Gitlab::Branches).to receive(:call).and_return([branch_fixture])
@@ -16,7 +14,7 @@ RSpec.describe Workers::Branches do
         perform
 
         expect(Workers::Branch.jobs.size).to eq(1)
-        expect(Workers::Branch.jobs.first["args"]).to eq [project.id, branch_fixture[:id]]
+        expect(Workers::Branch.jobs.first["args"]).to eq [project.id, branch_fixture[:name]]
 
         expect(project.reload.branches.last.name).to eq branch_fixture[:name]
       end
@@ -24,7 +22,6 @@ RSpec.describe Workers::Branches do
 
     context "other call with data" do
       let!(:branch) { create_branch(project) }
-      let(:page) { 2 }
 
       it "saves" do
         expect_any_instance_of(Gitlab::Branches).to receive(:call).and_return([branch_fixture.merge(name: '123')])
@@ -32,7 +29,7 @@ RSpec.describe Workers::Branches do
         perform
 
         expect(Workers::Branch.jobs.size).to eq(1)
-        expect(Workers::Branch.jobs.first["args"]).to eq [project.id, branch_fixture[:id]]
+        expect(Workers::Branch.jobs.first["args"]).to eq [project.id, '123']
 
         expect(project.reload.branches.last.name).to eq '123'
       end
@@ -40,7 +37,6 @@ RSpec.describe Workers::Branches do
 
     context "other call with no data" do
       let!(:branch) { create_branch(project) }
-      let(:page) { 3 }
 
       it "saves" do
         expect_any_instance_of(Gitlab::Branches).to receive(:call).and_return([])

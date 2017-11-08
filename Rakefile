@@ -13,10 +13,6 @@ namespace :db do
   # of which the main hash has a :database key
   db_config_admin = ENV['CREATE_DATABASE_URL'] || db_config.merge(database: 'postgres')
 
-  puts "db_config:#{db_config}"
-  puts "db_config_admin:#{db_config_admin}"
-  puts "CREATE_DATABASE_URL:#{ENV['CREATE_DATABASE_URL']}"
-
   desc "Create the database"
   task :create do
     ActiveRecord::Base.establish_connection(db_config_admin)
