@@ -2,15 +2,14 @@ image: registry.quiqup.com/backend/docker-api-builder:0.0.4
 
 services:
   - redis:latest
-  - registry.quiqup.com/backend/docker-test-postgis:latest
+  - postgres:latest
 
 variables:
   POSTGRES_DB: quiqup_test
   POSTGRES_USER: test
   POSTGRES_PASSWORD: ""
-  DB_HOST: registry.quiqup.com-backend-docker-test-postgis
-  DATABASE_URL: postgis://$POSTGRES_USER@$DB_HOST:5432/$POSTGRES_DB
-  DATABASE_URL_MAIN: postgis://$POSTGRES_USER@$DB_HOST:5432/postgres
+  DATABASE_URL: postgis://$POSTGRES_USER@postgres:5432/$POSTGRES_DB
+  DATABASE_URL_MAIN: postgis://$POSTGRES_USER@postgres:5432/postgres
   REDIS_URL: redis://redis:6379/
   IMAGE_URL: registry.quiqup.com/ian/lab-stats
 
