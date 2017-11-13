@@ -47,15 +47,11 @@ build_image:
 deploy:
   stage: deploy
   variables:
-    RANCHER_ACCESS_KEY: $RANCHER_ACCESS_KEY_PRODUCTION
-    RANCHER_SECRET_KEY: $RANCHER_SECRET_KEY_PRODUCTION
+    RANCHER_ACCESS_KEY: $RANCHER_ACCESS_KEY_STAGING
+    RANCHER_SECRET_KEY: $RANCHER_SECRET_KEY_STAGING
   environment:
     name: staging
   script:
     - echo "Deploying $CI_BUILD_REF"
-    - rancher-gitlab-deploy --environment Production --stack FraudService --service web --start-before-stopping --new-image $IMAGE_URL:$CI_BUILD_REF
-    - rancher-gitlab-deploy --environment Production --stack FraudService --service sidekiq --start-before-stopping --new-image $IMAGE_URL:$CI_BUILD_REF
-    - notify-rollbar-deploy --accesstoken $ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN --environment production --username GitLab --revision $CI_BUILD_REF
-  when: manual
-  only:
-    - master
+    - rancher-gitlab-deploy --environment Staging --stack LabStats --service web --start-before-stopping --new-image $IMAGE_URL:$CI_BUILD_REF
+    - rancher-gitlab-deploy --environment Staging --stack LabStats --service sidekiq --start-before-stopping --new-image $IMAGE_URL:$CI_BUILD_REF
