@@ -1,4 +1,3 @@
-# image: registry.quiqup.com/backend/docker-api-builder:0.0.4
 image: ruby:2.4
 
 services:
@@ -44,6 +43,8 @@ build_image:
     - docker build --cache-from $IMAGE_URL:latest --tag $IMAGE_URL:$CI_BUILD_REF --tag $IMAGE_URL:latest .
     - docker push $IMAGE_URL:$CI_BUILD_REF
     - docker push $IMAGE_URL:latest
+  tags:
+    - docker
 
 deploy:
   stage: deploy
