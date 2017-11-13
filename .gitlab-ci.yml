@@ -12,9 +12,9 @@ variables:
   IMAGE_URL: registry.quiqup.com/ian/lab-stats
 
 stages:
+  - test
   - build
   - deploy
-  - test
 
 test:
   stage: test
