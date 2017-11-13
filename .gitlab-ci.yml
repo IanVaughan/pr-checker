@@ -1,5 +1,3 @@
-image: ruby:2.4
-
 services:
   - redis:latest
   - postgres:latest
@@ -14,12 +12,13 @@ variables:
   IMAGE_URL: registry.quiqup.com/ian/lab-stats
 
 stages:
-  - test
   - build
   - deploy
+  - test
 
 test:
   stage: test
+  image: ruby:2.4
   cache:
     key: labstats-bundle
     untracked: true
@@ -36,8 +35,8 @@ test:
     - rspec
 
 build_image:
-  image: docker:latest
   stage: build
+  image: docker:latest
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.quiqup.com
     - docker pull $IMAGE_URL:latest
@@ -47,6 +46,7 @@ build_image:
 
 deploy:
   stage: deploy
+  image: registry.quiqup.com/backend/docker-api-builder:0.0.4
   variables:
     RANCHER_ACCESS_KEY: $RANCHER_ACCESS_KEY_STAGING
     RANCHER_SECRET_KEY: $RANCHER_SECRET_KEY_STAGING
