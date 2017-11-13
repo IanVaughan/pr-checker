@@ -43,6 +43,8 @@ build_image:
     - docker build --cache-from $IMAGE_URL:latest --tag $IMAGE_URL:$CI_BUILD_REF --tag $IMAGE_URL:latest .
     - docker push $IMAGE_URL:$CI_BUILD_REF
     - docker push $IMAGE_URL:latest
+  only:
+    - master
 
 deploy:
   stage: deploy
@@ -56,3 +58,5 @@ deploy:
     - echo "Deploying $CI_BUILD_REF"
     - rancher-gitlab-deploy --environment Staging --stack LabStats --service web --start-before-stopping --new-image $IMAGE_URL:$CI_BUILD_REF
     - rancher-gitlab-deploy --environment Staging --stack LabStats --service sidekiq --start-before-stopping --new-image $IMAGE_URL:$CI_BUILD_REF
+  only:
+    - master
