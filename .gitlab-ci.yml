@@ -36,6 +36,7 @@ test:
     - rspec
 
 build_image:
+  image: docker:latest
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.quiqup.com
@@ -43,8 +44,6 @@ build_image:
     - docker build --cache-from $IMAGE_URL:latest --tag $IMAGE_URL:$CI_BUILD_REF --tag $IMAGE_URL:latest .
     - docker push $IMAGE_URL:$CI_BUILD_REF
     - docker push $IMAGE_URL:latest
-  tags:
-    - docker
 
 deploy:
   stage: deploy
